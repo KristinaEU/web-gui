@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>KRISTINA GUI</title>
+    <script src="kristinajs/gl-matrix-min.js"></script>
+    <script src="kristinajs/litegl.js"></script>
+    <script src="kristinajs/Canvas2DtoWebGL.js"></script>
+    <script src="kristinajs/litescene.js"></script>
+    <script src="gui_js/volumeControl.js"></script>
+    <script src="gui_js/scenarioSelector.js"></script>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/small-business.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <!--<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
+        <!--<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/range.css">
+
+    <script src="https://cdn.WebRTC-Experiment.com/MediaStreamRecorder.js"></script>
+
+    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
+    <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
+
+
+
+    <style>
+        li {
+            position: relative;
+            z-index: 0;
+            display: inline-block;
+            padding: 0px;
+            width: 15px;
+            height: 15px;
+            list-style: none;
+            text-align: center;
+            font-weight: normal;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        div.logoText {
+            position: absolute;
+            top: 50%;
+            right:0;
+            transform: translateY(-50%);
+            font-size: 36px;
+            text-align: right;
+        }
+
+        div.flat {
+            padding:0;
+            margin:0;
+        }
+
+        div.right {
+            text-align:right;
+        }
+
+        a.fullWidth {
+            width:100%;
+        }
+
+        div.row {
+            margin-left:0px;
+            margin-right:0px;
+            padding:0px;
+        }
+
+
+        div.overlay {
+            position:absolute;
+            top:0px;
+            left:0px;
+            display:block;
+            width:100%;
+            height:100%;
+            background-color:rgba(0,0,0,0.9);
+        }
+
+        body {
+            width:100%;
+            height:100%;
+
+        }
+
+        a.scenario {
+            width:100%;
+            padding: 20px;
+            height: 80px;
+            line-height: 40px;
+            vertical-align: top;
+        }
+
+        div.allCenter {
+            width: 500px;
+            height: 300px;
+            padding: 20px;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            margin: -200px 0 0 -250px;
+        }
+
+        div.btn {
+            width:200px;
+            height:100px;
+            padding:10px;
+            float:left;
+        }
+
+        div.overlayButtonWrapper {
+            width:500px;
+            height:100px;
+        }
+
+        #scenarioHeader {
+            position:absolute;
+            top:0px;
+            left:40px;
+            color:#fff;
+
+        }
+
+        div.volumeWrapper {
+            position:absolute;
+            bottom:20px;
+            right:14px;
+            width:340px;
+            height:40px
+        }
+
+        div.volumeButton {
+            display:inline-block;
+            float:left;
+            width:40px;
+            height:40px;
+            margin:10px;
+        }
+
+        div.volumeSliderWrapper {
+            position:relative;
+            top:-4px;
+            display:inline-block;
+            float:left;
+            margin:10px;
+            width:200px;
+            height:40px;
+            line-height: 40px;
+            vertical-align: middle
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Heading Row -->
+        <div class="row">
+
+            <!-- /.col-md-8 -->
+            <div class="col-sm-3 col-md-3">
+                <div class="row">
+                    <div class="row" style="position:relative;">
+                        <div class="col-md-3 flat"><img class="img-responsive" src="./images/kristina_logo.jpg" /></div>
+                        <div class="col-md-9 logoText">KRISTINA</div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12 flat">
+                            <a class="btn btn-success btn-lg fullWidth" href="#">Push to talk</a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row" id="videoContainerWrapper">
+                        <div id="videoContainer">
+                            <img class="img-responsive img-rounded center-block" src="http://placehold.it/320x240" alt="">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-9 col-md-9" style="position:relative;">
+                <h1 id="scenarioHeader"></h1>
+                <div id="kristinaWrapper">
+                    <img class="img-responsive img-rounded center-block" src="http://placehold.it/900x700" alt="">
+                </div>
+                <div class="volumeWrapper">
+                    <div class="volumeButton">
+                        <a class="btn btn-danger btn-md" onClick="decreaseVolume()">
+                            <li class="ion-volume-low" data-pack="default" data-tags="sign out"></li>
+                        </a>
+                    </div>
+                    <div class="volumeSliderWrapper">
+                        <input class="range" type="range" style="width:200px" id="volumeRange" max="1" min="0" step="0.05" value="1" onChange="updateSlider(this)">
+                    </div>
+                    <div class="volumeButton">
+                        <a class="btn btn-primary btn-md" onClick="increaseVolume()">
+                            <li class="ion-volume-high" data-pack="default" data-tags="sign out"></li>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.col-md-4 -->
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Call to Action Well -->
+        <div class="row">
+            <div class="col-lg-12 flat">
+                <div class="well text-center">
+                    This interface is in Alpha stage. Please ignore anything that does not work correctly.
+                </div>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12 flat">
+                    <p>Copyright &copy; KRISTINA 2016</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <div id="overlay" class="overlay">
+        <div class="allCenter">
+            <h1 style="margin-left: 100px; color:#fff;">Scenarios</h1>
+            <div class="overlayButtonWrapper">
+                <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('Baby Care');">Baby Care</a></div>
+                <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('Low Back Pain');">Low Back Pain</a></div>
+            </div>
+            <div class="overlayButtonWrapper">
+                <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('Sleeping Habits');">Sleeping Habits</a></div>
+                <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('Reading the News');">Reading the News</a></div>
+            </div>
+            <div class="overlayButtonWrapper">
+                <div class="btn" style="margin:auto"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('Small Talk');">Small Talk</a></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <!--<script src="js/bootstrap.js"></script>-->
+
+</body>
+<script src="gui_js/main.js"></script>
+</html>
