@@ -12,7 +12,7 @@ var resolution_y = 240;
 var ws = null;
 //var wsUri = "wss://webglstudio.org:8080";
 //var wsUri = "wss://localhost:8080";
-var wsUri = "wss://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:8080";
+var wsUri = "wss://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
 // Init websocket connection
 startWebsocket();
 
