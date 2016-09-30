@@ -12,15 +12,12 @@ var resolution_y = 240;
 var ws = null;
 //var wsUri = "wss://webglstudio.org:8080";
 //var wsUri = "wss://localhost:8080";
-var wsUri = "wss://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
+var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
 // Init websocket connection
 startWebsocket();
 
-
 // HTML container
 var container = document.getElementById('videoContainer');
-
-
 
 // Constraints
 var mediaConstraints = {
@@ -34,7 +31,6 @@ var mediaConstraints = {
   }
 };
 
-
 navigator.mediaDevices.getUserMedia(mediaConstraints)
   .then(function(stream) {
     console.log("Starting mediaRecorder...");
@@ -43,13 +39,11 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
     mediaRecorder.ondataavailable = function(e) {
       //console.log("Data available!");
         doSend(e.data);
-
     };
 
     // get the dimensions of the wrapper
     var videoWrapper = document.getElementById("videoContainerWrapper");
     var videoDimensions = videoWrapper.getBoundingClientRect();
-
 
     // Create video HTML
     var video = document.createElement('video');
@@ -81,17 +75,26 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
 // Websockets
 
 function startWebsocket(){
-  ws = new WebSocket(wsUri);
+  //Open https once first, to make sure certificate is valid
+  var xhttp;
+  if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xhttp.open("GET", "https://"+wsUri, false);
+  xhttp.send();
+  
+  //Now open websocket:
+  ws = new WebSocket("wss://"+wsUri);
 
   ws.onopen = function(e) {
     console.log("Websocket connected to: ", wsUri);
-    //this.send("Websocket connection established");
-    //captureUserMedia(mediaConstraints, onMediaSuccess, onMediaError);
   }
 
   ws.onclose = function(e){
     console.log("Disconnected from websocket: ", wsUri);
-    //mediaRecorder.stop();
   }
 
   ws.onmessage = function(e){
@@ -101,14 +104,13 @@ function startWebsocket(){
   ws.onerror = function(e){
     console.error("Websocket error: ", e);
   }
-
 }
 
 
 function doSend(message)
 {
-  console.log("Sending to websocket: ", message);
-  ws.send(message);
+  //console.log("Sending to websocket: ", message);
+  ws.send(message, {binary:true});
 }
 
 //Avatar rendering
@@ -129,6 +131,6 @@ function doSend(message)
   canvas.innerHTML = '';
   canvas.appendChild( player.canvas );
   player.canvas.style.borderRadius = '10px';
-  player.loadScene("./scenes/kate.SCENE.wbin");
+  player.loadScene("./scenes/kristina.SCENE.wbin");
 
 
