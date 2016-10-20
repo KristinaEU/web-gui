@@ -8,11 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>KRISTINA GUI</title>
-    <script src="kristinajs/gl-matrix-min.js"></script>
-    <script src="kristinajs/litegl.js"></script>
-    <script src="kristinajs/Canvas2DtoWebGL.js"></script>
-    <script src="kristinajs/litescene.js"></script>
-    <script src="gui_js/volumeControl.js"></script>
+
     <script src="gui_js/scenarioSelector.js"></script>
 
     <!-- Bootstrap Core CSS -->
@@ -30,12 +26,6 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="css/ionicons.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/range.css">
-
-    <script src="https://cdn.WebRTC-Experiment.com/MediaStreamRecorder.js"></script>
-
-    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
-    <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
-
     <link rel="stylesheet" type="text/css" media="screen" href="css/common.css">
 
 </head>
@@ -55,47 +45,38 @@
                         <div class="col-md-9 logoText">KRISTINA</div>
                     </div>
                     <hr>
-                    <div class="row">
-                        <div class="col-md-12 flat">
-                            <a class="btn btn-success btn-lg fullWidth" href="#" id="push2talk">Push to talk</a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row" id="videoContainerWrapper">
-                        <div id="videoContainer">
-                        </div>
-                    </div>
                 </div>
 
             </div>
             <div class="col-sm-9 col-md-9" style="position:relative;">
-                <h1 id="scenarioHeader"></h1>
-                <div id="kristinaWrapper">
-                    <img class="img-responsive img-rounded center-block" src="https://placehold.it/900x700" alt="">
-                </div>
-                <div class="volumeWrapper">
-                    <div class="volumeButton">
-                        <a class="btn btn-danger btn-md" onClick="decreaseVolume()">
-                            <li class="ion-volume-low" data-pack="default" data-tags="sign out"></li>
-                        </a>
-                    </div>
-                    <div class="volumeSliderWrapper">
-                        <input class="range" type="range" style="width:200px" id="volumeRange" max="1" min="0" step="0.05" value="1" onChange="updateSlider(this)">
-                    </div>
-                    <div class="volumeButton">
-                        <a class="btn btn-primary btn-md" onClick="increaseVolume()">
-                            <li class="ion-volume-high" data-pack="default" data-tags="sign out"></li>
-                        </a>
-                    </div>
-                </div>
+                <h1>Selected scenario:<span id="scenarioHeader"></span></h1>
+                <hr>
+                <div class="row">
+                    <div class="row" style="position:relative;">
+                       <div class="allCenter">
 
+                        <div class="overlayButtonWrapper">
+                            <h1 style="margin-left: 100px;">Scenarios:</h1>
+
+                        <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('babycare');">Baby Care</a></div>
+                        <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('pain');">Low Back Pain</a></div>
+                        </div>
+                        <div class="overlayButtonWrapper">
+                        <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('sleep');">Sleeping Habits</a></div>
+                        <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('newspaper');">Reading the News</a></div>
+                        </div>
+                        <div class="overlayButtonWrapper">
+                        <div class="btn" style="margin:auto"><a class="btn btn-primary btn-lg scenario" onClick="setScenario('weather');">Weather/Small Talk</a></div>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
             </div>
             <!-- /.col-md-4 -->
         </div>
         <!-- /.row -->
 
-        <hr>
-        <a class="btn btn-success btn-lg fullWidth" target="_blank" href="scenarioSelector.html">Scenario Selector</a>
         <hr>
 
         <!-- Call to Action Well -->
@@ -121,15 +102,9 @@
 
     </div>
     <!-- /.container -->
-    
+
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <!--<script src="js/bootstrap.js"></script>-->
-
-
-
 </body>
-<script src="gui_js/main.js"></script>
 </html>

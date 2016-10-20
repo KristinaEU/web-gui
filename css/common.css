@@ -1,0 +1,112 @@
+li {
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+    padding: 0px;
+    width: 15px;
+    height: 15px;
+    list-style: none;
+    text-align: center;
+    font-weight: normal;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+div.logoText {
+    position: absolute;
+    top: 50%;
+    right:0;
+    transform: translateY(-50%);
+    font-size: 36px;
+    text-align: right;
+}
+
+div.flat {
+    padding:0;
+    margin:0;
+}
+
+div.right {
+    text-align:right;
+}
+
+a.fullWidth {
+    width:100%;
+}
+
+div.row {
+    margin-left:0px;
+    margin-right:0px;
+    padding:0px;
+}
+
+
+div.overlay {
+    position:absolute;
+    top:0px;
+    left:0px;
+    display:block;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.9);
+}
+
+body {
+    width:100%;
+    height:100%;
+
+}
+
+a.scenario {
+    width:100%;
+    padding: 20px;
+    height: 80px;
+    line-height: 40px;
+    vertical-align: top;
+}
+
+div.allCenter {
+    width: 500px;
+    height: 300px;
+    padding: 20px;
+}
+
+div.btn {
+    width:200px;
+    height:100px;
+    padding:10px;
+    float:left;
+}
+
+div.overlayButtonWrapper {
+    width:500px;
+    height:100px;
+}
+
+div.volumeWrapper {
+    position:absolute;
+    bottom:20px;
+    right:14px;
+    width:340px;
+    height:40px
+}
+
+div.volumeButton {
+    display:inline-block;
+    float:left;
+    width:40px;
+    height:40px;
+    margin:10px;
+}
+
+div.volumeSliderWrapper {
+    position:relative;
+    top:-4px;
+    display:inline-block;
+    float:left;
+    margin:10px;
+    width:200px;
+    height:40px;
+    line-height: 40px;
+    vertical-align: middle
+}

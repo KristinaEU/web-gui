@@ -11,7 +11,6 @@ var resolution_y = 240;
 // Websocket variables
 var ws = null;
 //var wsUri = "wss://webglstudio.org:8080";
-//var wsUri = "wss://localhost:8080";
 var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
 // Init websocket connection
 startWebsocket();
@@ -22,7 +21,7 @@ var container = document.getElementById('videoContainer');
 // Constraints
 var mediaConstraints = {
   audio: true,
-  //video: true
+  //video: false
   video: {
     mandatory: {
       maxWidth: resolution_x,
@@ -50,12 +49,11 @@ p2tbutton.onmouseup =  function(){
 navigator.mediaDevices.getUserMedia(mediaConstraints)
   .then(function(stream) {
     console.log("Starting mediaRecorder...");
-	
-	mediastream = stream;
-	//mute by default
-	setTimeout(function(){mediastream.getAudioTracks()[0].enabled = false;},1000);
-	
+    mediastream = stream;
+
+    //mute by default
     mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm',bitsPerSecond: 160000});
+    setTimeout(function(){mediastream.getAudioTracks()[0].enabled = false;},1000);
 
     mediaRecorder.ondataavailable = function(e) {
       //console.log("Data available!");
@@ -94,7 +92,7 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
 
 
 // Websockets
-
+var open = false;
 function startWebsocket(){
   //Open https once first, to make sure certificate is valid
   var xhttp;
@@ -112,10 +110,12 @@ function startWebsocket(){
 
   ws.onopen = function(e) {
     console.log("Websocket connected to: ", wsUri);
+    open = true;
   }
 
   ws.onclose = function(e){
     console.log("Disconnected from websocket: ", wsUri);
+    open = false;
   }
 
   ws.onmessage = function(e){
@@ -124,14 +124,16 @@ function startWebsocket(){
 
   ws.onerror = function(e){
     console.error("Websocket error: ", e);
+    open = false;
   }
 }
 
 
 function doSend(message)
 {
-  //console.log("Sending to websocket: ", message);
-  ws.send(message, {binary:true});
+  if (open) {
+    ws.send(message, {binary:true});
+  }
 }
 
 //Avatar rendering
@@ -153,5 +155,4 @@ function doSend(message)
   canvas.appendChild( player.canvas );
   player.canvas.style.borderRadius = '10px';
   player.loadScene("./scenes/kristina.SCENE.wbin");
-
 
