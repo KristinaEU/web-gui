@@ -31,9 +31,30 @@ var mediaConstraints = {
   }
 };
 
+var mediastream = null;
+var p2tbutton = document.getElementById("push2talk");
+
+p2tbutton.onmousedown = function(){
+  console.log("unmuting!");
+  if (mediastream != null) {
+    mediastream.getAudioTracks()[0].enabled = true;
+  }
+};
+p2tbutton.onmouseup =  function(){
+  console.log("muting!");
+  if (mediastream != null) {
+    mediastream.getAudioTracks()[0].enabled = false;
+  }
+};
+
 navigator.mediaDevices.getUserMedia(mediaConstraints)
   .then(function(stream) {
     console.log("Starting mediaRecorder...");
+	
+	mediastream = stream;
+	//mute by default
+	setTimeout(function(){mediastream.getAudioTracks()[0].enabled = false;},1000);
+	
     mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm',bitsPerSecond: 160000});
 
     mediaRecorder.ondataavailable = function(e) {
