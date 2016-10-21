@@ -154,5 +154,5 @@ function doSend(message)
   canvas.innerHTML = '';
   canvas.appendChild( player.canvas );
   player.canvas.style.borderRadius = '10px';
-  player.loadScene("./scenes/kristina.SCENE.wbin");
+  player.loadScene("./scenes/emma.SCENE.wbin");
 
