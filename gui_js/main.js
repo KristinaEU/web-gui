@@ -132,7 +132,8 @@ function startWebsocket(){
 function doSend(message)
 {
   if (open) {
-    ws.send(message, {binary:true});
+    //ws.send(message, {binary:true});
+	ws.send(message);
   }
 }
 
