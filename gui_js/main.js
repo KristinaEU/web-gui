@@ -134,12 +134,16 @@ function startWebsocket(){
 }
 
 
+function doCmdSend(command){
+  if (open) {
+    ws.send(command, {binary:false});
+  }
+}
+
 function doSend(message)
 {
   if (open) {
-    //ws.send(message, {binary:true});
-    var wrap = {"data":message};
-	ws.send(wrap);
+    ws.send(message, {binary:true});
   }
 }
 
