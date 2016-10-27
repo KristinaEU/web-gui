@@ -138,7 +138,8 @@ function doSend(message)
 {
   if (open) {
     //ws.send(message, {binary:true});
-	ws.send(message);
+    var wrap = {"data":message};
+	ws.send(wrap);
   }
 }
 
