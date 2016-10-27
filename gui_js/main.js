@@ -31,6 +31,7 @@ var mediaConstraints = {
 };
 
 var mediastream = null;
+var mediaRecorder = null;
 var p2tbutton = document.getElementById("push2talk");
 
 p2tbutton.onmousedown = function(){
@@ -74,10 +75,11 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
       muted: true,
       src: URL.createObjectURL(mediaRecorder.stream)
     });
-
-    mediaRecorder.start(500);
     video.play();
 
+	if (open){
+		mediaRecorder.start(500);	
+	}
     container.appendChild(video);
 
   })
@@ -111,6 +113,9 @@ function startWebsocket(){
   ws.onopen = function(e) {
     console.log("Websocket connected to: ", wsUri);
     open = true;
+	if (mediaRecorder != null){
+		mediaRecorder.start(500);	
+	}  
   }
 
   ws.onclose = function(e){
@@ -132,7 +137,8 @@ function startWebsocket(){
 function doSend(message)
 {
   if (open) {
-    ws.send(message, {binary:true});
+    //ws.send(message, {binary:true});
+	ws.send(message);
   }
 }
 
