@@ -13,7 +13,12 @@
     <script src="kristinajs/Canvas2DtoWebGL.js"></script>
     <script src="kristinajs/litescene.js"></script>
     <script src="gui_js/volumeControl.js"></script>
-    <script src="gui_js/scenarioSelector.js"></script>
+
+    <script src="https://cdn.WebRTC-Experiment.com/MediaStreamRecorder.js"></script>
+
+    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
+    <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
+
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -31,10 +36,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/ionicons.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/range.css">
 
-    <script src="https://cdn.WebRTC-Experiment.com/MediaStreamRecorder.js"></script>
 
-    <!-- for Edige/FF/Chrome/Opera/etc. getUserMedia support -->
-    <script src="https://cdn.WebRTC-Experiment.com/gumadapter.js"></script>
 
     <link rel="stylesheet" type="text/css" media="screen" href="css/common.css">
 
@@ -59,6 +61,11 @@
                         <div class="col-md-12 flat">
                             <a class="btn btn-success btn-lg fullWidth" href="#" id="push2talk">Push to talk</a>
                         </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-8 flat">Manual text input:<br/><input type="text" id="manualTextInput" name="manual"/></div>
+                        <div class="col-md-4 flat"><a class="btn btn-success btn-lg" href="#" onclick="sendText()">Send text</a></div>
                     </div>
                     <hr>
                     <div class="row" id="videoContainerWrapper">
@@ -121,16 +128,8 @@
 
     </div>
     <!-- /.container -->
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <!--<script src="js/bootstrap.js"></script>-->
-
-
-
 </body>
+<script src="js/jquery.js"></script>
 <script src="gui_js/common.js"></script>
 <script src="gui_js/main.js"></script>
 

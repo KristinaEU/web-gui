@@ -1,19 +1,9 @@
 
 // Capture and send video and audio media
 
-
 // Multistream recorder
 var resolution_x = 320;
 var resolution_y = 240;
-
-
-
-// Websocket variables
-var ws = null;
-//var wsUri = "wss://webglstudio.org:8080";
-var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
-// Init websocket connection
-startWebsocket();
 
 // HTML container
 var container = document.getElementById('videoContainer');
@@ -31,7 +21,6 @@ var mediaConstraints = {
 };
 
 var mediastream = null;
-var mediaRecorder = null;
 var p2tbutton = document.getElementById("push2talk");
 
 p2tbutton.onmousedown = function(){
@@ -91,61 +80,6 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
       log.error("Permission denied!");
     }
   });
-
-
-// Websockets
-var open = false;
-function startWebsocket(){
-  //Open https once first, to make sure certificate is valid
-  var xhttp;
-  if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest();
-    } else {
-    // code for IE6, IE5
-    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xhttp.open("GET", "https://"+wsUri, false);
-  xhttp.send();
-  
-  //Now open websocket:
-  ws = new WebSocket("wss://"+wsUri);
-
-  ws.onopen = function(e) {
-    console.log("Websocket connected to: ", wsUri);
-    open = true;
-	if (mediaRecorder != null){
-		mediaRecorder.start(500);	
-	}  
-  }
-
-  ws.onclose = function(e){
-    console.log("Disconnected from websocket: ", wsUri);
-    open = false;
-  }
-
-  ws.onmessage = function(e){
-    //console.log("Received data: ", e.data);
-  }
-
-  ws.onerror = function(e){
-    console.error("Websocket error: ", e);
-    open = false;
-  }
-}
-
-
-function doCmdSend(command){
-  if (open) {
-    ws.send(command, {binary:false});
-  }
-}
-
-function doSend(message)
-{
-  if (open) {
-    ws.send(message, {binary:true});
-  }
-}
 
 //Avatar rendering
 
