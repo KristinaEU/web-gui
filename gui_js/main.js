@@ -1,4 +1,3 @@
-
 // Capture and send video and audio media
 
 // Multistream recorder
@@ -23,13 +22,13 @@ var mediaConstraints = {
 var mediastream = null;
 var p2tbutton = document.getElementById("push2talk");
 
-p2tbutton.onmousedown = function(){
+p2tbutton.onmousedown = function () {
   console.log("unmuting!");
   if (mediastream != null) {
     mediastream.getAudioTracks()[0].enabled = true;
   }
 };
-p2tbutton.onmouseup =  function(){
+p2tbutton.onmouseup = function () {
   console.log("muting!");
   if (mediastream != null) {
     mediastream.getAudioTracks()[0].enabled = false;
@@ -37,17 +36,19 @@ p2tbutton.onmouseup =  function(){
 };
 
 navigator.mediaDevices.getUserMedia(mediaConstraints)
-  .then(function(stream) {
+  .then(function (stream) {
     console.log("Starting mediaRecorder...");
     mediastream = stream;
 
     //mute by default
-    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm',bitsPerSecond: 160000});
-    setTimeout(function(){mediastream.getAudioTracks()[0].enabled = false;},1000);
+    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm', bitsPerSecond: 160000});
+    setTimeout(function () {
+      mediastream.getAudioTracks()[0].enabled = false;
+    }, 1000);
 
-    mediaRecorder.ondataavailable = function(e) {
+    mediaRecorder.ondataavailable = function (e) {
       //console.log("Data available!");
-        doSend(e.data);
+      doSend(e.data);
     };
 
     // get the dimensions of the wrapper
@@ -56,9 +57,9 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
 
     // Create video HTML
     var video = document.createElement('video');
-	video.classname = "img-responsive img-rounded center-block";
+    video.classname = "img-responsive img-rounded center-block";
     video.style.width = videoDimensions.width + 'px';
-    video.style.height = (videoDimensions.width/4*3) + 'px'; // the wrapper div has no height, but a 4:3 aspect ratio.
+    video.style.height = (videoDimensions.width / 4 * 3) + 'px'; // the wrapper div has no height, but a 4:3 aspect ratio.
     video = mergeProps(video, {
       controls: false,
       muted: true,
@@ -66,13 +67,13 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
     });
     video.play();
 
-	if (open){
-		mediaRecorder.start(500);	
-	}
+    if (open) {
+      mediaRecorder.start(500);
+    }
     container.appendChild(video);
 
   })
-  .catch(function(error) {
+  .catch(function (error) {
     if (error.name === 'ConstraintNotSatisfiedError') {
       log.error("Some constraint was not satisfied!");
 
@@ -83,21 +84,25 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
 
 //Avatar rendering
 
-  // get the dimensions of the wrapper
-  var kristinaWrapper = document.getElementById("kristinaWrapper");
-  var kristinaDimensions = kristinaWrapper.getBoundingClientRect();
+// get the dimensions of the wrapper
+var kristinaWrapper = document.getElementById("kristinaWrapper");
+var kristinaDimensions = kristinaWrapper.getBoundingClientRect();
 
-  var player = new LS.Player({
-    width:kristinaDimensions.width,
-    height:kristinaDimensions.width/4*3,
-    resources: "resources",
-    shaders: "shaders/shaders.xml",
-    container: kristinaWrapper
-  });
 
-  var canvas = document.getElementById("kristinaWrapper");
-  canvas.innerHTML = '';
-  canvas.appendChild( player.canvas );
-  player.canvas.style.borderRadius = '10px';
-  player.loadScene("./scenes/emma.SCENE.wbin");
+var player = new LS.Player({
+  width: kristinaDimensions.width,
+  height: kristinaDimensions.width / 4 * 3,
+  resources: "resources",
+  shaders: "shaders/shaders.xml",
+  loadingbar: true, //shows loading bar progress
+  container: kristinaWrapper
+});
 
+var canvas = document.getElementById("kristinaWrapper");
+canvas.innerHTML = '';
+canvas.appendChild(player.canvas);
+player.canvas.style.borderRadius = '10px';
+player.loadScene("./scenes/emma.json");
+setTimeout(function () {
+  LS.Globals.showGUI = false;
+}, 500);

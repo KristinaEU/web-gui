@@ -6,21 +6,30 @@
 //Rest client to VSM: URL, call method, structures.
 var vsm_uri = "http://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:11220/";
 
-var vsm_start = { "cmd":"start"};
-var vsm_reset = { "cmd":"reset"};
-var vsm_load =  { "cmd":"load", "arg":"res/prj/vsm" };
+var vsm_start = {"cmd": "start"};
+var vsm_reset = {"cmd": "reset"};
+var vsm_load = {"cmd": "load", "arg": "res/prj/vsm"};
 
-var vsm_set  =  function(field,val){ return { "cmd": "set", "arg":{ "var":field, "val":JSON.stringify(val)}}};
-var vsm_text = function(text) { return vsm_set("UserData",{"confidence":0.85,"text":text})};
+var vsm_set = function (field, val) {
+  return {"cmd": "set", "arg": {"var": field, "val": JSON.stringify(val)}}
+};
+var vsm_text = function (text) {
+  return vsm_set("UserData", {"confidence": 0.85, "text": text})
+};
 
-var sendText = function(){
-     var text = $('#manualTextInput').val();
-     if (typeof text == "string" && text != "") {
-       doVSMCall(vsm_text(text));
-     }
+var sendText = function () {
+  var text = $('#manualTextInput').val();
+  if (typeof text == "string" && text != "") {
+    doVSMCall(vsm_text(text));
+  }
 }
 
-
+var initVSM = function () {
+  doVSMCall(vsm_load);
+  setTimeout(function () {
+    doVSMCall(vsm_start);
+  }, 1000);
+}
 // Websocket variables
 var ws = null;
 var open = false;
@@ -32,9 +41,9 @@ var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
 startWebsocket();
 
 
-function startWebsocket(){
+function startWebsocket() {
 
-  if (open && typeof ws != "undefined"){
+  if (open && typeof ws != "undefined") {
     ws.close();
   }
 
@@ -46,51 +55,50 @@ function startWebsocket(){
     // code for IE6, IE5
     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
   }
-  xhttp.open("GET", "https://"+wsUri, false);
+  xhttp.open("GET", "https://" + wsUri, false);
   xhttp.send();
 
   //Now open websocket:
-  ws = new WebSocket("wss://"+wsUri);
+  ws = new WebSocket("wss://" + wsUri);
 
-  ws.onopen = function(e) {
+  ws.onopen = function (e) {
     console.log("Websocket connected to: ", wsUri);
     open = true;
-    if (mediaRecorder != null){
+    if (mediaRecorder != null) {
       mediaRecorder.start(500);
     }
   }
 
-  ws.onclose = function(e){
+  ws.onclose = function (e) {
     console.log("Disconnected from websocket: ", wsUri);
     open = false;
   }
 
-  ws.onmessage = function(e){
+  ws.onmessage = function (e) {
     //console.log("Received data: ", e.data);
   }
 
-  ws.onerror = function(e){
+  ws.onerror = function (e) {
     console.error("Websocket error: ", e);
     open = false;
   }
 }
 
-function doCmdSend(command){
+function doCmdSend(command) {
   if (open) {
-    console.log("Sending VSM command:",command);
-    ws.send(JSON.stringify(command), {binary:false});
+    console.log("Sending VSM command:", command);
+    ws.send(JSON.stringify(command), {binary: false});
   }
 }
 
-function doSend(message)
-{
+function doSend(message) {
   if (open) {
-    ws.send(message, {binary:true});
+    ws.send(message, {binary: true});
   }
 }
 
 
-var doVSMCall = function(body){
+var doVSMCall = function (body) {
   body["target"] = "VSM";
   doCmdSend(body);
 }

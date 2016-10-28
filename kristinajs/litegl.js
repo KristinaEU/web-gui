@@ -504,6 +504,33 @@ global.hexColorToRGBA = (function() {
 		transparent: [0,0,0,0]
 	};
 
+	function hue2rgb( p, q, t ){
+		if(t < 0) t += 1;
+		if(t > 1) t -= 1;
+		if(t < 1/6) return p + (q - p) * 6 * t;
+		if(t < 1/2) return q;
+		if(t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+		return p;
+	}
+
+	function hslToRgb( h, s, l, out ){
+		var r, g, b;
+		out = out || vec3.create();
+		if(s == 0){
+			r = g = b = l; // achromatic
+		}else{
+			var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+			var p = 2 * l - q;
+			r = hue2rgb(p, q, h + 1/3);
+			g = hue2rgb(p, q, h);
+			b = hue2rgb(p, q, h - 1/3);
+		}
+		out[0] = r;
+		out[1] = g;
+		out[2] = b;
+		return out;
+	}
+
 	return function( hex, color, alpha )
 	{
 	alpha = (alpha === undefined ? 1 : alpha);
@@ -539,6 +566,16 @@ global.hexColorToRGBA = (function() {
 		return color;
 	}
 
+	var pos = hex.indexOf("hsla(");
+	if(pos != -1)
+	{
+		var str = hex.substr(5);
+		str = str.split(",");
+		hslToRgb( parseInt( str[0] ) / 360, parseInt( str[1] ) / 100, parseInt( str[2] ) / 100, color );
+		color[3] = parseFloat( str[3] ) * alpha;
+		return color;
+	}
+
 	color[3] = alpha;
 
 	//rgb colors
@@ -552,6 +589,16 @@ global.hexColorToRGBA = (function() {
 		color[2] = parseInt( str[2] ) / 255;
 		return color;
 	}
+
+	var pos = hex.indexOf("hsl(");
+	if(pos != -1)
+	{
+		var str = hex.substr(5);
+		str = str.split(",");
+		hslToRgb( parseInt( str[0] ) / 360, parseInt( str[1] ) / 100, parseInt( str[2] ) / 100, color );
+		return color;
+	}
+
 
 	//the rest
 	// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
@@ -1573,13 +1620,13 @@ quat.toEuler = function(out, quat) {
 	{
 		heading = 2 * Math.atan2(q[0],q[3]);
 		bank = 0;
-		attitude = 0; //Â¿?
+		attitude = 0; //¿?
 	}
 	else if( (q[0]*q[1] + q[2]*q[3]) == 0.5 )
 	{
 		heading = -2 * Math.atan2(q[0],q[3]);
 		bank = 0;
-		attitude = 0; //Â¿?
+		attitude = 0; //¿?
 	}
 	else
 	{
@@ -5663,7 +5710,7 @@ FBO.prototype.update = function( skip_disable )
 	}
 
 	//bind buffers for the colors
-	if(color_textures)
+	if(color_textures && color_textures.length)
 	{
 		this.order = []; //draw_buffers request the use of an array with the order of the attachments
 		for(var i = 0; i < color_textures.length; i++)
@@ -6858,6 +6905,7 @@ GL.create = function(options) {
 	var gl = global.gl;
 
 	canvas.is_webgl = true;
+	canvas.gl = gl;
 	gl.context_id = this.last_context_id++;
 
 	//get some common extensions
@@ -8216,8 +8264,8 @@ global.geo = {
 		var dd = vec3.dot(d, d);
 
 		// Test if segment fully outside either endcap of cylinder
-		if (md < 0.0 && md + nd < 0.0) return false; // Segment outside â€™pâ€™ side of cylinder
-		if (md > dd && md + nd > dd) return false; // Segment outside â€™qâ€™ side of cylinder
+		if (md < 0.0 && md + nd < 0.0) return false; // Segment outside ’p’ side of cylinder
+		if (md > dd && md + nd > dd) return false; // Segment outside ’q’ side of cylinder
 
 		var nn = vec3.dot(n, n);
 		var mn = vec3.dot(m, n);
@@ -8229,15 +8277,15 @@ global.geo = {
 		{
 			// Segment runs parallel to cylinder axis
 			if (c > 0.0) return false;
-			// â€™aâ€™ and thus the segment lie outside cylinder
+			// ’a’ and thus the segment lie outside cylinder
 			// Now known that segment intersects cylinder; figure out how it intersects
 			if (md < 0.0) t = -mn/nn;
-			// Intersect segment against â€™pâ€™ endcap
+			// Intersect segment against ’p’ endcap
 			else if (md > dd)
 				t=(nd-mn)/nn;
-			// Intersect segment against â€™qâ€™ endcap
+			// Intersect segment against ’q’ endcap
 			else t = 0.0;
-			// â€™aâ€™ lies inside cylinder
+			// ’a’ lies inside cylinder
 			if(result) vec3.add(result, sa, vec3.scale(vec3.create(), n,t) );
 			return true;
 		}
@@ -8252,7 +8300,7 @@ global.geo = {
 		// Intersection lies outside segment
 		if(md+t*nd < 0.0)
 		{
-			// Intersection outside cylinder on â€™pâ€™ side
+			// Intersection outside cylinder on ’p’ side
 			if (nd <= 0.0) 
 				return false;
 			// Segment pointing away from endcap
@@ -8263,7 +8311,7 @@ global.geo = {
 			return k+2*t*(mn+t*nn) <= 0.0;
 		} else if (md+t*nd>dd)
 		{
-			// Intersection outside cylinder on â€™qâ€™ side
+			// Intersection outside cylinder on ’q’ side
 			if (nd >= 0.0) return false; //Segment pointing away from endcap
 			t = (dd - md) / nd;
 			// Keep intersection if Dot(S(t) - q, S(t) - q) <= r^2
