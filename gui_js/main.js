@@ -84,6 +84,11 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
 
 //Avatar rendering
 
+var msgCallback = function(msg){
+  console.log("Received server message:",msg);
+}
+
+
 // get the dimensions of the wrapper
 var kristinaWrapper = document.getElementById("kristinaWrapper");
 var kristinaDimensions = kristinaWrapper.getBoundingClientRect();
@@ -105,4 +110,5 @@ player.canvas.style.borderRadius = '10px';
 player.loadScene("./scenes/emma.json");
 setTimeout(function () {
   LS.Globals.showGUI = false;
+  LS.Globals.msgCallback = msgCallback;
 }, 500);

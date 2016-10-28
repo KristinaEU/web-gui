@@ -26,10 +26,13 @@ LS.Globals.changeVolume = function(vol){
 LS.Globals.processMsg = function(msg){
   
   msg = JSON.parse(msg);
-  console.log("Processing message: ", msg);
+ // console.log("Processing message: ", msg);
   
   LS.Globals.inputMSG = msg;
-  
+  if (typeof LS.Globals.msgCallback == "function"){
+    LS.Globals.msgCallback(msg);
+  }
+
   // Id
   if (msg.clientId !== undefined && !LS.Globals.ws.id){
     LS.Globals.ws.id = msg.clientId;
