@@ -6,11 +6,30 @@ var SCENARIO = null;
 
 
 var map = {
-  "newspaper":{"user":"Elisabeth","language":"de","scenario":"newspaper","vocapia-model":"ger-kr","avatar":"KRISTINA"},
-  "weather":  {"user":"Hans",     "language":"de","scenario":"weather",  "vocapia-model":"ger-kr","avatar":"KRISTINA"},
-  "sleep":    {"user":"Iwona",    "language":"pl","scenario":"sleep",    "vocapia-model":"pol-kr","avatar":"KRISTINA"},
-  "pain":     {"user":"Juan",     "language":"es","scenario":"pain",     "vocapia-model":"spa-kr","avatar":"KRISTINA"},
-  "babycare": {"user":"Maria",    "language":"es","scenario":"babycare", "vocapia-model":"spa-kr","avatar":"KRISTINA"}
+  "newspaper": {
+    "user": "Elisabeth",
+    "language": "de",
+    "scenario": "newspaper",
+    "vocapia-model": "ger-kr",
+    "avatar": "KRISTINA"
+  },
+  "weather": {"user": "Hans", "language": "de", "scenario": "weather", "vocapia-model": "ger-kr", "avatar": "KRISTINA"},
+  "sleep-pl": {"user": "Iwona", "language": "pl", "scenario": "sleep", "vocapia-model": "pol-kr", "avatar": "KRISTINA"},
+  "sleep-ger": {
+    "user": "Elisabeth",
+    "language": "de",
+    "scenario": "sleep",
+    "vocapia-model": "ger-kr",
+    "avatar": "KRISTINA"
+  },
+  "pain": {"user": "Juan", "language": "es", "scenario": "pain", "vocapia-model": "spa-kr", "avatar": "KRISTINA"},
+  "babycare": {
+    "user": "Maria",
+    "language": "es",
+    "scenario": "babycare",
+    "vocapia-model": "spa-kr",
+    "avatar": "KRISTINA"
+  }
 };
 
 
@@ -18,7 +37,7 @@ function setScenario(scenario) {
   console.log("selected scenario");
   document.getElementById('scenarioHeader').innerHTML = scenario;
 
-  console.log(vsm_set("MetaData",map[scenario]));
-  doVSMCall(vsm_set("MetaData",map[scenario]));
+  console.log(vsm_set("MetaData", map[scenario]));
+  doVSMCall(vsm_set("MetaData", map[scenario]));
 }
 
