@@ -14,8 +14,8 @@ var map = {
     "avatar": "KRISTINA"
   },
   "weather": {"user": "Hans", "language": "de", "scenario": "weather", "vocapia-model": "ger-kr", "avatar": "KRISTINA"},
-  "sleep-pl": {"user": "Iwona", "language": "pl", "scenario": "sleep", "vocapia-model": "pol-kr", "avatar": "KRISTINA"},
-  "sleep-ger": {
+  "sleep_pl": {"user": "Iwona", "language": "pl", "scenario": "sleep", "vocapia-model": "pol-kr", "avatar": "KRISTINA"},
+  "sleep_ger": {
     "user": "Elisabeth",
     "language": "de",
     "scenario": "sleep",
@@ -34,7 +34,7 @@ var map = {
 
 
 function setScenario(scenario) {
-  console.log("selected scenario");
+  console.log("selected scenario:"+scenario);
   document.getElementById('scenarioHeader').innerHTML = scenario;
 
   console.log(vsm_set("MetaData", map[scenario]));
