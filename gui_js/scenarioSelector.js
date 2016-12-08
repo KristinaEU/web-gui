@@ -1,9 +1,3 @@
-var SCENARIO = null;
-
-//Set of scenarios, with associated language codes for vocapia, for LA and name of the person.
-//Build selector from JS
-//On set Scenario, send JSON object through Tunnel? Or directly in the VSM, good for first setup...!
-
 
 var map = {
   "newspaper": {
@@ -39,5 +33,9 @@ function setScenario(scenario) {
 
   console.log(vsm_set("MetaData", map[scenario]));
   doVSMCall(vsm_set("MetaData", map[scenario]));
+
+  if (modal) {
+    modal.style.display = "none";
+  }
 }
 

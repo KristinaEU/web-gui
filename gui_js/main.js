@@ -4,9 +4,6 @@
 var resolution_x = 320;
 var resolution_y = 240;
 
-// HTML container
-var container = document.getElementById('videoContainer');
-
 // Constraints
 var mediaConstraints = {
   audio: true,
@@ -70,7 +67,8 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
     if (open) {
       mediaRecorder.start(500);
     }
-    container.appendChild(video);
+    videoWrapper.innerHTML="";
+    videoWrapper.appendChild(video);
 
   })
   .catch(function (error) {
@@ -85,8 +83,8 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
 //Avatar rendering
 
 var msgCallback = function(msg){
-  console.log("Received server message:",msg);
-}
+  console.log("Received Avatar server message:",msg);
+};
 
 
 // get the dimensions of the wrapper
