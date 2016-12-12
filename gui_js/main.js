@@ -34,14 +34,11 @@ p2tbutton.onmouseup = function () {
 
 navigator.mediaDevices.getUserMedia(mediaConstraints)
   .then(function (stream) {
-    console.log("Starting mediaRecorder...");
+    console.log("Setting up mediaRecorder...");
     mediastream = stream;
 
     //mute by default
     mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm', bitsPerSecond: 160000});
-    setTimeout(function () {
-      mediastream.getAudioTracks()[0].enabled = false;
-    }, 1000);
 
     mediaRecorder.ondataavailable = function (e) {
       //console.log("Data available!");
@@ -60,13 +57,10 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
     video = mergeProps(video, {
       controls: false,
       muted: true,
-      src: URL.createObjectURL(mediaRecorder.stream)
+      src: URL.createObjectURL(stream)
     });
     video.play();
 
-    if (open) {
-      mediaRecorder.start(500);
-    }
     videoWrapper.innerHTML="";
     videoWrapper.appendChild(video);
 

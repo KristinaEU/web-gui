@@ -33,11 +33,22 @@
     <!--<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
     <![endif]-->
 
+
+    <style>
+        #lipsyncDiv {
+            display: none
+        }
+    </style>
+
+
     <link rel="stylesheet" type="text/css" media="screen" href="css/ionicons.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/range.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/common.css">
 
     <link rel="stylesheet" type="text/css" media="screen" href="gui_css/modal.css">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/vis.min.css">
+    <script src="js/vis.min.js"></script>
 
 </head>
 
@@ -64,7 +75,7 @@
             <div class="row">
                 <div class="col-md-8 flat">Manual text input:<br/><input type="text" id="manualTextInput"
                                                                          name="manual"/></div>
-                <div class="col-md-4 flat"><a class="btn btn-success btn-lg" href="#" onclick="sendText()">Send
+                <div class="col-md-4 flat"><a id="manualInput" class="btn btn-success btn-lg" href="#" onclick="sendText()">Send
                     text</a></div>
             </div>
             <br>
@@ -112,19 +123,19 @@
     <!-- /.row -->
 
     <hr>
-    <a class="btn btn-success btn-lg fullWidth" target="_blank" onclick="openReservationScreen()">Reserve System</a><br><br>
-    <a class="btn btn-success btn-lg fullWidth" target="_blank" onclick="openScenarioSelection()">Scenario Selector</a>
+    <a id="scenarioSelector" class="btn btn-success btn-lg fullWidth" target="_blank" onclick="openScenarioSelection()">Scenario Selector</a>
     <hr>
-
+    <h3>System reservations:</h3>
     <!-- Call to Action Well -->
     <div class="row">
         <div class="col-lg-12 flat">
             <div class="well text-center">
-                This interface is in Alpha stage. Please ignore anything that does not work correctly.
+                <div id="reservation_timeline"></div>
             </div>
         </div>
         <!-- /.col-lg-12 -->
     </div>
+    <a class="btn btn-success btn-lg fullWidth" target="_blank" onclick="openReservationScreen()">Reserve System</a><br><br>
     <!-- /.row -->
 
 
@@ -209,7 +220,17 @@
         <!-- Heading Row -->
         <div class="row">
             <div class="col-sm-9 col-md-9" style="position:relative;">
-                <a class="btn btn-success btn-lg fullWidth" target="_blank" onclick="reserve1hour()">Reserve System for 1 hour</a><br><br>
+                <div class="row">Your label (email address):<input onchange="setMyLabel(this.value)" id="myLabelInput"/>
+                </div>
+                <hr>
+                <div class="row">
+                    TODO: Only provide buttons when free:<br>
+                    <a class="btn btn-success btn-lg" target="_blank" onclick="reserve1hour()">Reserve System for 1
+                        hour</a>
+                    <a class="btn btn-success btn-lg" target="_blank" onclick="reserve5min()">Reserve System for 5
+                        min</a>
+                    <a class="btn btn-success btn-lg" target="_blank" onclick="release()">Release system again</a>
+                </div>
             </div>
             <!-- /.col-md-4 -->
         </div>
