@@ -66,24 +66,6 @@
                 <div class="col-md-9 logoText">KRISTINA</div>
             </div>
             <hr>
-            <div class="row">
-                <div class="col-md-12 flat">
-                    <a class="btn btn-success btn-lg fullWidth" href="#" id="push2talk">Push to talk</a>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-8 flat">Manual text input:<br/><input type="text" id="manualTextInput"
-                                                                         name="manual"/></div>
-                <div class="col-md-4 flat"><a id="manualInput" class="btn btn-success btn-lg" href="#" onclick="sendText()">Send
-                    text</a></div>
-            </div>
-            <br>
-            <div class="row">
-                Transcript: <span id="transcript"></span>
-            </div>
-
-            <hr>
             <div class="row" id="videoContainerWrapper">
                 <div id="videoContainer">Video not started yet?
                 </div>
@@ -93,6 +75,24 @@
             <div class="row" id="informationBox">
                 Reservation: <span id="reservation"></span><br>
                 Selected scenario: <span id="scenarioHeader"></span><br>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12 flat">
+                    <a class="btn btn-success btn-lg fullWidth" href="#" id="push2talk">Push to talk</a>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-8 flat">Manual text input:<br/><input type="text" id="manualTextInput"
+                                                                         name="manual"/></div>
+                <div class="col-md-4 flat"><a id="manualInput" class="btn btn-success btn-lg" href="#"
+                                              onclick="sendText()">Send
+                    text</a></div>
+            </div>
+            <br>
+            <div class="row">
+                Transcript: <span id="transcript"></span>
             </div>
 
         </div>
@@ -116,14 +116,16 @@
                     </a>
                 </div>
             </div>
-
         </div>
         <!-- /.col-md-4 -->
     </div>
     <!-- /.row -->
-
     <hr>
-    <a id="scenarioSelector" class="btn btn-success btn-lg fullWidth" target="_blank" onclick="openScenarioSelection()">Scenario Selector</a>
+    <h3>Popup screens:</h3>
+    <a id="scenarioSelector" class="btn btn-success btn-lg" target="_blank" onclick="openScenarioSelection()">Scenario
+        Selector</a>
+    <a class="btn btn-success btn-lg " target="_blank" onclick="openReservationScreen()">Reserve System</a>&nbsp;&nbsp;
+    <a class="btn btn-danger btn-lg " target="_blank" onclick="openTestingScreen()">Settings</a>
     <hr>
     <h3>System reservations:</h3>
     <!-- Call to Action Well -->
@@ -135,7 +137,6 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-    <a class="btn btn-success btn-lg fullWidth" target="_blank" onclick="openReservationScreen()">Reserve System</a><br><br>
     <!-- /.row -->
 
 
@@ -238,6 +239,23 @@
     </div>
     <!-- /.container -->
 </div>
+
+<div style="display:none" id="testing_contents">
+    <!-- Page Content -->
+    <div class="container">
+        Warning: These buttons can block, hamper, and otherwise influence running tests, handle with care.
+        <div class="row">
+            <div class="col-lg-9 flat">
+                <div class="text-center">
+                    <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="initVSM()">Init VSM.</a></div>
+                </div>
+            </div>
+            <!-- /.col-lg-9 -->
+        </div>
+    </div>
+    <!-- /.container -->
+</div>
+
 
 </body>
 <script src="js/jquery.js"></script>

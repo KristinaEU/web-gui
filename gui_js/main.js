@@ -4,6 +4,10 @@
 var resolution_x = 320;
 var resolution_y = 240;
 
+var videoWrapper = document.getElementById("videoContainerWrapper");
+var videoDimensions = videoWrapper.getBoundingClientRect();
+videoWrapper.style.height = (videoDimensions.width / 4 * 3) + 'px';
+
 // Constraints
 var mediaConstraints = {
   audio: true,
@@ -44,10 +48,6 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
       //console.log("Data available!");
       doSend(e.data);
     };
-
-    // get the dimensions of the wrapper
-    var videoWrapper = document.getElementById("videoContainerWrapper");
-    var videoDimensions = videoWrapper.getBoundingClientRect();
 
     // Create video HTML
     var video = document.createElement('video');

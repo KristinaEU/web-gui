@@ -18,6 +18,18 @@ var vsm_text = function (text) {
   return vsm_set("UserData", {"confidence": "0.85", "text": text})
 };
 
+
+var start = new Date();
+start.setHours(0);
+start.setMinutes(0);
+start.setSeconds(0);
+start.setMilliseconds(0);
+var end = new Date();
+end.setHours(24);
+end.setMinutes(0);
+end.setSeconds(0);
+end.setMilliseconds(0);
+
 //Create and handle reservation(s)
 //
 
@@ -151,6 +163,7 @@ var setMyLabel = function (label) {
   console.log("Label changed to:", label);
 };
 
+
 //Schedule a reservation check
 handleReplies["getReservation"] = function (reply) {
   var original_reservation = reserved;
@@ -182,8 +195,6 @@ handleReplies["getReservation"] = function (reply) {
         console.log("Stopping mediaRecorder...");
         mediaRecorder.stop();
         mediastream.getAudioTracks()[0].enabled = true;
-
-
       }
     }
   }
@@ -248,20 +259,22 @@ handleReplies["getReservations"] = function (reply) {
     return {id: item.start, start: item.start, end: item.end, content: item.reservation.label};
   }));
 };
-var start = new Date();
-start.setHours(0);
-start.setMinutes(0);
-start.setSeconds(0);
-start.setMilliseconds(0);
-var end = new Date();
-end.setHours(24);
-end.setMinutes(0);
-end.setSeconds(0);
-end.setMilliseconds(0);
-new vis.Timeline(document.getElementById("reservation_timeline"), reservations,{stack:false,start:start,end:end,selectable:false,align:'left'});
+
+var timeline = new vis.Timeline(document.getElementById("reservation_timeline"), reservations, {
+  stack: false,
+  start: start,
+  end: end,
+  selectable: false,
+  align: 'left'
+});
+timeline.on('rangechanged', function (properties) {
+  start = properties.start;
+  end = properties.end;
+  checkReservations();
+});
 
 var checkReservations = function () {
-  doProxyCall({'method': 'getReservations', 'params': null, token: token});
+  doProxyCall({'method': 'getReservations', 'params': [start.getTime(), end.getTime()], token: token});
 };
 setInterval(checkReservations, 60000);
 
@@ -295,5 +308,10 @@ var openReservationScreen = function () {
   $('#modal-body').html($('#reservation_contents').html());
   $("#myLabelInput").val(myLabel);
 
+  modal.style.display = "block";
+}
+var openTestingScreen = function () {
+  $('#modal-title').html("System Test and Maintenance");
+  $('#modal-body').html($('#testing_contents').html());
   modal.style.display = "block";
 }
