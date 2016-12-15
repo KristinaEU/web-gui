@@ -6,6 +6,44 @@
 	]]>		
 	</snippet>
 
+	<snippet id="input">
+		<![CDATA[
+			//used to store topology input information
+			struct Input {
+				vec4 color;
+				vec3 vertex;
+				vec3 normal;
+				vec2 uv;
+				vec2 uv1;
+
+				vec3 camPos;
+				vec3 viewDir;
+				vec3 worldPos;
+				vec3 worldNormal;
+				vec4 screenPos;
+			};
+
+			Input getInput()
+			{
+				Input IN;
+				IN.color = vec4(1.0);
+				IN.vertex = v_pos;
+				IN.normal = v_normal;
+				IN.uv = v_uvs;
+				IN.uv1 = IN.uv;
+
+				IN.camPos = u_camera_eye;
+				IN.viewDir = normalize(u_camera_eye - v_pos);
+				IN.worldPos = v_pos;
+				IN.worldNormal = normalize(v_normal);
+				//IN.screenPos = vec4( (v_screenpos.xy / v_screenpos.w) * 0.5 + vec2(0.5), v_screenpos.zw );  //sometimes we need also z and w, thats why we pass all
+				IN.screenPos = vec4( (gl_FragCoord.xy / gl_FragCoord.w) * 0.5 + vec2(0.5), gl_FragCoord.zw );  //sometimes we need also z and w, thats why we pass all
+				return IN;
+			}
+		]]>
+	</snippet>
+
+
 	<snippet id="structs">
 		<![CDATA[
 			//used to store topology input information
@@ -26,7 +64,7 @@
 			//used to store surface shading properties
 			struct SurfaceOutput {
 				vec3 Albedo;
-				vec3 Normal;
+				vec3 Normal; //separated in case there is a normal map
 				vec3 Emission;
 				vec3 Ambient;
 				float Specular;
@@ -35,17 +73,6 @@
 				float Reflectivity;
 				vec4 Extra; //for special purposes
 			};
-
-			/*
-			struct Light {
-				vec3 position;
-				vec3 color;
-				vec2 attenuation; //start,end
-				vec3 front;
-				vec4 angle; //cone start,end,phi,theta
-				vec3 shadowmap_info; //bias, size, alpha
-			}
-			*/
 
 			//used to store light contribution
 			struct FinalLight {
@@ -64,7 +91,7 @@
 	<snippet id="computeLight">
 		<![CDATA[
 		//***** compute Light
-			vec3 computeLight(in SurfaceOutput o, in Input IN, in FinalLight LIGHT)
+			vec3 computeLight( in SurfaceOutput o, in Input IN, inout FinalLight LIGHT )
 			{
 				vec3 N = o.Normal; //use the final normal (should be the same as IN.worldNormal)
 
@@ -254,7 +281,7 @@
 
 	<snippet id="spotFalloff">
 		<![CDATA[
-			float spotFalloff(vec3 spotDir,  vec3 lightDir, float angle_phi, float angle_theta)
+			float spotFalloff(vec3 spotDir, vec3 lightDir, float angle_phi, float angle_theta)
 			{
 				float sqlen = dot(lightDir,lightDir);
 				float atten = 1.0;
@@ -1996,7 +2023,12 @@
 				#endif
 
 				//Compute light equation **********************************************************
-				vec3 final_color = computeLight(o,IN, LIGHT);
+				vec3 final_color = computeLight( o, IN, LIGHT );
+
+				#ifdef USE_SPECULAR_ON_ALPHA
+					alpha += LIGHT.Specular;
+				#endif
+
 				//*********************************************************************************
 
 				#ifdef USE_FOG
@@ -2015,7 +2047,7 @@
 		</code>
 	</shader>
 
-	<shader id="lowglobal" tags="instance" macros="USE_COLOR_TEXTURE,USE_OPACITY_TEXTURE,USE_SPECULAR_TEXTURE,USE_AMBIENT_TEXTURE,USE_EMISSIVE_TEXTURE,USE_ALPHA_TEST,USE_DIRECTIONAL_LIGHT,USE_SPOT_LIGHT,USE_OMNI_LIGHT,USE_LINEAR_ATTENUATION,USE_DIFFUSE_LIGHT,USE_RANGE_ATTENUATION,USE_AMBIENT_ONLY,USE_VELVET,NO_NORMALS,NO_COORDS,USE_COLOR_STREAM,USE_FOG,USE_CLIPPING_PLANE,USE_TEXTURE_MATRIX,USE_SPOT_CONE,USE_SOFT_PARTICLES,USE_POINTS,USE_POINT_CLOUD,USE_TEXTURED_POINTS,FIRST_PASS,LAST_PASS,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE"  multipass="true" imports="true">
+	<shader id="lowglobal" tags="instance" macros="USE_COLOR_TEXTURE,USE_OPACITY_TEXTURE,USE_SPECULAR_TEXTURE,USE_AMBIENT_TEXTURE,USE_EMISSIVE_TEXTURE,USE_ALPHA_TEST,USE_IGNORE_LIGHTS,USE_DIRECTIONAL_LIGHT,USE_SPOT_LIGHT,USE_OMNI_LIGHT,USE_LINEAR_ATTENUATION,USE_DIFFUSE_LIGHT,USE_RANGE_ATTENUATION,USE_AMBIENT_ONLY,USE_VELVET,NO_NORMALS,NO_COORDS,USE_COLOR_STREAM,USE_FOG,USE_CLIPPING_PLANE,USE_TEXTURE_MATRIX,USE_SPOT_CONE,USE_SOFT_PARTICLES,USE_POINTS,USE_POINT_CLOUD,USE_TEXTURED_POINTS,FIRST_PASS,LAST_PASS,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE"  multipass="true" imports="true">
 		<code type="vertex_shader">
 		<![CDATA[
 			precision highp float;
@@ -2161,6 +2193,10 @@
 				#endif
 
 				light += u_emissive_color.xyz;
+
+				#ifdef USE_IGNORE_LIGHTS
+					light = vec3(1.0);
+				#endif
 
 				float velvet_factor = 0.0;
 				#ifdef USE_VELVET

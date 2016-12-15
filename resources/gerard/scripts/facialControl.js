@@ -3,7 +3,7 @@
 if (!LS.Globals)
   LS.Globals = {};
 
-thatFacial = this;
+LS.Globals.Facial = this;
 
 this.headNodeName = "omarHead";
 this.jawNodeName = "jaw";
@@ -61,8 +61,8 @@ this.valAro = vec2.create();
 // Lipsync
 this._audio = new Audio();
 this._audio.addEventListener("canplaythrough", function(){
-  console.log("Audio loaded: ", this.src, ". Duration: ", this.duration, " sec.");
-  thatFacial.playSequence();
+  console.log("Audio loaded: ", this.src, ". Duration: ", this.duration, "sec.");
+  LS.Globals.Facial.playSequence();
 }, false);
 this._lipsyncBSW = [0,0,0,0,0,0];
 // Visemes parameters
@@ -170,7 +170,7 @@ this.onStart = function(){
   
   
   // Initialize blendshape interpolation
-  LS.Globals.face({valaro: [0.5,0.5], start: 0, end: 0.1});
+  //LS.Globals.face({valaro: [0.5,0.5], start: 0, end: 0.05});
 }
   
   
@@ -214,8 +214,8 @@ LS.Globals.blink = function(blinkData, cmdId){
 
   blinkData.end = blinkData.end || blinkData.attackPeak * 2 || 0.5;
   
-  thatFacial.newBlink(blinkData);
-  thatFacial._blinking = true;
+  LS.Globals.Facial.newBlink(blinkData);
+  LS.Globals.Facial._blinking = true;
   
   // Server response
   if (cmdId) 
@@ -253,7 +253,7 @@ LS.Globals.face = function (faceData, cmdId){
 
   faceData.end = faceData.end || faceData.attackPeak*2 || 0.0;
 
-  thatFacial.newFA(faceData, false);
+  LS.Globals.Facial.newFA(faceData, false);
 
     // Server response
   if (cmdId) 
@@ -264,7 +264,7 @@ LS.Globals.faceShift = function (faceData, cmdId){
 
   faceData.end = faceData.end || faceData.attackPeak*2 || 0.0;
 
-  thatFacial.newFA(faceData, true);
+  LS.Globals.Facial.newFA(faceData, true);
 
     // Server response
   if (cmdId) 
@@ -326,8 +326,8 @@ this.faceUpdate = function(dt){
 // --------------------- LIPSYNC ---------------------
 
 LS.Globals.lipsync = function(lipData){
-  thatFacial._visSeq.sequence = lipData.sequence;
-  thatFacial._audio.src = lipData.audioURL;
+  LS.Globals.Facial._visSeq.sequence = lipData.sequence;
+  LS.Globals.Facial._audio.src = lipData.audioURL;
   duration = lipData.duration || 4;
   
   if (lipData.cmdId) 
@@ -340,7 +340,7 @@ this.playSequence = function()
   
 	if (this._audio || this._visSeq){
 		if (this._audio.paused){
-      console.log("Playing sequence", this._audio, this._visSeq);
+      //console.log("Playing sequence", this._audio, this._visSeq);
 			this._audio.play();
 			this._visSeq.startTime = getTime();
 			this._lastInd = 0;
@@ -520,7 +520,7 @@ LS.Globals.gaze = function(gazeData, cmdId){
 
   gazeData.end = gazeData.end || 2.0;
 
-  thatFacial.newGaze(gazeData, false);
+  LS.Globals.Facial.newGaze(gazeData, false);
   
   // Server response
   if (cmdId) 
@@ -531,7 +531,7 @@ LS.Globals.gazeShift = function(gazeData, cmdId){
 
   gazeData.end = gazeData.end || 1.0;
 
-  thatFacial.newGaze(gazeData, true);
+  LS.Globals.Facial.newGaze(gazeData, true);
   
   // Server response
   if (cmdId) 
@@ -568,7 +568,7 @@ LS.Globals.head = function(headData, cmdId){
 
 	headData.end = headData.end || 2.0;
 
-  thatFacial.newHeadBML(headData);
+  LS.Globals.Facial.newHeadBML(headData);
 
   // Server response
   if (cmdId) 
@@ -603,7 +603,7 @@ LS.Globals.headDirectionShift = function(headData, cmdId){
   headData.end = headData.end || 2.0;
   
   headData.influence = "HEAD";
-  thatFacial.newGaze(headData, true, null, true);
+  LS.Globals.Facial.newGaze(headData, true, null, true);
   
   // Server response
   if (cmdId) 
