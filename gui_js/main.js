@@ -78,6 +78,9 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
 
 var msgCallback = function(msg){
   console.log("Received Avatar server message:",msg);
+  //If this is a full logfile, add it to the testing screen output (max 5 last messages?)
+
+
 };
 
 

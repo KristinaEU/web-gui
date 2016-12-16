@@ -122,6 +122,7 @@ BMLTimeManager.prototype.newBlock = function(block, time){
 	// Remove blocks with no content
   if (block.end == 0){
     console.error ("Refused block.\n", JSON.stringify(block));
+    LS.Globals.ws.send(block.id + ": true"); // HARDCODED
     return;
   }
   
@@ -167,7 +168,7 @@ BMLTimeManager.prototype.fixBlock = function(block){
 	if (block.pointing) block.pointing = this.fixBML(block.pointing, "pointing", block,  {start: 0, ready: 0.3, strokeStart: 0.3, stroke: 0.4, strokeEnd: 0.6, relax: 0.7, end: 1.0});
 
 	// Language-generation
-  if (block.lg) block.lg = this.fixBML(block.lg, "lg", block, {start: 0, end: 10});
+  if (block.lg) block.lg = this.fixBML(block.lg, "lg", block, {start: 0, end: 1});
 
 
 	// Check particular properties or remove?

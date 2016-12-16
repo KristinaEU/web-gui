@@ -9,6 +9,7 @@ var vsm_uri = "http://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:11220/"
 
 var vsm_start = {"cmd": "start"};
 var vsm_reset = {"cmd": "reset"};
+var vsm_show = {"cmd": "show"};
 var vsm_load = {"cmd": "load", "arg": "res/prj/vsm"};
 
 var vsm_set = function (field, val) {
@@ -309,9 +310,10 @@ var openReservationScreen = function () {
   $("#myLabelInput").val(myLabel);
 
   modal.style.display = "block";
-}
+};
 var openTestingScreen = function () {
   $('#modal-title').html("System Test and Maintenance");
   $('#modal-body').html($('#testing_contents').html());
   modal.style.display = "block";
-}
+};
+

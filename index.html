@@ -246,11 +246,20 @@
         Warning: These buttons can block, hamper, and otherwise influence running tests, handle with care.
         <div class="row">
             <div class="col-lg-9 flat">
-                <div class="text-center">
-                    <div class="btn"><a class="btn btn-primary btn-lg scenario" onClick="initVSM()">Init VSM.</a></div>
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-lg" onClick="initVSM()">Init VSM.</a>
+                    <a class="btn btn-primary btn-lg" onClick="doVSMCall(vsm_show)">Show VSM</a>
+                    <a class="btn btn-primary btn-lg" onClick="startWebsocket()">(re)start WS</a>
+                    <a class="btn btn-primary btn-lg" onClick="doResetCall({})">Reset FFMpeg</a>
                 </div>
             </div>
             <!-- /.col-lg-9 -->
+        </div>
+        <br>
+        <hr>
+        <div class="row">
+            <div id="logfiles" class="btn-group btn-group-vertical">
+            </div>
         </div>
     </div>
     <!-- /.container -->
