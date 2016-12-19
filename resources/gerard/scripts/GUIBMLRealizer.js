@@ -3,6 +3,7 @@
 if (!LS.Globals)
   LS.Globals = {};
 
+//LS.Globals.showGUI = true;
 
 
 // Stacks (should concide with BMLManager.BMLStacks order)

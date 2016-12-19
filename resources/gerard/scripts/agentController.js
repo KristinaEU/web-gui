@@ -3,7 +3,7 @@
 if (!LS.Globals)
   LS.Globals = {};
   
-LS.Globals.showGUI = false;
+
 
 
 this.onStart = function(){
@@ -11,12 +11,11 @@ this.onStart = function(){
   if (window.BMLPlanner !== undefined)
   	LS.Globals.BMLPlanner = new BMLPlanner();
   else
-    console.error("BML Planner not included");
-  
+    console.log("BML Planner not included");
   if (window.BMLTimeManager !== undefined)
   	LS.Globals.BMLManager = new BMLTimeManager();
   else
-    console.error("BML Manager not included");
+    console.log("BML Manager not included");
 
   LS.Globals.ws = {};
   LS.Globals.ws.send = function(e){console.log("WS should send ", e)};
@@ -49,16 +48,20 @@ LS.Globals.changeVolume = function(vol){
 }
 
 // Process message
-LS.Globals.processMsg = function(msg){
+LS.Globals.processMsg = function(msg, fromWS){
   
   msg = JSON.parse(msg);
+  if (fromWS)
+  	msg.fromWS = fromWS;
   console.log("Processing message: ", msg);
   
-   LS.Globals.inputMSG = msg;
+  // Input msg KRISTINA
+  LS.Globals.inputMSG = msg;
   if (typeof LS.Globals.msgCallback == "function"){
-    LS.Globals.msgCallback(msg);
+  	LS.Globals.msgCallback(msg);
   }
-
+  
+  
   // Client id -> should be characterId?
   if (msg.clientId !== undefined && !LS.Globals.ws.id){
     LS.Globals.ws.id = msg.clientId;
@@ -71,6 +74,7 @@ LS.Globals.processMsg = function(msg){
 
   // Process block
   // Create new bml if necessary
+  //LS.Globals.ws.send("100:true");
 
   if (LS.Globals.BMLPlanner)
   	LS.Globals.BMLPlanner.newBlock(msg);

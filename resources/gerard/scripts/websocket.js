@@ -83,7 +83,7 @@ this.connectWS = function(){
     
     // Process message
     if (LS.Globals.processMsg)
-      LS.Globals.processMsg(e.data);
+      LS.Globals.processMsg(e.data, true);
   }
   
   // onerror

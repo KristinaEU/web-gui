@@ -37,7 +37,7 @@ function BMLTimeManager(){
 
 
 // TODO: PROVIDE FEEDBACK AND WARNINGS
-BMLTimeManager.prototype.update = function(actionCallback, time, onBlockEnd){
+BMLTimeManager.prototype.update = function(actionCallback, time){
 
 	// Time now
 	//var d = new Date();
@@ -63,8 +63,10 @@ BMLTimeManager.prototype.update = function(actionCallback, time, onBlockEnd){
         this.progressFeedback(this.stack[i].id, "end", this.time);
         // CALLBACK
         //LS.Globals.ws.send(cmdId + ": true");
-        if (onBlockEnd)
+        if (this.stack[i].fromWS){
           LS.Globals.ws.send(this.stack[i].id + ": true"); // HARDCODED
+          console.log("Sending POST response with id:", this.stack[i].id);
+        }
         // Remove
         this.removeFromStacks(this.stack[i]);
         this.stack.splice(i, 1);
@@ -122,7 +124,10 @@ BMLTimeManager.prototype.newBlock = function(block, time){
 	// Remove blocks with no content
   if (block.end == 0){
     console.error ("Refused block.\n", JSON.stringify(block));
-    LS.Globals.ws.send(block.id + ": true"); // HARDCODED
+    if (block.fromWS){
+    	LS.Globals.ws.send(block.id + ": true"); // HARDCODED
+    	console.log("Sending POST response with id:", block.id);
+    }
     return;
   }
   
