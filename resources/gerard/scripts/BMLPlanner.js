@@ -221,6 +221,7 @@ BMLPlanner.prototype.newBlock = function(block){
 		if (block.lg.constructor === Array)
          for (var i = 0; i <block.lg.length; i++){
            this.processSpeechBlock(block.lg[i], block, (i == block.lg.length-1));
+           this.addUtterancePause(block.lg[i]);
          }
     	// No array
     	else
@@ -314,7 +315,7 @@ BMLPlanner.prototype.attentionToUser = function(block){
 
 
 
-
+// ---------------------------- UTTERANCE MANAGEMENT ----------------------------
 // Process language generation message
 // Adds new bml instructions according to the dialogue act and speech
 BMLPlanner.prototype.processSpeechBlock = function(bmlLG, block, isLast){
@@ -381,6 +382,10 @@ BMLPlanner.prototype.processSpeechBlock = function(bmlLG, block, isLast){
 	}
 
 }
+
+
+
+
 
 
 // Use longest word as prosody mark
@@ -575,7 +580,7 @@ BMLPlanner.prototype.createGazeEnd = function(bmlLG){
 
 
 
-
+// Change offsets of new bml instructions
 BMLPlanner.prototype.fixSyncStart = function(bml, offsetStart){
 	// Find which sync attributes exist
 	var syncAttrs = ["start"];
@@ -612,4 +617,30 @@ BMLPlanner.prototype.fixSyncStart = function(bml, offsetStart){
 			bml[syncName] = start + bml[syncName];
 		}
 	}
+}
+
+
+
+// Add a pause between speeches
+
+BMLPlanner.prototype.addUtterancePause = function(bmlLG){
+  // Pause time
+  var pauseTime = 0.2 + Math.random()*0.4;
+  
+	// Is a reference to another bml?
+	var end = parseFloat(bmlLG.end);
+	var isRef = false;
+	if (isNaN(end))
+		isRef = true;
+  
+  if (isRef){
+    // If ref already has an offset
+		var str = bmlLG.end.split("+");
+		var offset = str[1] === undefined ? 0 : parseFloat(offset);
+    offset += pauseTime;
+    bmlLG.end = str[0] + "+" + offset;
+  }
+  else
+    bmlLG.end += pauseTime;
+  
 }

@@ -19,6 +19,10 @@ this.onStart = function(){
 
   LS.Globals.ws = {};
   LS.Globals.ws.send = function(e){console.log("WS should send ", e)};
+  
+  // Resources
+  // Pre-load audio files. Contains blocks with lg content
+  LS.Globals.pendingResources = [];
    
 }
 
@@ -36,7 +40,36 @@ this.onUpdate = function(dt)
     //console.log(newBlock);
     LS.Globals.BMLManager.newBlock(newBlock, LS.GlobalScene.time);
   }
-	//node.scene.refresh();
+	
+  
+  // Check pending audio resources to load
+  if (LS.Globals.pendingResources.length != 0){  
+    var sendPendingLG = true;
+    for (var i = 0; i<LS.Globals.pendingResources.length; i++){
+      sendPendingLG = true;
+      
+      var block = LS.Globals.pendingResources[i];
+      var bml = block.lg;
+      if (bml.constructor === Array){
+        for (var j = 0; j<bml.length; j++){
+					if (bml[j].audio.readyState != 4)
+            sendPendingLG = false;
+        }
+      } else {
+        if (bml.audio.readyState != 4)
+            sendPendingLG = false;
+      }
+      // Send block
+      if (sendPendingLG){
+        console.log("**********here");
+        LS.Globals.processMsg(JSON.stringify(block), block.fromWS);
+        LS.Globals.pendingResources.splice(i,1);
+        i--;
+      }
+    }
+  }
+  
+  //node.scene.refresh();
 }
 
 
@@ -71,11 +104,18 @@ LS.Globals.processMsg = function(msg, fromWS){
     
     return;
   }
-
+  
+  // Load audio files
+  if (msg.lg){
+    var hasToLoad = LS.Globals.loadAudio(msg);
+    if (hasToLoad){
+      LS.Globals.pendingResources.push(msg);
+      return;
+    }
+  }
+  
   // Process block
   // Create new bml if necessary
-  //LS.Globals.ws.send("100:true");
-
   if (LS.Globals.BMLPlanner)
   	LS.Globals.BMLPlanner.newBlock(msg);
   // Update to remove aborted blocks
@@ -133,6 +173,30 @@ LS.Globals.processBML = function(key, bml){
   		thatFacial._audio.src = bml.audioURL; // When audio loads it plays
       break;
   }
+}
+
+
+// Preloads audios to avoid loading time when added to BML stacks
+LS.Globals.loadAudio = function(block){
+  var output = false;
+  if (block.lg.constructor === Array){
+    for (var i = 0; i<block.lg.length; i++){
+      if (!block.lg[i].audio){
+        block.lg[i].audio = new Audio();
+        block.lg[i].audio.src = block.lg[i].audioURL;
+        output = true;
+      }
+    }
+  }
+  else {
+    if (!block.lg.audio){
+      block.lg.audio = new Audio();
+      block.lg.audio.src = block.lg.audioURL;
+      output = true;
+    }
+  }
+  
+  return output;    
 }
 
 

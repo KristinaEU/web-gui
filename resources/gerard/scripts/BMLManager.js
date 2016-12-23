@@ -33,6 +33,7 @@ function BMLTimeManager(){
 
 	// Block stack
 	this.stack = [];
+
 }
 
 
