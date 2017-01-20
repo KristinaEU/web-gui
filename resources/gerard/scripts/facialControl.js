@@ -203,6 +203,11 @@ this.onUpdate = function(dt)
 }
 
 
+this.onFinish = function(){
+  if (!this._audio.paused)
+  	this._audio.pause();
+}
+
 
 
 

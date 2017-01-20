@@ -110,16 +110,18 @@ BMLTimeManager.prototype.update = function(actionCallback, time){
 
 BMLTimeManager.prototype.newBlock = function(block, time){
 //console.log("NEW BLOCK\n", JSON.stringify(block));
-  
 	// Time now
 	//var d = new Date();
 	this.time = time || LS.GlobalScene.time;// ||d.getSeconds() + 0.001*d.getMilliseconds();
 
   // TODO: require
   
+  if (!block){
+    console.error("An undefined block has been received in BMLManager newBlock().", block);
+  	return;
+	}
 	// Fix and Sychronize (set missing timings) (should substitute "start:gaze1:end + 1.1" by a number)
 	this.fixBlock(block);
-
 	// TODO: constraint (synchronize, after, before) and wait
 
 	// Remove blocks with no content
@@ -131,13 +133,10 @@ BMLTimeManager.prototype.newBlock = function(block, time){
     }
     return;
   }
-  
   // Add to stack
 	this.addToStack(block);
-
 	// Check timing errors
 	this.check();
-
   //console.log("FIXED BLOCK.", JSON.stringify(block), block);
   //console.log(this.BMLStacks);
 
@@ -197,6 +196,12 @@ BMLTimeManager.prototype.fixBML = function(bml, key, block, sync){
 			bml[i] = this.fixBML(bml[i], key, block, sync);
     return bml;
 	}
+  // Error check
+  if (!bml){
+    console.error("BML instruction undefined", key);
+    return;
+  }
+  
 	// Check if is it an object
 	if (typeof bml !== "object" || bml === null)
 		bml = {};
@@ -530,8 +535,8 @@ BMLTimeManager.prototype.mergeBML = function(bml, stack, globalStart, overwrite)
 	bml.endGlobalTime = globalStart + bml.end;
 
 	// Check errors
-	if (bml.start < 0 ) console.error ("BML start is negative", bml.start, stack, globalStart);
-	if (bml.start < 0 ) console.error ("BML end is negative", bml.end, stack, globalStart);
+	if (bml.start < 0 ) console.error ("BML start is negative", bml.start, bml.key, globalStart);
+	if (bml.end < 0 ) console.error ("BML end is negative", bml.end, bml.key, globalStart);
 
 	// Modify all sync attributes to remove non-zero starts (offsets)
 	// Also fix refs to another block (negative global timestamp)

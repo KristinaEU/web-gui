@@ -82,7 +82,6 @@ var msgCallback = function(msg){
   if (msg.control === "SPEAKING"){
     $("#transcript").html('"'+msg.userText+'"');
   }
-
 };
 
 

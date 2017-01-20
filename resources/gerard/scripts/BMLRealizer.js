@@ -1027,3 +1027,61 @@ HeadBML.prototype.initHeadValues = function(){
 
   
 }
+
+
+
+
+
+
+
+// --------------------- SPEECH ---------------------
+// BML
+// <speech text>
+// Not supported: SSML tags, sync, start, end
+
+// The SpeechSynthesisUtternace should be in the agent and passed here. Events will be managed
+// in the agent side, not here.
+// Could there be an end time approximation?
+
+// Constructor
+function Speech(lang, voice){
+  this.utterance = new SpeechSynthesisUtterance("");
+  this.utterance.lang = lang || 'en-US';
+  
+  if (voice)
+  	this.utterance.voice = speechSynthesis.getVoices().filter(function(v) {return v.name == voice;})[0];
+}
+
+// Get available voices
+Speech.prototype.getVoices = function(){
+  var voicesNames = [];
+  var vv = speechSynthesis.getVoices();
+  for (var i = 0; i<vv.length; i++){
+    voicesNames[i] = vv[i].name;
+  }
+  return voicesNames;
+}
+// Set voice
+Speech.prototype.setVoice = function(voiceName){
+  this.utterance.voice = speechSynthesis.getVoices().filter(function(v) {return v.name == voiceName;})[0];
+}
+
+
+// Speak - TTS
+Speech.prototype.speak = function (text){
+  this.utterance.text = text;
+  speechSynthesis.speak(this.utterance);
+}
+
+
+
+
+
+
+
+// --------------------- GESTURE ---------------------
+// BML
+// <gesture start ready strokeStart stroke strokeEnd relax end mode lexeme>
+// mode [LEFT_HAND, RIGHT_HAND, BOTH_HANDS]
+// lexeme [BEAT]
+

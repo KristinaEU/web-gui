@@ -45,23 +45,42 @@ this.onUpdate = function(dt)
   // Check pending audio resources to load
   if (LS.Globals.pendingResources.length != 0){  
     var sendPendingLG = true;
+    var audioError = false;
+    
     for (var i = 0; i<LS.Globals.pendingResources.length; i++){
-      sendPendingLG = true;
+      sendPendingLG = false;
+      audioError = false;
       
       var block = LS.Globals.pendingResources[i];
       var bml = block.lg;
       if (bml.constructor === Array){
         for (var j = 0; j<bml.length; j++){
-					if (bml[j].audio.readyState != 4)
-            sendPendingLG = false;
+          // Audio error
+          if (bml[j].audio.error != null)
+            audioError = true;
+          // Audio is not loaded yet
+          else if (bml[j].audio.readyState == 4)
+            sendPendingLG = true;
         }
       } else {
-        if (bml.audio.readyState != 4)
-            sendPendingLG = false;
+        // Audio error
+        if (bml.audio.error != null)
+          audioError = true;
+        // Audio is not loaded yet
+        else if (bml.audio.readyState == 4)
+          sendPendingLG = true;
+      }
+      
+      // Remove blocks with audio errors
+      if (audioError){
+        // Send post response
+        LS.Globals.ws.send(block.id + ": true"); 
+        // Remove from pending stack
+        LS.Globals.pendingResources.splice(i,1);
+        i--;
       }
       // Send block
-      if (sendPendingLG){
-        console.log("**********here");
+      else if (sendPendingLG){
         LS.Globals.processMsg(JSON.stringify(block), block.fromWS);
         LS.Globals.pendingResources.splice(i,1);
         i--;
@@ -81,6 +100,7 @@ LS.Globals.changeVolume = function(vol){
 }
 
 // Process message
+// Messages can come from inner processes. "fromWS" indicates if a reply to the server is required in BMLManager.js
 LS.Globals.processMsg = function(msg, fromWS){
   
   msg = JSON.parse(msg);
@@ -90,6 +110,7 @@ LS.Globals.processMsg = function(msg, fromWS){
   
   // Input msg KRISTINA
   LS.Globals.inputMSG = msg;
+  // This is here for the KRISTINA Web GUI
   if (typeof LS.Globals.msgCallback == "function"){
   	LS.Globals.msgCallback(msg);
   }
@@ -110,18 +131,35 @@ LS.Globals.processMsg = function(msg, fromWS){
     var hasToLoad = LS.Globals.loadAudio(msg);
     if (hasToLoad){
       LS.Globals.pendingResources.push(msg);
+      console.log("Needs to preload audio files.");
       return;
     }
   }
   
+  if (!msg){
+    console.error("An undefined msg has been received.", msg);
+    return;
+  }
+
   // Process block
   // Create new bml if necessary
   if (LS.Globals.BMLPlanner)
   	LS.Globals.BMLPlanner.newBlock(msg);
+  
+  if (!msg){
+    console.error("An undefined block has been created by BMLPlanner.", msg);
+  	return;
+	}
+  
   // Update to remove aborted blocks
   if (!LS.Globals.BMLManager)
     return;
   LS.Globals.BMLManager.update(LS.Globals.processBML, LS.GlobalScene.time);
+  
+  if (!msg){
+    console.error("An undefined block has been created due to the update of BMLManager.", msg);
+  	return;
+	}
  
   // Add new block to stack
   LS.Globals.BMLManager.newBlock(msg, LS.GlobalScene.time);
@@ -171,6 +209,8 @@ LS.Globals.processBML = function(key, bml){
     case "lg":
       thatFacial._visSeq.sequence = bml.sequence;
   		thatFacial._audio.src = bml.audioURL; // When audio loads it plays
+      // All "lg" go through pending resources and are called when the audio is loaded.
+      // If I assign again the audioURL is the audio already loaded?
       break;
   }
 }

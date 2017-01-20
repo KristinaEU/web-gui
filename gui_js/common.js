@@ -87,14 +87,30 @@ function startWebsocket() {
         open = false;
       };
 
+      var message = "";
       ws.onmessage = function (e) {
-        console.log("Received data: ", e.data);
         var data = e.data;
-        if (typeof e.data === "string") {
-          data = JSON.parse(e.data);
-        }
-        if (data.type === 'reply' && handleReplies[data.method]) {
-          handleReplies[data.method](data.result);
+        if (data === "{\"type\":\"start_data\"}") {
+          message = "";
+        } else if (data === "{\"type\":\"end_data\"}") {
+          var parsed_data = JSON.parse(message);
+          console.log("Received message:", parsed_data, message);
+          if (parsed_data.type === 'reply' && handleReplies[parsed_data.method]) {
+            handleReplies[parsed_data.method](parsed_data.result);
+          } else if (parsed_data.states) {
+            handleReplies["states"](parsed_data);
+          } else if (parsed_data["var"] && handleReplies[parsed_data["var"]]) {
+            handleReplies[parsed_data["var"]](parsed_data.val);
+          }
+        } else if (typeof data === "string") {
+          if (data[0] === '"') {
+            data = JSON.parse(data);
+          }
+          message += data;
+        } else {
+          if (data.type === 'reply' && handleReplies[data.method]) {
+            handleReplies[data.method](data.result);
+          }
         }
       };
 
@@ -102,9 +118,7 @@ function startWebsocket() {
         console.error("Websocket error: ", e);
         open = false;
       }
-
-    }
-  });
+    }});
 }
 
 function doCmdSend(command) {
@@ -164,6 +178,9 @@ var setMyLabel = function (label) {
   console.log("Label changed to:", label);
 };
 
+handleReplies["PipeData"] = function (data) {
+  console.log("Received PipeData:",JSON.parse(data));
+};
 
 //Schedule a reservation check
 handleReplies["getReservation"] = function (reply) {
@@ -194,7 +211,9 @@ handleReplies["getReservation"] = function (reply) {
         }, 700);
       } else {
         console.log("Stopping mediaRecorder...");
-        mediaRecorder.stop();
+        if (mediaRecorder.state !== "inactive"){
+          mediaRecorder.stop();
+        }
         mediastream.getAudioTracks()[0].enabled = true;
       }
     }
