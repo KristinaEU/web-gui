@@ -103,6 +103,11 @@ LS.Globals.changeVolume = function(vol){
 // Messages can come from inner processes. "fromWS" indicates if a reply to the server is required in BMLManager.js
 LS.Globals.processMsg = function(msg, fromWS){
   
+  if (!msg){
+    console.error("An undefined msg has been received.", msg);
+    return;
+  }
+  
   msg = JSON.parse(msg);
   if (fromWS)
   	msg.fromWS = fromWS;
@@ -134,11 +139,6 @@ LS.Globals.processMsg = function(msg, fromWS){
       console.log("Needs to preload audio files.");
       return;
     }
-  }
-  
-  if (!msg){
-    console.error("An undefined msg has been received.", msg);
-    return;
   }
 
   // Process block

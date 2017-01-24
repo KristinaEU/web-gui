@@ -153,8 +153,12 @@ this.onStart = function(){
   this.lookAtHead = node.scene.getNodeByName (this.lookAtHeadName);
   this.lookAtNeck = node.scene.getNodeByName (this.lookAtNeckName);
   if (!this.lookAtEyes) console.error("LookAt Eyes not found with name: ", this.lookAtEyesName);
+  else this.gazePositions["EYESTARGET"] = this.lookAtEyes.transform.position;
   if (!this.lookAtHead) console.error("LookAt Head not found with name: ", this.lookAtHeadName);
+  else this.gazePositions["HEADARGET"] = this.lookAtHead.transform.position;
   if (!this.lookAtNeck) console.error("LookAt Neck not found with name: ", this.lookAtNeckName);
+  else this.gazePositions["NECKTARGET"] = this.lookAtNeck.transform.position;
+
   
   // Gaze manager
   this.gazeManager = new GazeManager(this.lookAtNeck, this.lookAtHead, this.lookAtEyes, this.gazePositions);

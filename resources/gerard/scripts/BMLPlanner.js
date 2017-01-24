@@ -1,9 +1,6 @@
 //@BMLPlanner
 
-// Or could be also called Gesture Generation.
-
-// TODO: change automatically to WAITING when SPEAKING finishes.
-// TODO: automatic blink, saccades, breathing, head and body movement.
+// TODO: separate NVG of bml planner (processSpeechBlock).
 
 
 var BMLPlanner = function(){
@@ -13,9 +10,18 @@ var BMLPlanner = function(){
   this.stateTime = 0;
   this.nextBlockIn =  1 + Math.random() * 2;
   
-  // Default state
+  // Default facial state
   this.defaultValence = 0.4;
   this.currentArousal = 0;
+  
+  // Idle timings (blink and saccades)
+  this.blinkIdle = 0.5 + Math.random()*6;
+	this.blinkDur = Math.random()*0.5 + 0.15;
+	this.blinkCountdown = 0;
+
+	this.saccIdle = 0.5 + Math.random()*6;
+	this.saccDur = Math.random() + 0.5;
+	this.saccCountdown = 0;
 }
 
 BMLPlanner.prototype.update = function(dt){
@@ -27,8 +33,17 @@ BMLPlanner.prototype.update = function(dt){
     return this.createBlock();
   }
   
+  // Check if speech has finished to change to WAITING
+  if (this.state == "SPEAKING"){
+    if (LS.Globals.BMLManager){
+      if (LS.Globals.BMLManager.lgStack.length == 0)
+        this.transition({control: "WAITING"});
+    }
+  }
+  
   // Automatic blink and saccades
-  return null;//this.updateBlinksAndSaccades();
+  return this.updateBlinksAndSaccades(dt);
+  
 }
 
 BMLPlanner.prototype.transition = function(block){
@@ -48,7 +63,7 @@ BMLPlanner.prototype.transition = function(block){
   // Waiting can only come after speaking
   if (nextState == "WAITING"){
     // Look at user for a while, then start gazing around
-    this.nextBlockIn = 2 + Math.random() * 3;
+    this.nextBlockIn = 4 + Math.random() * 3;
   }
   // Can start speaking at any moment
   else if (nextState == "LISTENING"){
@@ -59,7 +74,7 @@ BMLPlanner.prototype.transition = function(block){
       this.abortSpeech();
     } 
     // Look at user and default face
-    this.attentionToUser(block);
+    this.attentionToUser(block, true);
     // Back-channelling
     this.nextBlockIn = 1 +  Math.random()*2;
 
@@ -70,8 +85,9 @@ BMLPlanner.prototype.transition = function(block){
   }
   // Speaking always after processing
   else if (nextState == "SPEAKING"){
-    // Already done in newBlock() if language-generation present
-    this.nextBlockIn = 100;
+    this.attentionToUser(block, true);
+    // Should I create random gestures during speech?
+    this.nextBlockIn = 1000000;
   }
   
   this.state = nextState;
@@ -177,15 +193,15 @@ BMLPlanner.prototype.createBlock = function(){
   	var randOffset = offsetDirections[Math.floor(Math.random() * offsetDirections.length)];
     block.gazeShift = {
       start: 0,
-      end: 1 + Math.random()*3,
+      end: 1 + Math.random(),
       target: "CAMERA",
       influence: Math.random()>0.5 ? "HEAD":"EYES",
       offsetDirection: randOffset,
-      offsetAngle: 5 + 10*Math.random()
+      offsetAngle: 5 + 5*Math.random()
 		}
     // Blink
     if(Math.random() < 0.8)
-    block.blink = {start: 0, end: 0.2 + Math.random()*0.5};
+    	block.blink = {start: 0, end: 0.2 + Math.random()*0.5};
     
     // Set to neutral face
     block.faceShift = {start: 0, end: 2, valaro: [0,0]};
@@ -196,11 +212,59 @@ BMLPlanner.prototype.createBlock = function(){
 
 
 
+// Automatic blink and saccades
+BMLPlanner.prototype.updateBlinksAndSaccades = function(dt){
+  
+  var block = null;
+  
+  // Blink
+  this.blinkCountdown += dt;
+  if (this.blinkCountdown > this.blinkIdle){
+    block = {blink: {end: this.blinkDur}};
+    
+    this.blinkCountdown = this.blinkDur;
+    this.blinkIdle = this.blinkDur + 0.5 + Math.random()*10;
+    this.blinkDur = Math.random()*0.5 + 0.15;
+  }
+  
+  // Saccade
+  this.saccCountdown += dt;
+  if (this.saccCountdown > this.saccIdle){
+    // Random direction
+    var opts = ["RIGHT", "LEFT", "DOWN","DOWNRIGHT", "DOWNLEFT"]; // If you are looking at the eyes usually don't look at the hair
+    var randDir = opts[Math.floor(Math.random()*opts.length)];
+    // Fixed point to saccade around?
+    var target = "EYESTARGET";
+    if (this.state == "LISTENING") target = "USER";
+        
+    if (!block) block = {};
+    
+    block.gazeShift = {
+      start: 0,
+      end: Math.random()*0.1+0.1,
+      target: target, 
+      influence: "EYES",
+      offsetDirection: randDir,
+      offsetAngle: Math.random()*5 + 2
+    }
+    
+    this.saccCountdown = this.saccDur;
+  	this.saccIdle = this.saccDur + 0.5 + Math.random()*6;
+  	this.saccDur = Math.random()*0.5 + 0.5;
+  }
+  
+  
+  return block;
+}
 
 
 
 
 
+
+
+
+// -------------------- NEW BLOCK --------------------
 // New block arrives. It could be speech or control.
 BMLPlanner.prototype.newBlock = function(block){
   
@@ -255,7 +319,7 @@ BMLPlanner.prototype.abortSpeech = function(){
 }
 
 
-BMLPlanner.prototype.attentionToUser = function(block){
+BMLPlanner.prototype.attentionToUser = function(block, overwrite){
   // If gazeShift already exists, modify
   // TODO
 
@@ -294,14 +358,40 @@ BMLPlanner.prototype.attentionToUser = function(block){
   var faceShift = {
     start: startHead,
     end: end,
-    valaro: [this.defaultValence, Math.random*0.2],
+    valaro: [this.defaultValence, 0],
   }
   
   // Force and remove existing bml instructions
-  block.blink = blink;
-  block.faceShift = faceShift;
-  block.gazeShift = gazeShift;
-  block.headDirectionShift = headDir;
+  if (overwrite){
+    block.blink = blink;
+    block.faceShift = faceShift;
+    block.gazeShift = gazeShift;
+    block.headDirectionShift = headDir;
+  } else{
+    this.addToBlock(blink, block, "blink");
+    this.addToBlock(faceShift, block, "faceShift");
+    this.addToBlock(gazeShift, block, "gazeShift");
+    this.addToBlock(headDir, block, "headDirectionShift");
+  }
+}
+
+
+BMLPlanner.prototype.addToBlock = function(bml, block, key){
+  if (block[key]){
+    // Add to array (TODO: overwrite, merge etc...)
+    if (block[key].constructor === Array)
+      block[key].push(bml);
+    // Transform object to array
+    else {
+      var tmpObj = block[key];
+      block[key] = [];
+      block[key].push(tmpObj); block[key].push(bml);
+    }
+  } 
+  // Doesn't exist yet
+  else
+    block[key] = [bml];
+  
 }
 
 
@@ -314,8 +404,7 @@ BMLPlanner.prototype.attentionToUser = function(block){
 
 
 
-
-// ---------------------------- UTTERANCE MANAGEMENT ----------------------------
+// ---------------------------- NONVERBAL GENERATOR (for speech) ----------------------------
 // Process language generation message
 // Adds new bml instructions according to the dialogue act and speech
 BMLPlanner.prototype.processSpeechBlock = function(bmlLG, block, isLast){
@@ -358,28 +447,27 @@ BMLPlanner.prototype.processSpeechBlock = function(bmlLG, block, isLast){
 
 	// Add to block
   if (faceBrows)
-  	block.face.push(faceBrows);
+  	this.addToBlock(faceBrows, block, "face");
   if (isLast){
-    
-		block.faceShift = faceShiftsEnd;
+		this.addToBlock(faceShiftsEnd, block, "faceShift");
     // Arrange ending
     var lastFaceBrow = block.face[block.face.length-1];
     if (lastFaceBrow.end > block.faceShift[0].start)
    		block.face.pop();
   }
-	block.head = head;
+  this.addToBlock(head, block, "head");
 
 	if (isLast){
-		block.headDirectionShift = gazeblinkEnd[2];
-		block.gazeShift = gazeblinkEnd[0];
-		block.blink.push(gazeblinkEnd[1]);
+		this.addToBlock(gazeblinkEnd[2], block, "headDirectionShift");
+		this.addToBlock(gazeblinkEnd[0], block, "gazeShift");
+		this.addToBlock(gazeblinkEnd[1], block, "blink");
   } else
-   block.blink.push(gazeblinkEnd);
+		this.addToBlock(gazeblinkEnd, block, "blink");
   
 
 	if (gazeblinkStart[0] != null){
-		block.gaze = gazeblinkStart[0];
-		block.blink.push(gazeblinkStart[1]);
+		this.addToBlock(gazeblinkStart[0], block, "gaze");
+		this.addToBlock(gazeblinkStart[1], block, "blink");
 	}
 
 }
