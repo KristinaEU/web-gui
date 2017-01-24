@@ -78,6 +78,24 @@ function startWebsocket() {
       ws.onopen = function (e) {
         console.log("Websocket connected to: ", wsUri);
         open = true;
+
+        if (mediaRecorder != null) {
+          if (reserved) {
+            console.log("Reconnect! Pushing server reset...");
+            doResetCall({});
+            console.log("Starting mediaRecorder...");
+            mediaRecorder.start(500);
+            setTimeout(function () {
+              mediastream.getAudioTracks()[0].enabled = false;
+            }, 700);
+          } else {
+            console.log("Reconnect! Stopping mediaRecorder...");
+            if (mediaRecorder.state !== "inactive"){
+              mediaRecorder.stop();
+            }
+            mediastream.getAudioTracks()[0].enabled = true;
+          }
+        }
         checkReservation();
         checkReservations();
       };
