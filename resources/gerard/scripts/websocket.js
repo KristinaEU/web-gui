@@ -23,6 +23,8 @@ this.onStart = function(){
     alert("WebSockets are not supported in this browser");
   else
     this.connectWS();
+
+  this.port = 8000;
   
 }
 

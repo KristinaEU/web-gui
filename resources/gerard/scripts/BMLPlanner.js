@@ -63,7 +63,7 @@ BMLPlanner.prototype.transition = function(block){
   // Waiting can only come after speaking
   if (nextState == "WAITING"){
     // Look at user for a while, then start gazing around
-    this.nextBlockIn = 4 + Math.random() * 3;
+    this.nextBlockIn = 2 + Math.random() * 4;
   }
   // Can start speaking at any moment
   else if (nextState == "LISTENING"){
@@ -87,7 +87,7 @@ BMLPlanner.prototype.transition = function(block){
   else if (nextState == "SPEAKING"){
     this.attentionToUser(block, true);
     // Should I create random gestures during speech?
-    this.nextBlockIn = 1000000;
+    this.nextBlockIn = 2 + Math.random()*4;
   }
   
   this.state = nextState;
@@ -104,7 +104,7 @@ BMLPlanner.prototype.createBlock = function(){
   if (state == "LISTENING"){
     this.nextBlockIn = 1.5 + Math.random()*3;
     // head -> link with this.currentArousal
-    if (Math.random() * 0.6)
+    if (Math.random() < 0.6)
     block.head = {
       start: 0,
       end: 1.5 + Math.random()*2,
@@ -131,7 +131,61 @@ BMLPlanner.prototype.createBlock = function(){
     // Gaze should already be towards user
     
     return block;
-  } 
+  }
+  // SPEAKING
+  else if (state == "SPEAKING"){
+    this.nextBlockIn = 2 + Math.random()*4;
+    // Head
+    if (Math.random() < 0.6){
+      block.head = {
+        start: 0,
+        end: 2.5 + Math.random()*1.5,
+        lexeme: "NOD",
+        amount: 0.05 + Math.random()*0.05
+      }
+      // Deviate head slightly
+      if (Math.random() < 0.85){
+        var offsetDirections = ["DOWNRIGHT", "DOWNLEFT", "LEFT", "RIGHT"]; // Upper and sides
+  			var randOffset = offsetDirections[Math.floor(Math.random() * offsetDirections.length)];
+        block.headDirectionShift = {
+          start: 0,
+          end: 1 + Math.random(),
+          target: "CAMERA",
+          offsetDirection: randOffset,
+          offsetAngle: 1 + Math.random()*3
+        }
+      }
+    }
+    // Esporadic raising eyebrows
+    if (Math.random() < 0.7){
+      var start = Math.random();
+      var end = start + 1.2 + Math.random()*0.5;
+      block.face = {
+        start: start,
+        attackPeak: start + (end-start)*0.2,
+        relax: start + (end-start)*0.5,
+        end: end,
+        lexeme: {lexeme: "RAISE_BROWS", amount: 0.1 + Math.random()*0.2}
+      }
+    }
+    // Redirect gaze to user
+    if (Math.random() < 0.7){
+      var start = Math.random();
+      var end = start + 0.5 + Math.random()*1;
+      block.gazeShift = {
+        start: start,
+        end: end,
+        influence: "EYES",
+        target: "CAMERA"
+      }
+      block.composition = "OVERWRITE";
+    }
+    
+    
+    return block;
+  }
+  
+  
   // PROCESSING
   else if (state == "PROCESSING"){
   	this.nextBlockIn = 2 + Math.random() * 2;
@@ -231,7 +285,7 @@ BMLPlanner.prototype.updateBlinksAndSaccades = function(dt){
   this.saccCountdown += dt;
   if (this.saccCountdown > this.saccIdle){
     // Random direction
-    var opts = ["RIGHT", "LEFT", "DOWN","DOWNRIGHT", "DOWNLEFT"]; // If you are looking at the eyes usually don't look at the hair
+    var opts = ["RIGHT", "LEFT", "DOWN","DOWNRIGHT", "DOWNLEFT", "UP", "UPLEFT", "UPRIGHT"]; // If you are looking at the eyes usually don't look at the hair
     var randDir = opts[Math.floor(Math.random()*opts.length)];
     // Fixed point to saccade around?
     var target = "EYESTARGET";
@@ -245,7 +299,7 @@ BMLPlanner.prototype.updateBlinksAndSaccades = function(dt){
       target: target, 
       influence: "EYES",
       offsetDirection: randDir,
-      offsetAngle: Math.random()*5 + 2
+      offsetAngle: Math.random()*3 + 2
     }
     
     this.saccCountdown = this.saccDur;
@@ -587,13 +641,13 @@ BMLPlanner.prototype.createGazeStart = function(bmlLG){
 	// Random probability that a start gaze will happen on short-med speeches.
 	var gaze0 = null;
 	var blink0 = null;
-  if (endOfSentence > 3 + Math.random()*4){
+  if (true){//endOfSentence > 3 + Math.random()*4){
 		var start = Math.random()*0.2; // One second max to start movement
 		var ready = start + 0.5 + Math.random();
 		var relax = ready + 0.2 + Math.random()*0.5;
-		var end = ready + 0.5 + Math.random();
+		var end = ready + 1 + Math.random();
 
-		var offsetDirections = ["LEFT, RIGHT", "DOWNLEFT", "DOWNRIGHT"]; // TODO: Sure about these directions??
+		var offsetDirections = ["LEFT, RIGHT"]; // TODO: Sure about these directions??
 		var randOffset = offsetDirections[Math.floor(Math.random() * offsetDirections.length)];
 
 		gaze0 = {
@@ -604,7 +658,7 @@ BMLPlanner.prototype.createGazeStart = function(bmlLG){
 			end: end,
 			influence: "HEAD",
 			target: "CAMERA",
-			offsetAngle: 5 + Math.random()*15, // TODO: angle magnitude?
+			offsetAngle: 10,//5 + Math.random()*5, // TODO: angle magnitude?
 
 			offsetDirection: randOffset
 		}
