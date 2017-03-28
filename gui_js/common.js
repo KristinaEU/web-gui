@@ -5,7 +5,10 @@
 
 //Rest client to VSM: URL, call method, structures.
 var handleReplies = {};
-var vsm_uri = "http://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:11220/";
+//var vsm_uri = "http://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:11220/";
+//var wsUri = "wss://webglstudio.org:8080";
+//var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
+var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com/ws";
 
 var vsm_start = {"cmd": "start"};
 var vsm_reset = {"cmd": "reset"};
@@ -54,8 +57,6 @@ var open = false;
 var reserved = false;
 var mediaRecorder = null;
 
-//var wsUri = "wss://webglstudio.org:8080";
-var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
 // Init websocket connection
 startWebsocket();
 
@@ -90,7 +91,7 @@ function startWebsocket() {
             }, 700);
           } else {
             console.log("Reconnect! Stopping mediaRecorder...");
-            if (mediaRecorder.state !== "inactive"){
+            if (mediaRecorder.state !== "inactive") {
               mediaRecorder.stop();
             }
             mediastream.getAudioTracks()[0].enabled = true;
@@ -136,7 +137,8 @@ function startWebsocket() {
         console.error("Websocket error: ", e);
         open = false;
       }
-    }});
+    }
+  });
 }
 
 function doCmdSend(command) {
@@ -197,7 +199,7 @@ var setMyLabel = function (label) {
 };
 
 handleReplies["PipeData"] = function (data) {
-  console.log("Received PipeData:",JSON.parse(data));
+  console.log("Received PipeData:", JSON.parse(data));
 };
 
 //Schedule a reservation check
@@ -229,7 +231,7 @@ handleReplies["getReservation"] = function (reply) {
         }, 700);
       } else {
         console.log("Stopping mediaRecorder...");
-        if (mediaRecorder.state !== "inactive"){
+        if (mediaRecorder.state !== "inactive") {
           mediaRecorder.stop();
         }
         mediastream.getAudioTracks()[0].enabled = true;
@@ -354,3 +356,94 @@ var openTestingScreen = function () {
   modal.style.display = "block";
 };
 
+var doUnmute = function (){
+  console.log("unmuting!");
+  if (mediastream != null) {
+    mediastream.getAudioTracks()[0].enabled = true;
+    $("#push2talk").addClass("active");
+    LS.Globals.BMLPlanner.state = "LISTENING";
+  }
+};
+var doMute = function(){
+  console.log("muting!");
+  if (mediastream != null) {
+    mediastream.getAudioTracks()[0].enabled = false;
+    $("#push2talk").removeClass("active");
+    LS.Globals.BMLPlanner.state = "PROCESSING";
+  }
+};
+
+window.addEventListener("keydown", function (event) {
+  if (!(open && reserved)) {
+    return;
+  }
+  if (event.defaultPrevented) {
+    return; // Do nothing if the event was already processed
+  }
+  if (event.target != document.body){
+    return;
+  }
+  switch (event.key) {
+    case " ":
+    case "Spacebar":
+      doUnmute();
+      // Cancel the default action to avoid it being handled twice
+      if (event.stopPropagation) {
+        event.stopPropagation();
+      }
+      event.preventDefault();
+      return false;
+    default:
+      return; // Quit when this doesn't handle the key event.
+  }
+});
+
+window.addEventListener("keyup", function (event) {
+  if (!(open && reserved)) {
+    return;
+  }
+  if (event.defaultPrevented) {
+    return; // Do nothing if the event was already processed
+  }
+  if (event.target != document.body){
+    return;
+  }
+  switch (event.key) {
+    case " ":
+    case "Spacebar":
+      doMute();
+      // Cancel the default action to avoid it being handled twice
+      if (event.stopPropagation) {
+        event.stopPropagation();
+      }
+      event.preventDefault();
+      return false;
+    default:
+      return; // Quit when this doesn't handle the key event.
+  }
+});
+
+window.addEventListener("keypress", function (event) {
+  if (!(open && reserved)) {
+    return;
+  }
+  if (event.defaultPrevented) {
+    return; // Do nothing if the event was already processed
+  }
+  if (event.target != document.body){
+    return;
+  }
+  switch (event.key) {
+    case " ":
+    case "Spacebar":
+
+      // Cancel the default action to avoid it being handled twice
+      if (event.stopPropagation) {
+        event.stopPropagation();
+      }
+      event.preventDefault();
+      return false;
+    default:
+      return; // Quit when this doesn't handle the key event.
+  }
+});

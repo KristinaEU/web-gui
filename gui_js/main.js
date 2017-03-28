@@ -23,17 +23,12 @@ var mediaConstraints = {
 var mediastream = null;
 var p2tbutton = document.getElementById("push2talk");
 
+
 p2tbutton.onmousedown = function () {
-  console.log("unmuting!");
-  if (mediastream != null) {
-    mediastream.getAudioTracks()[0].enabled = true;
-  }
+  doUnmute();
 };
 p2tbutton.onmouseup = function () {
-  console.log("muting!");
-  if (mediastream != null) {
-    mediastream.getAudioTracks()[0].enabled = false;
-  }
+  doMute();
 };
 
 navigator.mediaDevices.getUserMedia(mediaConstraints)
