@@ -1,4 +1,3 @@
-
 var map = {
   "newspaper": {
     "user": "Elisabeth",
@@ -13,6 +12,34 @@ var map = {
     "user": "Elisabeth",
     "language": "de",
     "scenario": "sleep",
+    "vocapia-model": "ger-kr",
+    "avatar": "KRISTINA"
+  },
+  "eat_pl": {
+    "user": "Iwona",
+    "language": "pl",
+    "scenario": "eat",
+    "vocapia-model": "pol-kr",
+    "avatar": "KRISTINA"
+  },
+  "eat_ger": {
+    "user": "Elisabeth",
+    "language": "de",
+    "scenario": "eat",
+    "vocapia-model": "ger-kr",
+    "avatar": "KRISTINA"
+  },
+  "companion_tr": {
+    "user": "Iwona",
+    "language": "tr",
+    "scenario": "companion",
+    "vocapia-model": "tr-kr",
+    "avatar": "KRISTINA"
+  },
+  "companion_ger": {
+    "user": "Elisabeth",
+    "language": "de",
+    "scenario": "companion",
     "vocapia-model": "ger-kr",
     "avatar": "KRISTINA"
   },
