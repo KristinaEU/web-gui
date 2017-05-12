@@ -53,7 +53,7 @@ var initVSM = function () {
 
 // Websocket variables
 var ws = null;
-var open = false;
+var ws_open = false;
 var reserved = false;
 var mediaRecorder = null;
 
@@ -63,7 +63,7 @@ startWebsocket();
 
 function startWebsocket() {
 
-  if (open && typeof ws != "undefined") {
+  if (ws_open && typeof ws != "undefined") {
     ws.close();
   }
 
@@ -78,7 +78,7 @@ function startWebsocket() {
 
       ws.onopen = function (e) {
         console.log("Websocket connected to: ", wsUri);
-        open = true;
+        ws_open = true;
 
         if (mediaRecorder != null) {
           if (reserved) {
@@ -103,7 +103,7 @@ function startWebsocket() {
 
       ws.onclose = function (e) {
         console.log("Disconnected from websocket: ", wsUri);
-        open = false;
+        ws_open = false;
       };
 
       var message = "";
@@ -135,21 +135,21 @@ function startWebsocket() {
 
       ws.onerror = function (e) {
         console.error("Websocket error: ", e);
-        open = false;
+        ws_open = false;
       }
     }
   });
 }
 
 function doCmdSend(command) {
-  if (open) {
+  if (ws_open) {
     console.log("Sending command:", command);
     ws.send(JSON.stringify(command), {binary: false});
   }
 }
 
 function doSend(message) {
-  if (open) {
+  if (ws_open) {
     ws.send(message, {binary: true});
   }
 }
@@ -221,7 +221,7 @@ handleReplies["getReservation"] = function (reply) {
   if (original_reservation != reserved) {
     //start/stop media recorder
     if (mediaRecorder != null) {
-      if (open && reserved) {
+      if (ws_open && reserved) {
         console.log("Pushing server reset...");
         doResetCall({});
         console.log("Starting mediaRecorder...");
@@ -243,7 +243,7 @@ handleReplies["getReservation"] = function (reply) {
     doProxyCall({'method': 'extend', 'params': [{token: token, label: myLabel}, 900000]});
     checkReservation();
   }
-  if (open && reserved) {
+  if (ws_open && reserved) {
     $('#manualInput').removeClass("disabled");
     $('#push2talk').removeClass("disabled");
     $('#scenarioSelector').removeClass("disabled");
@@ -374,7 +374,7 @@ var doMute = function(){
 };
 
 window.addEventListener("keydown", function (event) {
-  if (!(open && reserved)) {
+  if (!(ws_open && reserved)) {
     return;
   }
   if (event.defaultPrevented) {
@@ -399,7 +399,7 @@ window.addEventListener("keydown", function (event) {
 });
 
 window.addEventListener("keyup", function (event) {
-  if (!(open && reserved)) {
+  if (!(ws_open && reserved)) {
     return;
   }
   if (event.defaultPrevented) {
@@ -424,7 +424,7 @@ window.addEventListener("keyup", function (event) {
 });
 
 window.addEventListener("keypress", function (event) {
-  if (!(open && reserved)) {
+  if (!(ws_open && reserved)) {
     return;
   }
   if (event.defaultPrevented) {

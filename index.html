@@ -176,42 +176,51 @@
 
         <!-- Heading Row -->
         <div class="row">
-            <div class="col-sm-9 col-md-9" style="position:relative;">
-
+            <div class="col-sm-12 col-md-12" style="position:relative;">
+                <h1 style="margin-left: 100px;">Scenarios:</h1>
                 <hr>
-                <div class="row">
-                    <div class="row" style="position:relative;">
-                        <div class="allCenter">
-                            <h1 style="margin-left: 100px;">Scenarios:</h1>
-                            <div class="overlayButtonWrapper">
-                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                    onClick="setScenario('babycare');">Baby Care</a></div>
-                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                    onClick="setScenario('pain');">Low Back Pain</a></div>
-                            </div>
-                            <div class="overlayButtonWrapper">
-                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                    onClick="setScenario('sleep_pl');">Sleep Habits (Pol)</a></div>
-                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                    onClick="setScenario('sleep_ger');">Sleep Habits (Ger)</a></div>
-                            </div>
-                            <div class="overlayButtonWrapper">
-                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                    onClick="setScenario('newspaper');">Reading the News</a></div>
-                                <div class="btn" style="margin:auto"><a class="btn btn-primary btn-lg scenario"
-                                                                        onClick="setScenario('weather');">Weather/Small
-                                    Talk</a></div>
-                            </div>
+                <div class="row" style="position:relative;">
+                    <div class="col-sm-6 col-md-6">
+                        <h3>Spanish:</h3>
+                        <div class="overlayButtonWrapper">
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('babycare');">Baby Care</a></div>
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('pain');">Low Back Pain</a></div>
                         </div>
-
+                        <h3>Polish:</h3>
+                        <div class="overlayButtonWrapper">
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('sleep_pl');">Sleep Habits</a></div>
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('eat_pl');">Eating Advice</a></div>
+                        </div>
+                        <h3>Turkish:</h3>
+                        <div class="overlayButtonWrapper">
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('companion_tr');">Social Companion</a></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6" style="position:relative;">
+                        <h3>German:</h3>
+                        <div class="overlayButtonWrapper">
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('companion_ger');">Social Companion</a></div>
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('eat_ger');">Eating Advice</a></div>
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('sleep_ger');">Sleep Habits</a></div>
+                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                onClick="setScenario('newspaper');">Reading the News</a></div>
+                            <div class="btn" style="margin:auto"><a class="btn btn-primary btn-lg scenario"
+                                                                    onClick="setScenario('weather');">Weather/Small
+                                Talk</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- /.col-md-4 -->
         </div>
-        <!-- /.row -->
     </div>
-    <!-- /.container -->
 </div>
 
 <div style="display:none" id="reservation_contents">

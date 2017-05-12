@@ -70,12 +70,31 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
   });
 
 //Avatar rendering
-
+var timeout=null;
 var msgCallback = function(msg){
-  console.log("Received Avatar server message:",msg);
+  console.log("Received Avatar server message:",msg,JSON.stringify(msg));
   //If this is a full logfile, add it to the testing screen output (max 5 last messages?)
   if (msg.control === "SPEAKING"){
     $("#transcript").html('"'+msg.userText+'"');
+
+    if (msg.lg[0] && msg.lg[0].externalURL && msg.lg[0].externalURL != ""){
+      //open ExternalURL
+      if (timeout){
+        clearTimeout(timeout);
+        timeout=null;
+      }
+      console.log("opening external URL:",msg.lg[0].externalURL);
+      var openUrl = function(){
+        var url = msg.lg[0].externalURL;
+        if (url.startsWith("http")){
+          window.open(msg.lg[0].externalURL, '_blank');
+        }else {
+          window.open("http://"+msg.lg[0].externalURL, '_blank');
+        }
+        return false;
+      }
+      timeout = setTimeout(openUrl,1000);
+    }
   }
 };
 

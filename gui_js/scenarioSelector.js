@@ -16,36 +16,42 @@ var map = {
     "avatar": "KRISTINA"
   },
   "eat_pl": {
-    "user": "Iwona",
+    "user": "Jana",
     "language": "pl",
     "scenario": "eat",
     "vocapia-model": "pol-kr",
     "avatar": "KRISTINA"
   },
   "eat_ger": {
-    "user": "Elisabeth",
+    "user": "Claudia",
     "language": "de",
     "scenario": "eat",
     "vocapia-model": "ger-kr",
     "avatar": "KRISTINA"
   },
   "companion_tr": {
-    "user": "Iwona",
+    "user": "Mustafa",
     "language": "tr",
     "scenario": "companion",
-    "vocapia-model": "tr-kr",
+    "vocapia-model": "tur",
     "avatar": "KRISTINA"
   },
   "companion_ger": {
-    "user": "Elisabeth",
+    "user": "Hans",
     "language": "de",
     "scenario": "companion",
     "vocapia-model": "ger-kr",
     "avatar": "KRISTINA"
   },
-  "pain": {"user": "Juan", "language": "es", "scenario": "pain", "vocapia-model": "spa-kr", "avatar": "KRISTINA"},
+  "pain": {
+    "user": "Carmen",
+    "language": "es",
+    "scenario": "pain",
+    "vocapia-model": "spa-kr",
+    "avatar": "KRISTINA"
+  },
   "babycare": {
-    "user": "Maria",
+    "user": "Carmen",
     "language": "es",
     "scenario": "babycare",
     "vocapia-model": "spa-kr",
