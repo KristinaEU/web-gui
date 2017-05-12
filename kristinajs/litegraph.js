@@ -1393,6 +1393,8 @@ LGraphNode.prototype.configure = function(info)
 		for(var i = 0; i < this.outputs.length; ++i)
 		{
 			var output = this.outputs[i];
+			if(!output.links)
+				continue;
 			for(var j = 0; j < output.links.length; ++j)
 			{
 				var link_info = this.graph.links[ output.links[j] ];
@@ -5577,6 +5579,8 @@ LiteGraph.createContextMenu = function(values, options, ref_window)
 		//console.log("OUT!");
 		//check if mouse leave a inner element
 		var aux = e.relatedTarget || e.toElement;
+		if(!aux) //happens sometimes 
+			return;
 		while(aux != this && aux != ref_window.document)
 			aux = aux.parentNode;
 
@@ -6110,7 +6114,7 @@ Console.prototype.onAction = function(action, param)
 
 Console.prototype.onExecute = function()
 {
-	var msg = this.getInputData(0);
+	var msg = this.getInputData(1);
 	if(msg !== null)
 		this.properties.msg = msg;
 	console.log(msg);
@@ -9216,17 +9220,19 @@ if(typeof(LiteGraph) != "undefined")
 
 	LGraphTexturePreview.title = "Preview";
 	LGraphTexturePreview.desc = "Show a texture in the graph canvas";
+	LGraphTexturePreview.allow_preview = false;
 
 	LGraphTexturePreview.prototype.onDrawBackground = function(ctx)
 	{
 		if(this.flags.collapsed)
 			return;
 
-		if(!ctx.webgl)
+		if(!ctx.webgl && !LGraphTexturePreview.allow_preview)
 			return; //not working well
 
 		var tex = this.getInputData(0);
-		if(!tex) return;
+		if(!tex)
+			return;
 
 		var tex_canvas = null;
 		

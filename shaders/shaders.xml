@@ -246,10 +246,6 @@
 					LIGHT.Specular = 0.0;
 				#endif
 
-				#ifdef USE_EXTRA_LIGHT_SHADER_CODE
-					USE_EXTRA_LIGHT_SHADER_CODE
-				#endif
-
 				//FINAL LIGHT FORMULA ************************* 
 
 				vec3 total_light = LIGHT.Ambient * o.Ambient + LIGHT.Color * LIGHT.Diffuse * LIGHT.Attenuation * LIGHT.Shadow;
@@ -400,57 +396,72 @@
 
 	<snippet id="getFlatNormal">
 		<![CDATA[
-			#extension GL_OES_standard_derivatives : enable 
-			vec3 getFlatNormal(vec3 pos)
-			{
-				vec3 A = dFdx( pos );
-				vec3 B = dFdy( pos );
-				return normalize( cross(A,B) );
-			}
+			#ifdef STANDARD_DERIVATIVES
+				#extension GL_OES_standard_derivatives : enable 
+				vec3 getFlatNormal(vec3 pos)
+				{
+					vec3 A = dFdx( pos );
+					vec3 B = dFdy( pos );
+					return normalize( cross(A,B) );
+				}
+			#else
+				vec3 getFlatNormal(vec3 pos)
+				{
+					return vec3(0.0);
+				}
+			#endif
 		]]>
 	</snippet>
 
 	<snippet id="perturbNormal">
 		<![CDATA[
-			#extension GL_OES_standard_derivatives : enable 
+			#ifdef STANDARD_DERIVATIVES
+				#extension GL_OES_standard_derivatives : enable 
 
-			mat3 cotangent_frame(vec3 N, vec3 p, vec2 uv)
-			{
-				// get edge vectors of the pixel triangle
-				vec3 dp1 = dFdx( p );
-				vec3 dp2 = dFdy( p );
-				vec2 duv1 = dFdx( uv );
-				vec2 duv2 = dFdy( uv );
+				mat3 cotangent_frame(vec3 N, vec3 p, vec2 uv)
+				{
+					// get edge vectors of the pixel triangle
+					vec3 dp1 = dFdx( p );
+					vec3 dp2 = dFdy( p );
+					vec2 duv1 = dFdx( uv );
+					vec2 duv2 = dFdy( uv );
 
-				// solve the linear system
-				vec3 dp2perp = cross( dp2, N );
-				vec3 dp1perp = cross( N, dp1 );
-				vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
-				vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
-			 
-				// construct a scale-invariant frame 
-				float invmax = inversesqrt( max( dot(T,T), dot(B,B) ) );
-				return mat3( T * invmax, B * invmax, N );
-			}
+					// solve the linear system
+					vec3 dp2perp = cross( dp2, N );
+					vec3 dp1perp = cross( N, dp1 );
+					vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
+					vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
+				 
+					// construct a scale-invariant frame 
+					float invmax = inversesqrt( max( dot(T,T), dot(B,B) ) );
+					return mat3( T * invmax, B * invmax, N );
+				}
 
-			vec3 perturbNormal( vec3 N, vec3 V, vec2 texcoord, vec3 normal_pixel )
-			{
-				#ifdef USE_POINTS
+				vec3 perturbNormal( vec3 N, vec3 V, vec2 texcoord, vec3 normal_pixel )
+				{
+					#ifdef USE_POINTS
+						return N;
+					#endif
+
+					// assume N, the interpolated vertex normal and 
+					// V, the view vector (vertex to eye)
+					//vec3 normal_pixel = texture2D(normalmap, texcoord ).xyz;
+					normal_pixel = normal_pixel * 255./127. - 128./127.;
+					mat3 TBN = cotangent_frame(N, V, texcoord);
+					return normalize(TBN * normal_pixel);
+				}	
+			#else
+				vec3 perturbNormal( vec3 N, vec3 V, vec2 texcoord, vec3 normal_pixel )
+				{
 					return N;
-				#endif
-
-				// assume N, the interpolated vertex normal and 
-				// V, the view vector (vertex to eye)
-				//vec3 normal_pixel = texture2D(normalmap, texcoord ).xyz;
-				normal_pixel = normal_pixel * 255./127. - 128./127.;
-				mat3 TBN = cotangent_frame(N, V, texcoord);
-				return normalize(TBN * normal_pixel);
-			}	
+				}
+			#endif
 		]]>
 	</snippet>
 
 	<snippet id="bumpNormal">
 		<![CDATA[
+			#ifdef STANDARD_DERIVATIVES
 				#extension GL_OES_standard_derivatives : enable 
 
 				// Calculate the surface normal using screen-space partial derivatives of the height field
@@ -476,6 +487,12 @@
 					return normalize(normal + (r1 * (hdx - h) - r2 * (hdy - h)) / dot(dpdx, r1));
 					*/
 				}
+			#else
+				vec3 bumpNormal(vec3 position, vec3 normal, sampler2D texture, vec2 uvs, float factor)
+				{
+					return normal;
+				}
+			#endif
 		]]>
 	</snippet>
 
@@ -1082,7 +1099,7 @@
 		</code>
 	</shader>
 
-	<shader id="surface" tags="instance" macros="NO_NORMALS,NO_COORDS,USE_COORDS1_STREAM,USE_COLOR_STREAM,USE_TANGENT_STREAM,USE_EXTRA_STREAMS,USE_CLIPPING_PLANE,USE_ALPHA_TEST,USE_ORTHOGRAPHIC_CAMERA,USE_VERTEX_SHADER_UNIFORMS,USE_VERTEX_SHADER_FUNCTIONS,USE_VERTEX_SHADER_CODE,USE_PIXEL_SHADER_UNIFORMS,USE_PIXEL_SHADER_FUNCTIONS,USE_PIXEL_SHADER_CODE,USE_SURFACE_SHADER,USE_SHADOW_MAP,USE_SHADOW_DEPTH_TEXTURE,SHADOWMAP_OFFSET,USE_SHADOW_CUBEMAP,USE_LIGHT_TEXTURE,USE_LIGHT_CUBEMAP,USE_IGNORE_LIGHTS,USE_LIGHT_OFFSET,USE_BACKLIGHT,FIRST_PASS,LAST_PASS,USE_AMBIENT_ONLY,USE_HARD_SHADOWS,USE_SPOT_CONE,USE_SPOT_LIGHT,USE_DIRECTIONAL_LIGHT,USE_OMNI_LIGHT,USE_DIFFUSE_LIGHT,USE_SPECULAR_LIGHT,USE_IRRADIANCE_CUBEMAP,USE_LINEAR_ATTENUATION,USE_RANGE_ATTENUATION,USE_ENVIRONMENT_TEXTURE,USE_ENVIRONMENT_CUBEMAP,USE_SPECULAR_ONTOP,USE_MORPHING_STREAMS,USE_MORPHING_TEXTURE,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE,USE_EXTRA_LIGHT_SHADER_CODE, USE_EXTRA_LIGHT_TEXTURE, USE_EXTRA_LIGHT_CUBEMAP,USE_DRAW_BUFFERS,USE_POINTS,USE_TEXTURED_POINTS,USE_CIRCLE_POINTS,USE_LINEAR_PIPELINE" multipass="true" imports="true">
+	<shader id="surface" tags="instance" macros="NO_NORMALS,NO_COORDS,USE_COORDS1_STREAM,USE_COLOR_STREAM,USE_TANGENT_STREAM,USE_EXTRA_STREAMS,USE_CLIPPING_PLANE,USE_ALPHA_TEST,USE_ORTHOGRAPHIC_CAMERA,USE_VERTEX_SHADER_UNIFORMS,USE_VERTEX_SHADER_FUNCTIONS,USE_VERTEX_SHADER_CODE,USE_PIXEL_SHADER_UNIFORMS,USE_PIXEL_SHADER_FUNCTIONS,USE_PIXEL_SHADER_CODE,USE_SURFACE_SHADER,USE_SHADOW_MAP,USE_SHADOW_DEPTH_TEXTURE,SHADOWMAP_OFFSET,USE_SHADOW_CUBEMAP,USE_LIGHT_TEXTURE,USE_LIGHT_CUBEMAP,USE_IGNORE_LIGHTS,USE_LIGHT_OFFSET,USE_BACKLIGHT,FIRST_PASS,LAST_PASS,USE_AMBIENT_ONLY,USE_HARD_SHADOWS,USE_SPOT_CONE,USE_SPOT_LIGHT,USE_DIRECTIONAL_LIGHT,USE_OMNI_LIGHT,USE_DIFFUSE_LIGHT,USE_SPECULAR_LIGHT,USE_IRRADIANCE_CUBEMAP,USE_LINEAR_ATTENUATION,USE_RANGE_ATTENUATION,USE_ENVIRONMENT_TEXTURE,USE_ENVIRONMENT_CUBEMAP,USE_SPECULAR_ONTOP,USE_MORPHING_STREAMS,USE_MORPHING_TEXTURE,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE, USE_EXTRA_LIGHT_TEXTURE, USE_EXTRA_LIGHT_CUBEMAP,USE_DRAW_BUFFERS,USE_POINTS,USE_TEXTURED_POINTS,USE_CIRCLE_POINTS,USE_LINEAR_PIPELINE" multipass="true" imports="true">
 		<code type="vertex_shader">
 		<![CDATA[
 			precision mediump float;
@@ -1438,7 +1455,7 @@
 			USE_FOG, USE_FOG_EXP, USE_FOG_EXP2,
 			USE_ORTHOGRAPHIC_CAMERA, USE_SOFT_PARTICLES, FIRST_PASS,LAST_PASS, USE_EXTRA_SURFACE_SHADER_CODE, USE_VERTEX_SHADER_UNIFORMS, 
 			USE_VERTEX_SHADER_FUNCTIONS,USE_VERTEX_SHADER_CODE,USE_MORPHING_STREAMS,USE_MORPHING_TEXTURE,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE,
-			USE_EXTRA_LIGHT_SHADER_CODE, USE_EXTRA_LIGHT_TEXTURE, USE_EXTRA_LIGHT_CUBEMAP,
+			USE_EXTRA_LIGHT_TEXTURE, USE_EXTRA_LIGHT_CUBEMAP,
 			USE_DRAW_BUFFERS,USE_POINTS,USE_TEXTURED_POINTS,USE_LINEAR_PIPELINE
 		</macros>
 		<code type="vertex_shader">
@@ -1989,9 +2006,10 @@
 
 				#ifdef FIRST_PASS
 					#ifdef USE_AMBIENT_TEXTURE
-						LIGHT.Ambient = texture2D( ambient_texture, USE_AMBIENT_TEXTURE ).xyz;
-					#elif defined( USE_IRRADIANCE_CUBEMAP )
-						LIGHT.Ambient *= textureCube( irradiance_cubemap, N).xyz;
+						LIGHT.Ambient *= texture2D( ambient_texture, USE_AMBIENT_TEXTURE ).xyz;
+					#endif
+					#ifdef USE_IRRADIANCE_CUBEMAP
+						LIGHT.Ambient *= textureCube( irradiance_cubemap, N ).xyz;
 					#endif
 				#endif
 
