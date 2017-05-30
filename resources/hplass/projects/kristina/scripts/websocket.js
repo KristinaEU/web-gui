@@ -11,8 +11,8 @@ if (!LS.Globals)
 LS.infoText = "";
   
   
-this.hostname = "webglstudio.org";
-this.port = 8080;
+this.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
+this.port = 8000;
 this.characterName = "KRISTINA";
 
 
