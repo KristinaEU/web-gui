@@ -37,7 +37,7 @@ this.getEndDialogueAct = function(){
 this.defineDialogueActs = function(){
   this.dialogueActs = {
     // Greetings
-    SimpleGreet: {src: "packAnimations.wbin", range: [8.5,11]},
+    SimpleGreet: {src: "animations_1.1.1.wbin", range: [0,1.88]},
     PersonalGreet: {src: "animations_1.1.1.wbin", range: [11,17.4]},
     SimpleSayGoodbye: {src: "animations_1.1.1.wbin", range: [8.5,11]},
     PersonalSayGoodbye: {src: "animations_1.1.1.wbin", range: [11,17.4]},
