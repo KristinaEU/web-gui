@@ -1,31 +1,31 @@
 var map = {
-  "newspaper": {
-    "user": "Elisabeth",
-    "language": "de",
-    "scenario": "newspaper",
-    "vocapia-model": "ger-kr",
-    "avatar": "KRISTINA"
-  },
-  "weather": {"user": "Hans", "language": "de", "scenario": "weather", "vocapia-model": "ger-kr", "avatar": "KRISTINA"},
-  "sleep_pl": {"user": "Iwona", "language": "pl", "scenario": "sleep", "vocapia-model": "pol-kr", "avatar": "KRISTINA"},
-  "sleep_ger": {
-    "user": "Elisabeth",
-    "language": "de",
-    "scenario": "sleep",
-    "vocapia-model": "ger-kr",
-    "avatar": "KRISTINA"
-  },
+  // "newspaper": {
+  //   "user": "Elisabeth",
+  //   "language": "de",
+  //   "scenario": "newspaper",
+  //   "vocapia-model": "ger-kr",
+  //   "avatar": "KRISTINA"
+  // },
+  // "weather": {"user": "Hans", "language": "de", "scenario": "weather", "vocapia-model": "ger-kr", "avatar": "KRISTINA"},
+  // "sleep_pl": {"user": "Iwona", "language": "pl", "scenario": "sleep", "vocapia-model": "pol-kr", "avatar": "KRISTINA"},
+  // "sleep_ger": {
+  //   "user": "Elisabeth",
+  //   "language": "de",
+  //   "scenario": "sleep",
+  //   "vocapia-model": "ger-kr",
+  //   "avatar": "KRISTINA"
+  // },
   "eat_pl": {
     "user": "Jana",
     "language": "pl",
-    "scenario": "eat",
+    "scenario": "eat_sleep",
     "vocapia-model": "pol-kr",
     "avatar": "KRISTINA"
   },
   "eat_ger": {
     "user": "Claudia",
     "language": "de",
-    "scenario": "eat",
+    "scenario": "eat_sleep",
     "vocapia-model": "ger-kr",
     "avatar": "KRISTINA"
   },
@@ -44,9 +44,9 @@ var map = {
     "avatar": "KRISTINA"
   },
   "pain": {
-    "user": "Carmen",
+    "user": "Carlos",
     "language": "es",
-    "scenario": "pain",
+    "scenario": "backpain",
     "vocapia-model": "spa-kr",
     "avatar": "KRISTINA"
   },
@@ -57,6 +57,7 @@ var map = {
     "vocapia-model": "spa-kr",
     "avatar": "KRISTINA"
   }
+
 };
 
 
