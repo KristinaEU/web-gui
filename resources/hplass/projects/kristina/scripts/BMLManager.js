@@ -295,7 +295,7 @@ BMLTimeManager.prototype.checkSync = function(syncAttr, block, it){
 					// to composition. To mark it, the global time stamp is found and set to
 					// negative, in order to fix it later, once the current block is placed.
 					if (!isNaN(tNumber)){
-						tNumber += this.stack[i].startGlobalTime; // Global timestamp
+						tNumber += parseFloat(this.stack[i].startGlobalTime); // Global timestamp
 						tNumber *= -1; // Negative flag
 					}
 					break;
@@ -310,7 +310,7 @@ BMLTimeManager.prototype.checkSync = function(syncAttr, block, it){
 		}
 		// Add offset
 		if (str.length == 2)
-			tNumber += parseFloat(str[1]) * Math.sign(tNumber); // This last part is to compensate
+			tNumber += parseFloat(str[1]) * Math.sign(parseFloat(tNumber)); // This last part is to compensate
 																// the negative flag (ref to other blocks)
 	}
 

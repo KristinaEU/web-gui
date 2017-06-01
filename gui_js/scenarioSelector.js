@@ -33,7 +33,7 @@ var map = {
     "user": "Mustafa",
     "language": "tr",
     "scenario": "companion",
-    "vocapia-model": "tur",
+    "vocapia-model": "tur-kr",
     "avatar": "KRISTINA"
   },
   "companion_ger": {

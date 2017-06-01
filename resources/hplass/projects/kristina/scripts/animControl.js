@@ -38,32 +38,32 @@ this.defineDialogueActs = function(){
   this.dialogueActs = {
     // Greetings
     SimpleGreet: {src: "animations_1.1.1.wbin", range: [0,1.88]},
-    PersonalGreet: {src: "animations_1.1.1.wbin", range: [11,17.4]},
-    SimpleSayGoodbye: {src: "animations_1.1.1.wbin", range: [8.5,11]},
-    PersonalSayGoodbye: {src: "animations_1.1.1.wbin", range: [11,17.4]},
-    MeetAgainSayGoodbye: {src: "animations_1.1.1.wbin", range: [11,17.4]},
+    PersonalGreet: {src: "animations_1.1.1.wbin", range: [0,1.88]},
+    SimpleSayGoodbye: {src: "animations_1.1.1.wbin", range: [0,1.88]},
+    PersonalSayGoodbye: {src: "animations_1.1.1.wbin", range: [0,1.88]},
+    MeetAgainSayGoodbye: {src: "animations_1.1.1.wbin", range: [0,1.88]},
     // Moods
-    ShareJoy: {src: "animations_1.1.1.wbin", range: [36,41.35]},
-    CheerUp: {src: "animations_1.1.1.wbin", range: [36,41.35]},
-    CalmDown: {src: "animations_1.1.1.wbin", range: [27,32]},
-    Console: {src: "animations_1.1.1.wbin", range: [27,32]},
-    SimpleMotivate: {src: "animations_1.1.1.wbin", range: [17.9,22]},
+    ShareJoy: {src: "animations_1.1.1.wbin", range: [0,0]},
+    CheerUp: {src: "animations_1.1.1.wbin", range: [0,0]},
+    CalmDown: {src: "animations_1.1.1.wbin", range: [0,0]},
+    Console: {src: "animations_1.1.1.wbin", range: [0,0]},
+    SimpleMotivate: {src: "animations_1.1.1.wbin", range: [0,0]},
     // Ask
-    AskMood: {src: "animations_1.1.1.wbin", range: [22,27]},
-    AskTask: {src: "animations_1.1.1.wbin", range: [22,27]},
+    AskMood: {src: "animations_1.1.1.wbin", range: [0,0]},
+    AskTask: {src: "animations_1.1.1.wbin", range: [0,0]},
     // Please repeat
-    RequestRephrase: {src: "animations_1.1.1.wbin", range: [22,27]},
-    RequestRepeat: {src: "animations_1.1.1.wbin", range: [22,27]},
-    StateMissingComprehension: {src: "animations_1.1.1.wbin", range: [22,27]},
+    RequestRephrase: {src: "animations_1.1.1.wbin", range: [1.88,4.58]},
+    RequestRepeat: {src: "animations_1.1.1.wbin", range: [1.88,4.58]},
+    StateMissingComprehension: {src: "animations_1.1.1.wbin", range: [4.58,6.03]},
     // Thanks
-    AnswerThank: {src: "animations_1.1.1.wbin", range: [31.7,35.7]},
+    AnswerThank: {src: "animations_1.1.1.wbin", range: [1.88,4.58]},
     // Apologise
-    SimpleApologise: {src: "animations_1.1.1.wbin", range: [31.7,35.5]},
-    PersonalApologise: {src: "animations_1.1.1.wbin", range: [31.7,35.5]},
+    SimpleApologise: {src: "animations_1.1.1.wbin", range: [4.58,6.03]},
+    PersonalApologise: {src: "animations_1.1.1.wbin", range: [4.58,6.03]},
     // Statement
-    Accept: {src: "animations_1.1.1.wbin", range: [4.1,5.3]},
-    Acknowledge: {src: "animations_1.1.1.wbin", range: [31.7,35.5]},
-    Reject: {src: "animations_1.1.1.wbin", range: [5.6,8.2]}
+    Accept: {src: "animations_1.1.1.wbin", range: [0,0]},
+    Acknowledge: {src: "animations_1.1.1.wbin", range: [0,0]},
+    Reject: {src: "animations_1.1.1.wbin", range: [0,0]}
   };
 }
 

@@ -117,8 +117,13 @@ var canvas = document.getElementById("kristinaWrapper");
 canvas.innerHTML = '';
 canvas.appendChild(player.canvas);
 player.canvas.style.borderRadius = '10px';
-player.loadScene("./scenes/emma.json");
-setTimeout(function () {
+player.loadScene("./scenes/emma.json",function () {
+
+  LS.Globals.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
+  LS.Globals.port = 445;
+  LS.Globals.characterName = "KRISTINA";
+
   LS.Globals.showGUI = false;
   LS.Globals.msgCallback = msgCallback;
-}, 500);
+});
+

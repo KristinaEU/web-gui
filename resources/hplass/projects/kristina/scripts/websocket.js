@@ -10,15 +10,14 @@ if (!LS.Globals)
 
 LS.infoText = "";
   
-  
-this.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
-this.port = 8000;
-this.characterName = "KRISTINA";
+LS.Globals.hostname = "webglstudio.org";
+LS.Globals.port = 8080;
+LS.Globals.characterName = "KRISTINA";
 
 
 
 this.onStart = function(){
-  this.port = 8000;
+  LS.Globals.port = 8000;
   // If websockets not supported
   if (!"WebSocket" in window)
     alert("WebSockets are not supported in this browser");
@@ -57,7 +56,7 @@ this.onFinish = function(){
 
 this.connectWS = function(){
   // Host string ("wss://.." if https)
-  var hostString = "wss://" + this.hostname + ":" + this.port;
+  var hostString = "wss://" + LS.Globals.hostname + ":" + LS.Globals.port;
   
   that = this;
   // Create new WS

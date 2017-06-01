@@ -111,7 +111,15 @@ LS.Globals.processMsg = function(msg, fromWS){
   LS.Globals.inputMSG = msg;
   // This is here for the KRISTINA Web GUI
   if (typeof LS.Globals.msgCallback == "function"){
-  	LS.Globals.msgCallback(msg);
+  	//LS.Globals.msgCallback(msg);
+    var res = LS.Globals.msgCallback(msg);
+  	if (res === false){
+  	  if (fromWS){
+        LS.Globals.ws.send(msg.id + ": true"); // HARDCODED
+        console.log("(shortcut) Sending POST response with id:", msg.id);
+      }
+  	  return;
+    }
   }
   
   
