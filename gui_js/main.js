@@ -179,7 +179,7 @@ canvas.appendChild(player.canvas);
 player.canvas.style.borderRadius = '10px';
 
 LS.Globals.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
-LS.Globals.port = 443;
+LS.Globals.port = 8000;
 LS.Globals.characterName = "KRISTINA";
 player.loadScene("./scenes/emma.json");
 
