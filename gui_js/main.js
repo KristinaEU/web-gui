@@ -8,6 +8,8 @@ var videoWrapper = document.getElementById("videoContainerWrapper");
 var videoDimensions = videoWrapper.getBoundingClientRect();
 videoWrapper.style.height = (videoDimensions.width / 4 * 3) + 'px';
 
+
+
 // Constraints
 var mediaConstraints = {
   audio: true,
@@ -71,29 +73,36 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
 
 //Avatar rendering
 var timeout=null;
+var logs = [];
+var testingTool = false;
 var msgCallback = function(msg){
   console.log("Received Avatar server message:",msg,JSON.stringify(msg));
-  //If this is a full logfile, add it to the testing screen output (max 5 last messages?)
+
   if (msg.control === "SPEAKING"){
     $("#transcript").html('"'+msg.userText+'"');
-
-    if (msg.lg[0] && msg.lg[0].externalURL && msg.lg[0].externalURL != ""){
-      //open ExternalURL
-      if (timeout){
-        clearTimeout(timeout);
-        timeout=null;
-      }
-      console.log("opening external URL:",msg.lg[0].externalURL);
-      var openUrl = function(){
-        var url = msg.lg[0].externalURL;
-        if (url.startsWith("http")){
-          window.open(msg.lg[0].externalURL, '_blank');
-        }else {
-          window.open("http://"+msg.lg[0].externalURL, '_blank');
-        }
-        return false;
-      }
-      timeout = setTimeout(openUrl,1000);
+    logs.push(msg);
+    if (testingTool){
+      return false;
+    }
+    if (msg.lg && Array.isArray(msg.lg)){
+      msg.lg.map(function(item){
+         if (item.externalUrl && item.externalUrl != ""){
+           //open ExternalURL
+           if (timeout){
+             clearTimeout(timeout);
+           }
+           var url = item.externalURL;
+           console.log("opening external URL:",url);
+           var openUrl = function(){
+             if (url.startsWith("http")){
+               window.open(url, '_blank');
+             }else {
+               window.open("http://"+url, '_blank');
+             }
+           };
+           timeout = setTimeout(openUrl,1000);
+         }
+      });
     }
   }
 };
@@ -117,13 +126,13 @@ var canvas = document.getElementById("kristinaWrapper");
 canvas.innerHTML = '';
 canvas.appendChild(player.canvas);
 player.canvas.style.borderRadius = '10px';
-player.loadScene("./scenes/emma.json",function () {
 
-  LS.Globals.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
-  LS.Globals.port = 445;
-  LS.Globals.characterName = "KRISTINA";
+LS.Globals.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
+LS.Globals.port = 443;
+LS.Globals.characterName = "KRISTINA";
+player.loadScene("./scenes/emma.json");
 
+setTimeout(function (){
   LS.Globals.showGUI = false;
   LS.Globals.msgCallback = msgCallback;
-});
-
+},500);

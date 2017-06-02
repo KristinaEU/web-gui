@@ -682,14 +682,14 @@ BMLTimeManager.prototype.findEndOfBlock = function(block){
     var bml = block[keys[i]];
     if (bml === null){}
       //console.error("Empty bml instruction.", keys[i], block);
-    else if (bml.end !== undefined)
+    else if (bml.end !== undefined && !isNaN(bml[j].end))
 			latestEnd = Math.max(bml.end, latestEnd);
     
     if (bml.constructor === Array) // several instructions inside class
       for (var j = 0; j < bml.length; j++){
         if (!bml[j]){}
           //console.error("Empty bml instruction.", keys[i], block)
-        else if (bml[j].end !== undefined)
+        else if (bml[j].end !== undefined && !isNaN(bml[j].end))
 					latestEnd = Math.max(bml[j].end, latestEnd);
       }
 	}
