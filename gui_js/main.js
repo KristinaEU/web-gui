@@ -82,7 +82,11 @@ var msgCallback = function(msg){
     $("#transcript").html('"'+msg.userText+'"');
     logs.push(msg);
     if (testingTool){
+      $("#testing").html("TESTING!");
+      setTimeout(runNextSentence,100);
       return false;
+    } else {
+      $("#testing").html("");
     }
     if (msg.lg && Array.isArray(msg.lg)){
       msg.lg.map(function(item){
@@ -107,6 +111,53 @@ var msgCallback = function(msg){
   }
 };
 
+var testSentences = [
+  "#companion_ger",
+  "Hallo Kristina!",
+  "Ich bin traurig. Ich würde gerne die Zeitung lesen, aber die Schrift ist zu klein.",
+  "Kannst du den Artikel ARTICLE_NAME vorlesen?",
+  "Ja, er war interessant.",
+  "Nein.",
+  "Danke Kristina!"
+];
+var testIndex = 0;
+
+var nextSentence = function(){
+  var sentence = testSentences[testIndex];
+  if (!sentence){
+    return null;
+  }
+  if (sentence.startsWith("#")){
+    setScenario(sentence.slice(1));
+    testIndex++;
+    sentence = nextSentence();
+  }
+  testIndex++;
+  return sentence;
+};
+
+var runNextSentence = function(){
+   var sentence = nextSentence();
+   if (sentence){
+     $("#manualTextInput").val(sentence);
+     sendText();
+   }
+};
+
+var startTestingTool = function(){
+  testingTool = true;
+  //Schedule first sentence
+  testIndex = 0;
+  runNextSentence();
+  modal.style.display = "none";
+};
+var stopTestingTool = function(){
+  testingTool = false;
+  //reset sentences
+  testIndex = 0;
+  $("#testing").html("");
+  modal.style.display = "none";
+};
 
 // get the dimensions of the wrapper
 var kristinaWrapper = document.getElementById("kristinaWrapper");

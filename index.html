@@ -13,6 +13,7 @@
     <script src="kristinajs/litegraph.js"></script>
     <script src="kristinajs/litescene.js"></script>
     <script src="gui_js/volumeControl.js"></script>
+    <script src="gui_js/pure.min.js"></script>
 
     <script src="kristinajs/MediaStreamRecorder.js"></script>
 
@@ -75,6 +76,7 @@
             <div class="row" id="informationBox">
                 Reservation: <span id="reservation"></span><br>
                 Selected scenario: <span id="scenarioHeader"></span><br>
+                <span id="testing"></span><br>
             </div>
             <hr>
             <div class="row">
@@ -253,6 +255,8 @@
                     <a class="btn btn-primary btn-lg" onClick="doVSMCall(vsm_show)">Show VSM</a>
                     <a class="btn btn-primary btn-lg" onClick="startWebsocket()">(re)start WS</a>
                     <a class="btn btn-primary btn-lg" onClick="doResetCall({})">Reset FFMpeg</a>
+                    <a class="btn btn-primary btn-lg" onClick="startTestingTool()">Start TestRun</a>
+                    <a class="btn btn-primary btn-lg" onClick="stopTestingTool()">Stop TestRun</a>
                 </div>
             </div>
             <!-- /.col-lg-9 -->
