@@ -682,7 +682,7 @@ BMLTimeManager.prototype.findEndOfBlock = function(block){
     var bml = block[keys[i]];
     if (bml === null){}
       //console.error("Empty bml instruction.", keys[i], block);
-    else if (bml.end !== undefined && !isNaN(bml[j].end))
+    else if (bml.end !== undefined)
 			latestEnd = Math.max(bml.end, latestEnd);
     
     if (bml.constructor === Array) // several instructions inside class

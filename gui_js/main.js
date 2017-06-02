@@ -144,6 +144,14 @@ var runNextSentence = function(){
    }
 };
 
+var importTestData = function (json){
+  if (Array.isArray(json)){
+    testSentences = json;
+  } else {
+    testSentences = JSON.parse(json);
+  }
+};
+
 var startTestingTool = function(){
   testingTool = true;
   //Schedule first sentence
