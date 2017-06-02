@@ -159,6 +159,71 @@ var stopTestingTool = function(){
   modal.style.display = "none";
 };
 
+var downloadLogs = function () {
+  var a = document.createElement("a");
+  a.style = "display: none";
+  document.body.appendChild(a);
+
+  var json = JSON.stringify(logs);
+  var blob = new Blob([json], {type: "application/json"});
+  var url = URL.createObjectURL(blob);
+
+  a.href = url;
+  a.download = "logs.json";
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+};
+
+var summarizeLogs = function() {
+  var a = document.createElement("a");
+  a.style = "display: none";
+  document.body.appendChild(a);
+
+  var result = logs.map(function (item){
+    var res = {};
+    res.meta = item.meta;
+    res.userText = item.userText;
+    res.time = item.time;
+    res.outputText = item.lg.map(function (line){ return line.text });
+    return  res;
+  });
+
+  var json = JSON.stringify(result);
+  var blob = new Blob([json], {type: "application/json"});
+  var url = URL.createObjectURL(blob);
+
+  a.href = url;
+  a.download = "logs.json";
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+};
+
+var downloadCSV = function () {
+  var a = document.createElement("a");
+  a.style = "display: none";
+  document.body.appendChild(a);
+
+  var csv = "index;input;output;scenario;language;roundTime\n";
+  logs.map(function (item, idx) {
+    var runTime = item.time["vocapia-data"]+item.time["language-analysis"] + item.time["mode-selection"] + item.time["language-generation"] + item.time["dialog-management"];
+    csv += idx + ";" + item.userText + ";";
+    item.lg.map(function (line) {
+      csv += line.text
+    });
+    csv += ";" + item.meta.scenario + ";" + item.meta.language + ";" + runTime + "\n";
+  });
+  var blob = new Blob([csv], {type: "text/csv"});
+  var url = URL.createObjectURL(blob);
+
+  a.href = url;
+  a.download = "results.csv";
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+};
+
 // get the dimensions of the wrapper
 var kristinaWrapper = document.getElementById("kristinaWrapper");
 var kristinaDimensions = kristinaWrapper.getBoundingClientRect();

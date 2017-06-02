@@ -39,6 +39,7 @@
         #lipsyncDiv {
             display: none
         }
+
         #testing {
             color: red;
             font-weight: bold;
@@ -85,7 +86,8 @@
             <hr>
             <div class="row">
                 <div class="col-md-12 flat">
-                    <a class="btn btn-success btn-lg fullWidth" href="#" id="push2talk">Push to talk (<i>SpaceBar</i>)</a>
+                    <a class="btn btn-success btn-lg fullWidth" href="#" id="push2talk">Push to talk
+                        (<i>SpaceBar</i>)</a>
                 </div>
             </div>
             <hr>
@@ -180,14 +182,14 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-12" style="position:relative;">
-				<h1 style="margin-left: 100px;">Scenarios:</h1>
-				<hr>
+                <h1 style="margin-left: 100px;">Scenarios:</h1>
+                <hr>
                 <div class="row" style="position:relative;">
                     <div class="col-sm-6 col-md-6">
-						<h3>Spanish:</h3>
-						<div class="overlayButtonWrapper">
+                        <h3>Spanish:</h3>
+                        <div class="overlayButtonWrapper">
                             <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                    onClick="setScenario('babycare');">Baby Care</a></div>
+                                                onClick="setScenario('babycare');">Baby Care</a></div>
                             <!--
 							<div class="btn"><a class="btn btn-primary btn-lg scenario"
                                                     onClick="setScenario('pain');">Low Back Pain</a></div>
@@ -259,8 +261,26 @@
                     <a class="btn btn-primary btn-lg" onClick="doVSMCall(vsm_show)">Show VSM</a>
                     <a class="btn btn-primary btn-lg" onClick="startWebsocket()">(re)start WS</a>
                     <a class="btn btn-primary btn-lg" onClick="doResetCall({})">Reset FFMpeg</a>
+                </div>
+            </div>
+        </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col-lg-9 flat">
+                <div class="btn-group">
                     <a class="btn btn-primary btn-lg" onClick="startTestingTool()">Start TestRun</a>
                     <a class="btn btn-primary btn-lg" onClick="stopTestingTool()">Stop TestRun</a>
+                    <a class="btn btn-primary btn-lg" onClick="logs=[]">Drop Logs</a>
+                </div>
+            </div>
+        </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col-lg-9 flat">
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-lg" onClick="downloadLogs()">Download Logs</a>
+                    <a class="btn btn-primary btn-lg" onClick="summarizeLogs()">Download Summary Logs</a>
+                    <a class="btn btn-primary btn-lg" onClick="downloadCSV()">Download CSV</a>
                 </div>
             </div>
             <!-- /.col-lg-9 -->
