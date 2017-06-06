@@ -90,7 +90,7 @@ var msgCallback = function(msg){
     }
     if (msg.lg && Array.isArray(msg.lg)){
       msg.lg.map(function(item){
-         if (item.externalUrl && item.externalUrl != ""){
+         if (item.externalURL && item.externalURL != ""){
            //open ExternalURL
            if (timeout){
              clearTimeout(timeout);
