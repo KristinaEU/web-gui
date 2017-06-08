@@ -111,15 +111,7 @@ var msgCallback = function(msg){
   }
 };
 
-var testSentences = [
-  "#companion_ger",
-  "Hallo Kristina!",
-  "Ich bin traurig. Ich würde gerne die Zeitung lesen, aber die Schrift ist zu klein.",
-  "Kannst du den Artikel ARTICLE_NAME vorlesen?",
-  "Ja, er war interessant.",
-  "Nein.",
-  "Danke Kristina!"
-];
+
 var testIndex = 0;
 
 var nextSentence = function(){
