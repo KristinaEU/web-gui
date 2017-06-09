@@ -205,14 +205,18 @@ var downloadCSV = function () {
   a.style = "display: none";
   document.body.appendChild(a);
 
-  var csv = "index;input;output;scenario;language;roundTime\n";
+  var csv = "index;input;output;externalURL;scenario;language;roundTime;LA;DM;MS;LG\n";
   logs.map(function (item, idx) {
-    var runTime = item.time["vocapia-data"]+item.time["language-analysis"] + item.time["mode-selection"] + item.time["language-generation"] + item.time["dialog-management"];
+    var runTime = item.time["language-analysis"] + item.time["mode-selection"] + item.time["language-generation"] + item.time["dialog-management"];
     csv += idx + ";" + item.userText + ";";
+    var url = "";
     item.lg.map(function (line) {
       csv += line.text
+      if (url === "" && line.externalURL){
+        url = line.externalURL;
+      }
     });
-    csv += ";" + item.meta.scenario + ";" + item.meta.language + ";" + runTime + "\n";
+    csv += ";" + url + ";" + item.meta.scenario + ";" + item.meta.language + ";" + runTime + ";" + item.time["language-analysis"] + ";" + item.time["dialog-management"] + ";" + item.time["mode-selection"] + ";" + item.time["language-generation"] + "\n";
   });
   var blob = new Blob([csv], {type: "text/csv"});
   var url = URL.createObjectURL(blob);
