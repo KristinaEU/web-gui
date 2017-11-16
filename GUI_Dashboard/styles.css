@@ -1,0 +1,67 @@
+
+.modules{
+    opacity: 0.4;
+}
+
+/*For module activation visualization*/
+.active{
+    opacity: 1.0;
+}
+
+/* Kristina Processing Pipeline */
+#KPP rect{
+    fill:#97dffa;
+    stroke:black;
+    stroke-width:5;
+}
+
+/* Kristina Processing Pipeline text*/
+#KPP text{
+    text-anchor: middle;
+    fill: #000000;
+    font-size: 25px;
+    font-family: Verdana;
+}
+
+
+/* elliptical module*/
+#VD ellipse{
+    fill:yellow;
+    stroke:purple;
+    stroke-width:2;
+}
+/*Text of elliptical module*/
+#VD text{
+    text-anchor: middle;
+    alignment-baseline: middle;
+    fill: #000000;
+    font-size: 16px;
+    font-family: Verdana;
+}
+
+
+/*Rectangles modules*/
+.modules g rect{
+    fill:red;
+    stroke:black;
+    stroke-width:5;
+}
+
+/*text inside rectangles modules*/
+.modules g text{
+    text-anchor: middle;
+    alignment-baseline: middle;
+    fill: #000000;
+    font-size: 16px;
+    font-family: Verdana
+}
+
+#dashboard{
+    background: lightgray;
+    width: 900px;
+    height: 500px;
+}
+
+#tableLogger{
+    width: 900px;
+}
