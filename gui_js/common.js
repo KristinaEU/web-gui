@@ -339,20 +339,23 @@ window.onclick = function (event) {
 
 var openScenarioSelection = function () {
   $('#modal-title').html("Scenario Selector");
-  $('#modal-body').html($('#selector_contents').html());
+  $('#modal-body').children().detach().appendTo('#modal-sources');
+  $('#modal-body').append($('#selector_contents'));
   modal.style.display = "block";
 };
 
 var openReservationScreen = function () {
   $('#modal-title').html("Reservation System");
-  $('#modal-body').html($('#reservation_contents').html());
+  $('#modal-body').children().detach().appendTo('#modal-sources');
+  $('#modal-body').append($('#reservation_contents'));
   $("#myLabelInput").val(myLabel);
 
   modal.style.display = "block";
 };
 var openTestingScreen = function () {
   $('#modal-title').html("System Test and Maintenance");
-  $('#modal-body').html($('#testing_contents').html());
+  $('#modal-body').children().detach().appendTo('#modal-sources');
+  $('#modal-body').append($('#testing_contents'));
   modal.style.display = "block";
 };
 

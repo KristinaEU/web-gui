@@ -83,22 +83,29 @@
                 Selected scenario: <span id="scenarioHeader"></span><br>
                 <span id="testing"></span><br>
             </div>
-            <hr>
             <div class="row">
                 <div class="col-md-12 flat">
-                    <a class="btn btn-success btn-lg fullWidth" href="#" id="push2talk">Push to talk
-                        (<i>SpaceBar</i>)</a>
+                    <a class="btn btn-success btn-lg " target="_blank" onclick="openReservationScreen()">Reserve
+                        System</a>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12 flat">
+                    <a id="scenarioSelector" class="btn btn-success btn-lg" target="_blank"
+                       onclick="openScenarioSelection()">Scenario
+                        Selector</a>
                 </div>
             </div>
             <hr>
             <div class="row">
-                <div class="col-md-8 flat">Manual text input:<br/><input type="text" id="manualTextInput"
-                                                                         name="manual"/></div>
-                <div class="col-md-4 flat"><a id="manualInput" class="btn btn-success btn-lg" href="#"
-                                              onclick="sendText()">Send
-                    text</a></div>
+                <div class="col-md-12 flat">
+                    <a class="btn btn-warning btn-lg fullWidth" href="#" id="push2talk"><img
+                            src="images/microphone_318-50712.jpg" style="height:20px;width:20px">&nbsp;Push to talk
+                        (<i>SpaceBar</i>)</a>
+                </div>
             </div>
-            <br>
+            <hr>
             <div class="row">
                 Transcript: <span id="transcript"></span>
             </div>
@@ -129,11 +136,14 @@
     </div>
     <!-- /.row -->
     <hr>
-    <h3>Popup screens:</h3>
-    <a id="scenarioSelector" class="btn btn-success btn-lg" target="_blank" onclick="openScenarioSelection()">Scenario
-        Selector</a>
-    <a class="btn btn-success btn-lg " target="_blank" onclick="openReservationScreen()">Reserve System</a>&nbsp;&nbsp;
-    <a class="btn btn-danger btn-lg " target="_blank" onclick="openTestingScreen()">Settings</a>
+    <h3>Textual input:</h3>
+    <div class="row">
+        <div class="col-md-2 flat"><a id="manualInput" class="btn btn-success btn-lg" href="#"
+                                      onclick="sendText()">Send
+            text</a></div>
+        <div class="col-md-10 flat"><input type="text" style="width:100%;height:3em" id="manualTextInput"
+                                                                 name="manual"/></div>
+    </div>
     <hr>
     <h3>System reservations:</h3>
     <!-- Call to Action Well -->
@@ -146,13 +156,18 @@
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
-
+    <hr>
+    <div class="row">
+        <div class="col-lg-12 flat">
+            <a class="btn btn-danger btn-lg " target="_blank" onclick="openTestingScreen()">Settings</a>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
         <div class="row">
             <div class="col-lg-12 flat">
-                <p>Copyright &copy; KRISTINA 2016</p>
+                <p>Copyright &copy; KRISTINA 2017</p>
             </div>
         </div>
     </footer>
@@ -177,122 +192,160 @@
 
 </div>
 <!-- /Modal box -->
-
-<div style="display:none" id="selector_contents">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-12" style="position:relative;">
-                <h1 style="margin-left: 100px;">Scenarios:</h1>
-                <hr>
-                <div class="row" style="position:relative;">
-                    <div class="col-sm-6 col-md-6">
-                        <h3>Spanish:</h3>
-                        <div class="overlayButtonWrapper">
-                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                onClick="setScenario('babycare');">Baby Care</a></div>
-							<div class="btn"><a class="btn btn-primary btn-lg scenario"
+<div style="display:none" id="modal-sources">
+    <div id="selector_contents">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-12" style="position:relative;">
+                    <h1 style="margin-left: 100px;">Persons:</h1>
+                    <hr>
+                    <h3>Link to the <a href="http://160.40.51.132/project2/" target="_blank">KRISTINA User Management
+                        Portal</a></h3>
+                    <hr>
+                    <div class="row" style="position:relative;">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3">Your name:</div>
+                                <div class="col-sm-3 col-md-3"><input onchange="setSpeakerName(this.value)"
+                                                                      id="speakerNameInput" value=""/></div>
+                            </div>
+                            <!--TODO: make pulldown! -->
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3">Your gender:</div>
+                                <div class="col-sm-3 col-md-3"><input onchange="setSpeakerGender(this.value)"
+                                                                      id="speakerGenderInput" value=""/></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="row">
+                                <div class="col-sm-5 col-md-5">Care recipient's name:</div>
+                                <div class="col-sm-2 col-md-2"><input onchange="setSubjectName(this.value)"
+                                                                      id="subjectNameInput"/></div>
+                            </div>
+                            <!--TODO: make pulldown! -->
+                            <div class="row">
+                                <div class="col-sm-5 col-md-5">Care recipient's gender:</div>
+                                <div class="col-sm-2 col-md-2"><input onchange="setSubjectGender(this.value)"
+                                                                      id="subjectGenderInput"/></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12" style="position:relative;">
+                    <h1 style="margin-left: 100px;">Scenarios:</h1>
+                    <hr>
+                    <div class="row" style="position:relative;">
+                        <div class="col-sm-6 col-md-6">
+                            <h3>Spanish:</h3>
+                            <div class="overlayButtonWrapper">
+                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                    onClick="setScenario('babycare');">Baby Care</a></div>
+                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
                                                     onClick="setScenario('pain');">Low Back Pain</a></div>
+                            </div>
+                            <h3>Polish:</h3>
+                            <div class="overlayButtonWrapper">
+                                <!--<div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                        onClick="setScenario('sleep_pl');">Sleep Habits</a></div>
+                                                        -->
+                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                    onClick="setScenario('eat_pl');">Eating & Sleeping</a></div>
+                            </div>
                         </div>
-                        <h3>Polish:</h3>
-                        <div class="overlayButtonWrapper">
-                            <!--<div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                    onClick="setScenario('sleep_pl');">Sleep Habits</a></div>
-													-->
-                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                onClick="setScenario('eat_pl');">Eating & Sleeping</a></div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-6" style="position:relative;">
-                        <h3>German:</h3>
-                        <div class="overlayButtonWrapper">
-                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                onClick="setScenario('companion_ger');">Social Companion</a></div>
-                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                onClick="setScenario('eat_ger');">Eating & Sleeping</a></div>
-                        </div>
-                        <h3>Turkish:</h3>
-                        <div class="overlayButtonWrapper">
-                            <div class="btn"><a class="btn btn-primary btn-lg scenario"
-                                                onClick="setScenario('companion_tr');">Social Companion</a></div>
+                        <div class="col-sm-6 col-md-6" style="position:relative;">
+                            <h3>German:</h3>
+                            <div class="overlayButtonWrapper">
+                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                    onClick="setScenario('companion_ger');">Social Companion</a></div>
+                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                    onClick="setScenario('eat_ger');">Eating & Sleeping</a></div>
+                            </div>
+                            <h3>Turkish:</h3>
+                            <div class="overlayButtonWrapper">
+                                <div class="btn"><a class="btn btn-primary btn-lg scenario"
+                                                    onClick="setScenario('companion_tr');">Social Companion</a></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div style="display:none" id="reservation_contents">
-    <!-- Page Content -->
-    <div class="container">
+    <div id="reservation_contents">
+        <!-- Page Content -->
+        <div class="container">
 
-        <!-- Heading Row -->
-        <div class="row">
-            <div class="col-sm-9 col-md-9" style="position:relative;">
-                <div class="row">Your label (email address):<input onchange="setMyLabel(this.value)" id="myLabelInput"/>
+            <!-- Heading Row -->
+            <div class="row">
+                <div class="col-sm-9 col-md-9" style="position:relative;">
+                    <div class="row">Your label (email address):<input onchange="setMyLabel(this.value)"
+                                                                       id="myLabelInput"/>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <br>
+                        <a class="btn btn-success btn-lg" target="_blank" onclick="reserve1hour()">Reserve System for 1
+                            hour</a>
+                        <a class="btn btn-success btn-lg" target="_blank" onclick="reserve5min()">Reserve System for 5
+                            min</a>
+                        <a class="btn btn-success btn-lg" target="_blank" onclick="release()">Release system again</a>
+                    </div>
                 </div>
-                <hr>
-                <div class="row">
-                    <br>
-                    <a class="btn btn-success btn-lg" target="_blank" onclick="reserve1hour()">Reserve System for 1
-                        hour</a>
-                    <a class="btn btn-success btn-lg" target="_blank" onclick="reserve5min()">Reserve System for 5
-                        min</a>
-                    <a class="btn btn-success btn-lg" target="_blank" onclick="release()">Release system again</a>
+                <!-- /.col-md-4 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </div>
+
+    <div id="testing_contents">
+        <!-- Page Content -->
+        <div class="container">
+            Warning: These buttons can block, hamper, and otherwise influence running tests, handle with care.
+            <div class="row">
+                <div class="col-lg-9 flat">
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-lg" onClick="initVSM()">Init VSM.</a>
+                        <a class="btn btn-primary btn-lg" onClick="doVSMCall(vsm_show)">Show VSM</a>
+                        <a class="btn btn-primary btn-lg" onClick="startWebsocket()">(re)start WS</a>
+                        <a class="btn btn-primary btn-lg" onClick="doResetCall({})">Reset FFMpeg</a>
+                    </div>
                 </div>
             </div>
-            <!-- /.col-md-4 -->
+            <br/><br/>
+            <div class="row">
+                <div class="col-lg-9 flat">
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-lg" onClick="startTestingTool()">Start TestRun</a>
+                        <a class="btn btn-primary btn-lg" onClick="stopTestingTool()">Stop TestRun</a>
+                        <a class="btn btn-primary btn-lg" onClick="logs=[]">Drop Logs</a>
+                    </div>
+                </div>
+            </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col-lg-9 flat">
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-lg" onClick="downloadLogs()">Download Logs</a>
+                        <a class="btn btn-primary btn-lg" onClick="summarizeLogs()">Download Summary Logs</a>
+                        <a class="btn btn-primary btn-lg" onClick="downloadCSV()">Download CSV</a>
+                    </div>
+                </div>
+                <!-- /.col-lg-9 -->
+            </div>
+            <br>
+            <hr>
+            <div class="row">
+                <div id="logfiles" class="btn-group btn-group-vertical">
+                </div>
+            </div>
         </div>
-        <!-- /.row -->
     </div>
     <!-- /.container -->
 </div>
-
-<div style="display:none" id="testing_contents">
-    <!-- Page Content -->
-    <div class="container">
-        Warning: These buttons can block, hamper, and otherwise influence running tests, handle with care.
-        <div class="row">
-            <div class="col-lg-9 flat">
-                <div class="btn-group">
-                    <a class="btn btn-primary btn-lg" onClick="initVSM()">Init VSM.</a>
-                    <a class="btn btn-primary btn-lg" onClick="doVSMCall(vsm_show)">Show VSM</a>
-                    <a class="btn btn-primary btn-lg" onClick="startWebsocket()">(re)start WS</a>
-                    <a class="btn btn-primary btn-lg" onClick="doResetCall({})">Reset FFMpeg</a>
-                </div>
-            </div>
-        </div>
-        <br/><br/>
-        <div class="row">
-            <div class="col-lg-9 flat">
-                <div class="btn-group">
-                    <a class="btn btn-primary btn-lg" onClick="startTestingTool()">Start TestRun</a>
-                    <a class="btn btn-primary btn-lg" onClick="stopTestingTool()">Stop TestRun</a>
-                    <a class="btn btn-primary btn-lg" onClick="logs=[]">Drop Logs</a>
-                </div>
-            </div>
-        </div>
-        <br/><br/>
-        <div class="row">
-            <div class="col-lg-9 flat">
-                <div class="btn-group">
-                    <a class="btn btn-primary btn-lg" onClick="downloadLogs()">Download Logs</a>
-                    <a class="btn btn-primary btn-lg" onClick="summarizeLogs()">Download Summary Logs</a>
-                    <a class="btn btn-primary btn-lg" onClick="downloadCSV()">Download CSV</a>
-                </div>
-            </div>
-            <!-- /.col-lg-9 -->
-        </div>
-        <br>
-        <hr>
-        <div class="row">
-            <div id="logfiles" class="btn-group btn-group-vertical">
-            </div>
-        </div>
-    </div>
-    <!-- /.container -->
-</div>
-
 </body>
 <script src="js/jquery.js"></script>
 <script src="gui_js/common.js"></script>

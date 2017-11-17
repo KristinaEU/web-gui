@@ -1,3 +1,15 @@
+var speaker = localStorage.getItem("kristina_speaker");
+if (speaker == null) {
+  speaker = {'name': 'Hans', 'gender': 'Male'};
+} else {
+  speaker = JSON.parse(speaker);
+}
+var subject = localStorage.getItem("kristina_subject");
+if (subject == null) {
+  subject = {'name': 'Claudia', 'gender': 'Female'};
+} else {
+  subject = JSON.parse(subject);
+}
 var map = {
   // "newspaper": {
   //   "user": "Elisabeth",
@@ -60,16 +72,48 @@ var map = {
 
 };
 
+$('#speakerNameInput').val(speaker.name);
+$('#speakerGenderInput').val(speaker.gender);
+$('#subjectNameInput').val(subject.name);
+$('#subjectGenderInput').val(subject.gender);
+
+function createMetaData(scenario) {
+  var meta = $.extend({}, map[scenario]);
+  console.log(map[scenario], meta);
+  meta["speaker"] = speaker;
+  meta["subject"] = subject;
+  return meta;
+}
 
 function setScenario(scenario) {
-  console.log("selected scenario:"+scenario);
+  console.log("selected scenario:" + scenario);
   document.getElementById('scenarioHeader').innerHTML = scenario;
 
-  console.log(vsm_set("MetaData", map[scenario]));
-  doVSMCall(vsm_set("MetaData", map[scenario]));
+  var meta = createMetaData(scenario);
+  console.log(vsm_set("MetaData", meta));
+  doVSMCall(vsm_set("MetaData", meta));
 
   if (modal) {
     modal.style.display = "none";
   }
 }
 
+function setSpeakerName(name) {
+  speaker.name = name;
+  localStorage.setItem("kristina_speaker",JSON.stringify(speaker));
+}
+
+function setSpeakerGender(gender) {
+  speaker.gender = gender;
+  localStorage.setItem("kristina_speaker",JSON.stringify(speaker));
+}
+
+function setSubjectName(name) {
+  subject.name = name;
+  localStorage.setItem("kristina_subject",JSON.stringify(subject));
+}
+
+function setSubjectGender(gender) {
+  subject.gender = gender;
+  localStorage.setItem("kristina_subject",JSON.stringify(subject));
+}
