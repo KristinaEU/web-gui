@@ -7,16 +7,18 @@
     <meta name="Author" content="Luis F. M. Cunha">
 
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/bootstrap.css">
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/popper.min.js"></script>
 
     <!-- My Styles -->
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="gui_css/dashboard_styles.css">
 
-    <title>Dashboar - KRISTINA Pipeline</title>
+    <script src="gui_js/dashboard.js"></script>
+
+    <title>Dashboard - KRISTINA Pipeline</title>
 </head>
 <body>
 
@@ -39,13 +41,13 @@
 
                         <!-- Voice detection -->
                         <g id="VD" class="modules">
-                            <g  transform="translate(100,400)" >
-                                <ellipse rx="70" ry="20" />
+                            <g  transform="translate(110,400)" >
+                                <ellipse rx="7em" ry="20" />
                                 <text>Voice detection</text>
                             </g>
                             <g>
                                 <line xmlns="http://www.w3.org/2000/svg"
-                                      x1="170" y1="420"
+                                      x1="170" y1="425"
                                       x2="220" y2="460"
                                       marker-end="url(#triangle)" stroke="black" stroke-width="4"/>
                             </g>
@@ -55,15 +57,15 @@
                         <!-- Speech-To-Text -->
                         <g id="STT" class="modules">
                             <!-- Rectangle -->
-                            <g  transform="translate(150,300)">
-                                <rect x="-60" y="-20" rx="20" ry="20" width="120" height="40" />
+                            <g  transform="translate(150,320)">
+                                <rect x="-5em" y="-20" rx="20" ry="20" width="10em" height="40" />
                                 <text>Speech-To-Text</text>
                             </g>
                             <!-- Arrow -->
                             <g>
                                 <line xmlns="http://www.w3.org/2000/svg"
                                       x1="300" y1="420"
-                                      x2="200" y2="340"
+                                      x2="225" y2="360"
                                       marker-end="url(#triangle)" stroke="black" stroke-width="4"/>
                             </g>
                         </g>
@@ -71,7 +73,7 @@
                         <!-- Language analysis -->
                         <g id="LA" class="modules" >
                             <g transform="translate(300,250)">
-                                <rect x="-70" y="-20" rx="20" ry="20" width="140" height="40"/>
+                                <rect x="-6em" y="-20" rx="20" ry="20" width="12em" height="40"/>
                                 <text>Language analysis</text>
                             </g>
                             <g>
@@ -84,14 +86,14 @@
 
                         <!-- Dialog management -->
                         <g id="DM" class="modules">
-                            <g  transform="translate(450,200)">
-                                <rect x="-70" y="-20" rx="20" ry="20" width="140" height="40" />
+                            <g  transform="translate(450,190)">
+                                <rect x="-7em" y="-20" rx="20" ry="20" width="14em" height="40" />
                                 <text>Dialog management</text>
                             </g>
                             <g>
                                 <line xmlns="http://www.w3.org/2000/svg"
                                       x1="450" y1="420"
-                                      x2="450" y2="240"
+                                      x2="450" y2="230"
                                       marker-end="url(#triangle)" stroke="black" stroke-width="4"/>
                             </g>
                         </g>
@@ -99,7 +101,7 @@
                         <!-- Mode selection -->
                         <g id="MS" class="modules">
                             <g transform="translate(600,250)">
-                                <rect x="-70" y="-20" rx="20" ry="20" width="140" height="40"/>
+                                <rect x="-6em" y="-20" rx="20" ry="20" width="12em" height="40"/>
                                 <text>Mode selection</text>
                             </g>
                             <g>
@@ -112,15 +114,15 @@
 
                         <!-- Natural language generation -->
                         <g id="NLG" class="modules">
-                            <g  transform="translate(750,300)" >
-                                <rect x="-100" y="-20" rx="20" ry="20" width="200" height="40"/>
+                            <g  transform="translate(750,320)" >
+                                <rect x="-9em" y="-20" rx="20" ry="20" width="18em" height="40"/>
                                 <text>Natural language generation</text>
                             </g>
                             <!-- Arrow -->
                             <g>
                                 <line xmlns="http://www.w3.org/2000/svg"
                                       x1="600" y1="420"
-                                      x2="700" y2="340"
+                                      x2="680" y2="360"
                                       marker-end="url(#triangle)" stroke="black" stroke-width="4"/>
                             </g>
                         </g>
@@ -128,13 +130,13 @@
                         <!-- Avatar rendering -->
                         <g id="AR" class="modules" >
                             <g  transform="translate(800,400)" >
-                                <rect x="-70" y="-20" rx="20" ry="20" width="140" height="40"/>
+                                <rect x="-6em" y="-20" rx="20" ry="20" width="12em" height="40"/>
                                 <text>Avatar rendering</text>
                             </g>
                             <g>
                                 <line xmlns="http://www.w3.org/2000/svg"
                                       x1="660" y1="460"
-                                      x2="710" y2="420"
+                                      x2="710" y2="425"
                                       marker-end="url(#triangle)" stroke="black" stroke-width="4"/>
                             </g>
                         </g>
@@ -156,22 +158,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>134</td>
-                        <td>Speech-to-Text ended</td>
-                    </tr>
-                    <tr>
-                        <td>25</td>
-                        <td>Speech-to-Text started</td>
-                    </tr>
-                    <tr>
-                        <td>23</td>
-                        <td>Voice ended</td>
-                    </tr>
-                    <tr>
-                        <td>0</td>
-                        <td>Voice started</td>
-                    </tr>
                     </tbody>
                 </table>
 
@@ -179,74 +165,6 @@
         </div>
 
     </div>
-
-
-    <script>
-
-        // GLOBAL VARIABLES
-        var maxRows = 13*3;
-
-        /*
-         * Activates or deactivates
-         * moduleName   ->  id of the groupModule
-         * activation   ->  true    - activates module
-         *                  false   - deactivates module
-         */
-        function setActivationModule(moduleName, activation){
-          if(activation){
-            $('#' + moduleName).addClass('active');
-          } else {
-            $('#' + moduleName).removeClass('active');
-          }
-        }
-
-        // receive function
-        function getMessage(){
-
-          var input = {
-            "timestamp": "135",
-            "moduleName": "LA",
-            "message": "Language Analysis started",
-            "activation": "true"
-          }
-          handleMessage(input);
-        }
-
-        function handleMessage(input){
-
-          var timestamp = input["timestamp"],
-              moduleName = input["moduleName"],
-              message = input["message"],
-              activation = input["activation"];
-
-          // active module visualization
-          setActivationModule(moduleName, activation);
-
-          // add new entry to the table logger
-          addRowTable(timestamp, message);
-
-          // if table is too big then remove oldest entries
-          removeRows();
-
-        }
-
-        function addRowTable(timestamp, moduleName){
-          $("#tableLogger").prepend('<tr><td>' + timestamp + '</td><td>' + moduleName + '</td></tr>');
-        }
-
-        function removeRows(){
-
-          var nRows = $('#tableLogger >tbody >tr').length;
-          if(nRows > maxRows){
-
-            var diff = nRows - maxRows;
-            for(var i = 0; i < diff; i++){
-              $('#tableLogger tr:last').remove();
-            }
-          }
-        }
-
-    </script>
 
 </body>
 
