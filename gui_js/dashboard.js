@@ -47,17 +47,20 @@ function handleMessage(input) {
 }
 
 function addRowTable(timestamp, moduleName) {
-  $("#tableLogger").prepend('<tr><td>' + timestamp + '</td><td>' + moduleName + '</td></tr>');
+  if ($('#tableLogger').length > 0) {
+    $("#tableLogger").prepend('<tr><td>' + timestamp + '</td><td>' + moduleName + '</td></tr>');
+  }
 }
 
 function removeRows() {
+  if ($('#tableLogger').length > 0) {
+    var nRows = $('#tableLogger >tbody >tr').length;
+    if (nRows > maxRows) {
 
-  var nRows = $('#tableLogger >tbody >tr').length;
-  if (nRows > maxRows) {
-
-    var diff = nRows - maxRows;
-    for (var i = 0; i < diff; i++) {
-      $('#tableLogger tr:last').remove();
+      var diff = nRows - maxRows;
+      for (var i = 0; i < diff; i++) {
+        $('#tableLogger tr:last').remove();
+      }
     }
   }
 }

@@ -110,3 +110,18 @@ div.volumeSliderWrapper {
     line-height: 40px;
     vertical-align: middle
 }
+
+.modules{
+    opacity: 0.4;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background: lawngreen;
+    border: 1px solid darkgreen;
+    display: inline-block;
+}
+
+/*For module activation visualization*/
+.active{
+    opacity: 1.0;
+}

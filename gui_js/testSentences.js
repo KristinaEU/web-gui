@@ -1,4 +1,5 @@
-var testSentences = ["#companion_ger",
+var testSentences =
+  ["#companion_ger",
   "Hallo KRISTINA!",
   "Könntest du mir die Zeitung vorlesen?",
   "Könntest du den Artikel Das Entringer Freibad öffnete am Sonntag erstmals für einen Hundeschwimmtag vorlesen? ",
