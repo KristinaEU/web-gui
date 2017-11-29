@@ -19,7 +19,7 @@ var vsm_set = function (field, val) {
   return {"cmd": "set", "arg": {"var": field, "val": JSON.stringify(val)}}
 };
 var vsm_text = function (text) {
-  return vsm_set("UserData", {"confidence": "0.85", "text": text})
+  return vsm_set("UserData", {"confidence": "0.85", "text": text, "manual": true})
 };
 
 
