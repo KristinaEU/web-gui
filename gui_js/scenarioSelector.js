@@ -1,3 +1,5 @@
+var subjectOverride = (localStorage.getItem("kristina_subjectOverride").toLowerCase() === "true");
+
 var speaker = localStorage.getItem("kristina_speaker");
 if (speaker == null) {
   speaker = {'name': 'Hans', 'gender': 'Male'};
@@ -11,24 +13,9 @@ if (subject == null) {
   subject = JSON.parse(subject);
 }
 var map = {
-  // "newspaper": {
-  //   "user": "Elisabeth",
-  //   "language": "de",
-  //   "scenario": "newspaper",
-  //   "vocapia-model": "ger-kr",
-  //   "avatar": "KRISTINA"
-  // },
-  // "weather": {"user": "Hans", "language": "de", "scenario": "weather", "vocapia-model": "ger-kr", "avatar": "KRISTINA"},
-  // "sleep_pl": {"user": "Iwona", "language": "pl", "scenario": "sleep", "vocapia-model": "pol-kr", "avatar": "KRISTINA"},
-  // "sleep_ger": {
-  //   "user": "Elisabeth",
-  //   "language": "de",
-  //   "scenario": "sleep",
-  //   "vocapia-model": "ger-kr",
-  //   "avatar": "KRISTINA"
-  // },
   "eat_pl": {
     "user": "Jana",
+    "subject":{"name":"Stefan","gender":"Male"},
     "language": "pl",
     "scenario": "eat_sleep",
     "vocapia-model": "pol-kr",
@@ -36,6 +23,7 @@ var map = {
   },
   "eat_ger": {
     "user": "Claudia",
+    "subject":{"name":"Stefan","gender":"Male"},
     "language": "de",
     "scenario": "eat_sleep",
     "vocapia-model": "ger-kr",
@@ -43,6 +31,7 @@ var map = {
   },
   "companion_tr": {
     "user": "Mustafa",
+    "subject":{"name":"Mustafa","gender":"Male"},
     "language": "tr",
     "scenario": "companion",
     "vocapia-model": "tur-kr",
@@ -50,6 +39,7 @@ var map = {
   },
   "companion_ger": {
     "user": "Hans",
+    "subject":{"name":"Hans","gender":"Male"},
     "language": "de",
     "scenario": "companion",
     "vocapia-model": "ger-kr",
@@ -57,6 +47,7 @@ var map = {
   },
   "pain": {
     "user": "Carlos",
+    "subject":{"name":"Carlos","gender":"Male"},
     "language": "es",
     "scenario": "backpain",
     "vocapia-model": "spa-kr",
@@ -64,6 +55,7 @@ var map = {
   },
   "babycare": {
     "user": "Carmen",
+    "subject":{"name":"Carmen","gender":"Female"},
     "language": "es",
     "scenario": "babycare",
     "vocapia-model": "spa-kr",
@@ -76,13 +68,39 @@ $('#speakerNameInput').val(speaker.name);
 $('#speakerGenderInput').val(speaker.gender);
 $('#subjectNameInput').val(subject.name);
 $('#subjectGenderInput').val(subject.gender);
+setSubjectOverride();
 
 function createMetaData(scenario) {
   var meta = $.extend({}, map[scenario]);
-  console.log(map[scenario], meta);
+
   meta["speaker"] = speaker;
-  meta["subject"] = subject;
+  if (subjectOverride) {
+    meta["subject"] = subject;
+  } else {
+    setSubjectName(meta.subject.name);
+    $('#subjectNameInput').val(meta.subject.name);
+    setSubjectGender(meta.subject.gender);
+    $('#subjectGenderInput').val(meta.subject.gender);
+
+  }
   return meta;
+}
+
+function setSubjectOverride(override){
+  if (override){
+    subjectOverride = override.checked;
+    console.log("subjectOverride:",override,subjectOverride);
+    localStorage.setItem("kristina_subjectOverride",JSON.stringify(subjectOverride));
+  }
+  if (!subjectOverride){
+    $('#subjectOverride').removeAttr('checked');
+    $('#subjectNameInput').attr('disabled',true);
+    $('#subjectGenderInput').attr('disabled',true);
+  } else {
+    $('#subjectOverride').attr('checked','checked');
+    $('#subjectNameInput').attr('disabled',false);
+    $('#subjectGenderInput').attr('disabled',false);
+  }
 }
 
 function setScenario(scenario) {
