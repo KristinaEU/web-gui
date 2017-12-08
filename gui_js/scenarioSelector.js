@@ -1,4 +1,6 @@
-var subjectOverride = (localStorage.getItem("kristina_subjectOverride").toLowerCase() === "true");
+
+var subjectOverrideText = localStorage.getItem("kristina_subjectOverride");
+var subjectOverride = (subjectOverrideText && (subjectOverrideText.toLowerCase() === "true"));
 
 var speaker = localStorage.getItem("kristina_speaker");
 if (speaker == null) {
