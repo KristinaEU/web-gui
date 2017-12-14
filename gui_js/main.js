@@ -144,6 +144,22 @@ var importTestData = function (json){
   }
 };
 
+var setNoPushToTalk = function(input){
+  noPushToTalk= $(input).is(":checked");
+  localStorage.setItem("kristina_noPushToTalk",JSON.stringify(noPushToTalk));
+  if (noPushToTalk){
+    doUnmute();
+    $('#push2talk').addClass("disabled");
+  } else {
+    doMute();
+    $('#push2talk').removeClass("disabled");
+  }
+};
+if (noPushToTalk){
+  $('#nopushtotalk').prop("checked",true);
+}
+
+
 var startTestingTool = function(){
   testingTool = true;
   //Schedule first sentence

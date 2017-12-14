@@ -231,7 +231,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="subjectOverride" onchange="setSubjectOverride(this)"> Enable override care recipient:
+                                    <input type="checkbox" id="subjectOverride" onchange="setSubjectOverride(this)">
+                                    Enable override care recipient:
                                 </div>
                             </div>
                             <div class="row">
@@ -358,6 +359,16 @@
                         <a class="btn btn-primary btn-lg" onClick="downloadLogs()">Download Logs</a>
                         <a class="btn btn-primary btn-lg" onClick="summarizeLogs()">Download Summary Logs</a>
                         <a class="btn btn-primary btn-lg" onClick="downloadCSV()">Download CSV</a>
+                    </div>
+                </div>
+                <!-- /.col-lg-9 -->
+            </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col-lg-9 flat">
+                    <div class="checkbox">
+                        <label><input id="nopushtotalk" type="checkbox" onChange="setNoPushToTalk(this)">
+                                 Disable push2talk, audio always open</label>
                     </div>
                 </div>
                 <!-- /.col-lg-9 -->
