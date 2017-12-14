@@ -150,9 +150,11 @@ var setNoPushToTalk = function(input){
   if (noPushToTalk){
     doUnmute();
     $('#push2talk').addClass("disabled");
+    $('#push2talkInfo').show();
   } else {
     doMute();
     $('#push2talk').removeClass("disabled");
+    $('#push2talkInfo').hide();
   }
 };
 if (noPushToTalk){
