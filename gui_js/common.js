@@ -3,12 +3,15 @@
  */
 
 
+var skipReservation = true;
+
+
 //Rest client to VSM: URL, call method, structures.
 var handleReplies = {};
 //var vsm_uri = "http://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:11220/";
 //var wsUri = "wss://webglstudio.org:8080";
 //var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
-var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com/ws";
+var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com/ws";                                                                
 
 
 var noPushToTalkText = localStorage.getItem("kristina_noPushToTalk");
@@ -58,7 +61,7 @@ var initVSM = function () {
 // Websocket variables
 var ws = null;
 var ws_open = false;
-var reserved = false;
+var reserved = skipReservation || false;
 var mediaRecorder = null;
 
 // Init websocket connection
@@ -224,6 +227,8 @@ handleReplies["getReservation"] = function (reply) {
       reserved = false;
     }
   }
+  //Always reserved when skipReservation is true;
+  reserved = skipReservation || reserved;
   if (original_reservation != reserved) {
     //start/stop media recorder
     if (mediaRecorder != null) {

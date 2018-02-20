@@ -9,7 +9,6 @@ var videoDimensions = videoWrapper.getBoundingClientRect();
 videoWrapper.style.height = (videoDimensions.width / 4 * 3) + 'px';
 
 
-
 // Constraints
 var mediaConstraints = {
   audio: true,
@@ -39,7 +38,7 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
     mediastream = stream;
 
     //mute by default
-    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm', bitsPerSecond: 160000});
+    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm', videoBitsPerSecond : 2500000});
 
     mediaRecorder.ondataavailable = function (e) {
       //console.log("Data available!");
