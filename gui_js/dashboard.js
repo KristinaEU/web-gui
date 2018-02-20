@@ -1,5 +1,6 @@
 
 (function(){
+
 // GLOBAL VARIABLES
 var maxRows = 13 * 3;
 var wsUri = "localhost:8002";
