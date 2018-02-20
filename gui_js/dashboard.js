@@ -1,6 +1,8 @@
+
+(function(){
 // GLOBAL VARIABLES
 var maxRows = 13 * 3;
-var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:8008";
+var wsUri = "localhost:8002";
 
 /*
  * Activates or deactivates
@@ -117,3 +119,4 @@ function startWebsocket() {
     }
   });
 }
+})();

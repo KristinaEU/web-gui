@@ -15,8 +15,9 @@ var mediaConstraints = {
   audio: true,
   //video: false
   video: {
+//	frameRate: {"max":"15","min":"5"},  
     mandatory: {
-      maxWidth: resolution_x,
+	  maxWidth: resolution_x,
       maxHeight: resolution_y
     }
   }
@@ -39,7 +40,7 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
     mediastream = stream;
 
     //mute by default
-    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm', bitsPerSecond: 160000});
+    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm', bitsPerSecond: 1600000});
 
     mediaRecorder.ondataavailable = function (e) {
       //console.log("Data available!");
@@ -247,7 +248,7 @@ canvas.innerHTML = '';
 canvas.appendChild(player.canvas);
 player.canvas.style.borderRadius = '10px';
 
-LS.Globals.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
+LS.Globals.hostname = "localhost";
 LS.Globals.port = 8000;
 LS.Globals.characterName = "KRISTINA";
 player.loadScene("./scenes/emma.json");

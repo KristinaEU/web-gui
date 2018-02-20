@@ -8,7 +8,7 @@ var handleReplies = {};
 //var vsm_uri = "http://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:11220/";
 //var wsUri = "wss://webglstudio.org:8080";
 //var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
-var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com/ws";
+var wsUri = "localhost:8001/ws";
 
 var vsm_start = {"cmd": "start"};
 var vsm_reset = {"cmd": "reset"};
@@ -77,7 +77,13 @@ function startWebsocket() {
       ws = new WebSocket("wss://" + wsUri);
 
       ws.onopen = function (e) {
-        console.log("Websocket connected to: ", wsUri);
+		if (ws.readyState == 0){
+			console.error("Websocket called onopen before readyState was open!");
+			setTimeout(ws.onopen,1);
+			return;
+		}
+        console.log("Websocket connected to: ", wsUri, ws, ws.readyState);
+		
         ws_open = true;
 
         if (mediaRecorder != null) {
