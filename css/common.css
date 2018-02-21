@@ -85,7 +85,7 @@ div.overlayButtonWrapper {
 
 div.volumeWrapper {
     position:absolute;
-    bottom:20px;
+    top:60px;
     right:14px;
     width:340px;
     height:40px

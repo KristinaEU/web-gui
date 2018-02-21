@@ -229,7 +229,7 @@ var downloadCSV = function () {
     csv += idx + ";" + item.userText + ";";
     var url = "";
     item.lg.map(function (line) {
-      csv += line.text
+      csv += line.text;
       if (url === "" && line.externalURL){
         url = line.externalURL;
       }
@@ -250,12 +250,13 @@ var downloadCSV = function () {
 var kristinaWrapper = document.getElementById("kristinaWrapper");
 var kristinaDimensions = kristinaWrapper.getBoundingClientRect();
 
+var agentId = "cf";
 
 var player = new LS.Player({
   width: kristinaDimensions.width,
   height: kristinaDimensions.width / 4 * 3,
-  resources: "Agents/cf",
-  shaders: "Agents/cf/data/shaders.xml",
+  resources: "Agents/"+agentId,
+  shaders: "Agents/"+agentId+"/data/shaders.xml",
   loadingbar: true, //shows loading bar progress
   container: kristinaWrapper
 });
@@ -268,7 +269,7 @@ player.canvas.style.borderRadius = '10px';
 LS.Globals.hostname = "localhost";
 LS.Globals.port = 8000;
 LS.Globals.characterName = "KRISTINA";
-player.loadScene("./Agents/cf/scene.json");
+player.loadScene("./Agents/"+agentId+"/scene.json");
 
 setTimeout(function (){
   LS.Globals.showGUI = false;
