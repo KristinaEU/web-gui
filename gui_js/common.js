@@ -322,6 +322,10 @@ handleReplies["getReservations"] = function (reply) {
   }));
 };
 
+var checkReservations = function () {
+    doProxyCall({'method': 'getReservations', 'params': [start.getTime(), end.getTime()], token: token});
+};
+
 if (document.getElementById("reservation_timeline")) {
     var timeline = new vis.Timeline(document.getElementById("reservation_timeline"), reservations, {
         stack: false,
@@ -336,9 +340,6 @@ if (document.getElementById("reservation_timeline")) {
         checkReservations();
     });
 
-    var checkReservations = function () {
-        doProxyCall({'method': 'getReservations', 'params': [start.getTime(), end.getTime()], token: token});
-    };
     setInterval(checkReservations, 60000);
 }
 
