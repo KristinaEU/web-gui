@@ -251,6 +251,8 @@ var kristinaWrapper = document.getElementById("kristinaWrapper");
 var kristinaDimensions = kristinaWrapper.getBoundingClientRect();
 
 var agentId = "cf";
+//cf, sf_without
+
 
 var player = new LS.Player({
   width: kristinaDimensions.width,
