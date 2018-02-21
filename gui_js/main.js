@@ -253,8 +253,8 @@ var kristinaDimensions = kristinaWrapper.getBoundingClientRect();
 var player = new LS.Player({
   width: kristinaDimensions.width,
   height: kristinaDimensions.width / 4 * 3,
-  resources: "resources",
-  shaders: "shaders/shaders.xml",
+  resources: "Agents/cf",
+  shaders: "Agents/cf/data/shaders.xml",
   loadingbar: true, //shows loading bar progress
   container: kristinaWrapper
 });
@@ -267,7 +267,7 @@ player.canvas.style.borderRadius = '10px';
 LS.Globals.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
 LS.Globals.port = 8000;
 LS.Globals.characterName = "KRISTINA";
-player.loadScene("./scenes/emma.json");
+player.loadScene("./Agents/cf/scene.json");
 
 setTimeout(function (){
   LS.Globals.showGUI = false;

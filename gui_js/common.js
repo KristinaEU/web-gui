@@ -315,24 +315,25 @@ handleReplies["getReservations"] = function (reply) {
   }));
 };
 
-var timeline = new vis.Timeline(document.getElementById("reservation_timeline"), reservations, {
-  stack: false,
-  start: start,
-  end: end,
-  selectable: false,
-  align: 'left'
-});
-timeline.on('rangechanged', function (properties) {
-  start = properties.start;
-  end = properties.end;
-  checkReservations();
-});
+if (document.getElementById("reservation_timeline")) {
+    var timeline = new vis.Timeline(document.getElementById("reservation_timeline"), reservations, {
+        stack: false,
+        start: start,
+        end: end,
+        selectable: false,
+        align: 'left'
+    });
+    timeline.on('rangechanged', function (properties) {
+        start = properties.start;
+        end = properties.end;
+        checkReservations();
+    });
 
-var checkReservations = function () {
-  doProxyCall({'method': 'getReservations', 'params': [start.getTime(), end.getTime()], token: token});
-};
-setInterval(checkReservations, 60000);
-
+    var checkReservations = function () {
+        doProxyCall({'method': 'getReservations', 'params': [start.getTime(), end.getTime()], token: token});
+    };
+    setInterval(checkReservations, 60000);
+}
 
 // Get the modal
 var modal = document.getElementById('myModal');
