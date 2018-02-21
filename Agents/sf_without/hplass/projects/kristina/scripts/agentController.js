@@ -233,7 +233,7 @@ LS.Globals.processBML = function(key, bml) {
             // If I assign again the audioURL is the audio already loaded?
             
             var CC = LS.GlobalScene._root.getComponent("CaptionsComponent");
-            if (CC){
+            if (CC && !LS.Globals.hideCaptions){
               	var split = 5.0;
               
                 if (bml.duration <= split )
@@ -303,7 +303,7 @@ this.onRenderGUI = function(ctx)
 {
   var length;
 	
-  if(LS.Globals.count <= 0 || !LS.Globals.lg || !LS.Globals.lg.metadata || (length = Object.keys(LS.Globals.lg.metadata).length) == 0)// || LS.Globals.lg.end == undefined || LS.Globals.lg.end <= LS.GlobalScene.time || LS.Globals.lg.start == undefined || LS.Globals.lg.start > LS.GlobalScene.time)
+  if(!LS.Globals.showGUI || LS.Globals.count <= 0 || !LS.Globals.lg || !LS.Globals.lg.metadata || (length = Object.keys(LS.Globals.lg.metadata).length) == 0)// || LS.Globals.lg.end == undefined || LS.Globals.lg.end <= LS.GlobalScene.time || LS.Globals.lg.start == undefined || LS.Globals.lg.start > LS.GlobalScene.time)
     return;
  
   LS.GUI.Label( [56,285,400,22], "Mode-Selection:");	

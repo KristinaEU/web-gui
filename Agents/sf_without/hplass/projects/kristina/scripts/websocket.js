@@ -9,10 +9,10 @@ if (!LS.Globals)
   LS.Globals = {};
 
 LS.infoText = "";
-
+  
 if (!LS.Globals.hostname){
   LS.Globals.hostname = "webglstudio.org";
-  LS.Globals.port = 8080;
+  LS.Globals.port = 8000;
   LS.Globals.characterName = "KRISTINA";
 }
 
@@ -57,8 +57,7 @@ this.onFinish = function(){
 
 this.connectWS = function(){
   // Host string ("wss://.." if https)
-  var hostString = "wss://" + LS.Globals.hostname + ":" + LS.Globals.port;
-  
+var hostString = "wss://" + LS.Globals.hostname + ":" + LS.Globals.port;  
   that = this;
   // Create new WS
   this.ws = new WebSocket(hostString);
@@ -75,8 +74,7 @@ this.connectWS = function(){
     
     console.log("Connected to "+ hostString);
     LS.infoText = "Connected to "+ hostString;
-    this.send(LS.Globals.characterName.toLowerCase());
-  }
+this.send(LS.Globals.characterName.toLowerCase());  }
   
   // onmessage
   this.ws.onmessage = function(e){
