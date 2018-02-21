@@ -14,8 +14,9 @@ var mediaConstraints = {
   audio: true,
   //video: false
   video: {
+//	frameRate: {"max":"15","min":"5"},  
     mandatory: {
-      maxWidth: resolution_x,
+	  maxWidth: resolution_x,
       maxHeight: resolution_y
     }
   }
@@ -264,7 +265,7 @@ canvas.innerHTML = '';
 canvas.appendChild(player.canvas);
 player.canvas.style.borderRadius = '10px';
 
-LS.Globals.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
+LS.Globals.hostname = "localhost";
 LS.Globals.port = 8000;
 LS.Globals.characterName = "KRISTINA";
 player.loadScene("./Agents/cf/scene.json");
