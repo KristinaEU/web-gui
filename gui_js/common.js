@@ -3,12 +3,20 @@
  */
 
 
+var skipReservation = false;
+
+
 //Rest client to VSM: URL, call method, structures.
 var handleReplies = {};
 //var vsm_uri = "http://ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:11220/";
 //var wsUri = "wss://webglstudio.org:8080";
 //var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com:16160";
-var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com/ws";
+var wsUri = "localhost:8001/ws";
+//var wsUri = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com/ws";                                                                
+
+
+var noPushToTalkText = localStorage.getItem("kristina_noPushToTalk");
+var noPushToTalk = (noPushToTalkText && (noPushToTalkText.toLowerCase() === "true"));
 
 var vsm_start = {"cmd": "start"};
 var vsm_reset = {"cmd": "reset"};
@@ -54,7 +62,7 @@ var initVSM = function () {
 // Websocket variables
 var ws = null;
 var ws_open = false;
-var reserved = false;
+var reserved = skipReservation || false;
 var mediaRecorder = null;
 
 // Init websocket connection
@@ -92,9 +100,11 @@ function startWebsocket() {
             doResetCall({});
             console.log("Starting mediaRecorder...");
             mediaRecorder.start(500);
-            setTimeout(function () {
-              mediastream.getAudioTracks()[0].enabled = false;
-            }, 700);
+            if (!noPushToTalk) {
+              setTimeout(function () {
+                mediastream.getAudioTracks()[0].enabled = false;
+              }, 700);
+            }
           } else {
             console.log("Reconnect! Stopping mediaRecorder...");
             if (mediaRecorder.state !== "inactive") {
@@ -155,7 +165,7 @@ function doCmdSend(command) {
 }
 
 function doSend(message) {
-  if (ws_open) {
+  if (ws_open && reserved) {
     ws.send(message, {binary: true});
   }
 }
@@ -224,6 +234,8 @@ handleReplies["getReservation"] = function (reply) {
       reserved = false;
     }
   }
+  //Always reserved when skipReservation is true;
+  reserved = skipReservation || reserved;
   if (original_reservation != reserved) {
     //start/stop media recorder
     if (mediaRecorder != null) {
@@ -232,9 +244,11 @@ handleReplies["getReservation"] = function (reply) {
         doResetCall({});
         console.log("Starting mediaRecorder...");
         mediaRecorder.start(500);
-        setTimeout(function () {
-          mediastream.getAudioTracks()[0].enabled = false;
-        }, 700);
+        if (!noPushToTalk) {
+          setTimeout(function () {
+            mediastream.getAudioTracks()[0].enabled = false;
+          }, 700);
+        }
       } else {
         console.log("Stopping mediaRecorder...");
         if (mediaRecorder.state !== "inactive") {
@@ -258,7 +272,9 @@ handleReplies["getReservation"] = function (reply) {
     $('#manualInput').addClass("disabled");
     $('#push2talk').addClass("disabled");
     $('#scenarioSelector').addClass("disabled");
-
+  }
+  if (noPushToTalk){
+    $('#push2talk').addClass("disabled");
   }
 };
 
@@ -306,24 +322,26 @@ handleReplies["getReservations"] = function (reply) {
   }));
 };
 
-var timeline = new vis.Timeline(document.getElementById("reservation_timeline"), reservations, {
-  stack: false,
-  start: start,
-  end: end,
-  selectable: false,
-  align: 'left'
-});
-timeline.on('rangechanged', function (properties) {
-  start = properties.start;
-  end = properties.end;
-  checkReservations();
-});
-
 var checkReservations = function () {
-  doProxyCall({'method': 'getReservations', 'params': [start.getTime(), end.getTime()], token: token});
+    doProxyCall({'method': 'getReservations', 'params': [start.getTime(), end.getTime()], token: token});
 };
-setInterval(checkReservations, 60000);
 
+if (document.getElementById("reservation_timeline")) {
+    var timeline = new vis.Timeline(document.getElementById("reservation_timeline"), reservations, {
+        stack: false,
+        start: start,
+        end: end,
+        selectable: false,
+        align: 'left'
+    });
+    timeline.on('rangechanged', function (properties) {
+        start = properties.start;
+        end = properties.end;
+        checkReservations();
+    });
+
+    setInterval(checkReservations, 60000);
+}
 
 // Get the modal
 var modal = document.getElementById('myModal');

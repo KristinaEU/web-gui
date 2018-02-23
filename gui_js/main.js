@@ -9,14 +9,14 @@ var videoDimensions = videoWrapper.getBoundingClientRect();
 videoWrapper.style.height = (videoDimensions.width / 4 * 3) + 'px';
 
 
-
 // Constraints
 var mediaConstraints = {
   audio: true,
   //video: false
   video: {
+//	frameRate: {"max":"15","min":"5"},  
     mandatory: {
-      maxWidth: resolution_x,
+	  maxWidth: resolution_x,
       maxHeight: resolution_y
     }
   }
@@ -39,7 +39,7 @@ navigator.mediaDevices.getUserMedia(mediaConstraints)
     mediastream = stream;
 
     //mute by default
-    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm', bitsPerSecond: 160000});
+    mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm', videoBitsPerSecond : 2500000});
 
     mediaRecorder.ondataavailable = function (e) {
       //console.log("Data available!");
@@ -144,6 +144,24 @@ var importTestData = function (json){
   }
 };
 
+var setNoPushToTalk = function(input){
+  noPushToTalk= $(input).is(":checked");
+  localStorage.setItem("kristina_noPushToTalk",JSON.stringify(noPushToTalk));
+  if (noPushToTalk){
+    doUnmute();
+    $('#push2talk').addClass("disabled");
+    $('#push2talkInfo').show();
+  } else {
+    doMute();
+    $('#push2talk').removeClass("disabled");
+    $('#push2talkInfo').hide();
+  }
+};
+if (noPushToTalk){
+  $('#nopushtotalk').prop("checked",true);
+}
+
+
 var startTestingTool = function(){
   testingTool = true;
   //Schedule first sentence
@@ -211,7 +229,7 @@ var downloadCSV = function () {
     csv += idx + ";" + item.userText + ";";
     var url = "";
     item.lg.map(function (line) {
-      csv += line.text
+      csv += line.text;
       if (url === "" && line.externalURL){
         url = line.externalURL;
       }
@@ -232,12 +250,15 @@ var downloadCSV = function () {
 var kristinaWrapper = document.getElementById("kristinaWrapper");
 var kristinaDimensions = kristinaWrapper.getBoundingClientRect();
 
+var agentId = "cf";
+//cf, sf_without
+
 
 var player = new LS.Player({
   width: kristinaDimensions.width,
   height: kristinaDimensions.width / 4 * 3,
-  resources: "resources",
-  shaders: "shaders/shaders.xml",
+  resources: "Agents/"+agentId,
+  shaders: "Agents/"+agentId+"/data/shaders.xml",
   loadingbar: true, //shows loading bar progress
   container: kristinaWrapper
 });
@@ -247,10 +268,10 @@ canvas.innerHTML = '';
 canvas.appendChild(player.canvas);
 player.canvas.style.borderRadius = '10px';
 
-LS.Globals.hostname = "ec2-52-29-254-9.eu-central-1.compute.amazonaws.com";
+LS.Globals.hostname = "localhost";
 LS.Globals.port = 8000;
 LS.Globals.characterName = "KRISTINA";
-player.loadScene("./scenes/emma.json");
+player.loadScene("./Agents/"+agentId+"/scene.json");
 
 setTimeout(function (){
   LS.Globals.showGUI = false;

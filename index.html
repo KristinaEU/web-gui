@@ -68,7 +68,7 @@
         <!-- /.col-md-8 -->
         <div class="col-sm-3 col-md-3">
             <div class="row" style="position:relative;">
-                <div class="col-md-3 flat"><img class="img-responsive" src="./images/kristina_logo.jpg"/></div>
+                <div class="col-md-3 flat"><a href="http://kristina-project.eu/en/" target="_blank"><img class="img-responsive" src="./images/kristina_logo.jpg"/></a></div>
                 <div class="col-md-9 logoText">KRISTINA</div>
             </div>
             <hr>
@@ -103,6 +103,7 @@
                     <a class="btn btn-warning btn-lg fullWidth" href="#" id="push2talk"><img
                             src="images/microphone_318-50712.jpg" style="height:20px;width:20px">&nbsp;Push to talk
                         (<i>SpaceBar</i>)</a>
+                    <p id="push2talkInfo" style="color:red;" hidden>push2talk disabled, audio always open!</p>
                 </div>
             </div>
             <hr>
@@ -155,16 +156,13 @@
     </div>
     <hr>
     <h3>System reservations:</h3>
-    <!-- Call to Action Well -->
     <div class="row">
         <div class="col-lg-12 flat">
             <div class="well text-center">
                 <div id="reservation_timeline"></div>
             </div>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <!-- /.row -->
     <hr>
     <div class="row">
         <div class="col-lg-12 flat">
@@ -231,7 +229,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="subjectOverride" onchange="setSubjectOverride(this)"> Enable override care recipient:
+                                    <input type="checkbox" id="subjectOverride" onchange="setSubjectOverride(this)">
+                                    Enable override care recipient:
                                 </div>
                             </div>
                             <div class="row">
@@ -358,6 +357,16 @@
                         <a class="btn btn-primary btn-lg" onClick="downloadLogs()">Download Logs</a>
                         <a class="btn btn-primary btn-lg" onClick="summarizeLogs()">Download Summary Logs</a>
                         <a class="btn btn-primary btn-lg" onClick="downloadCSV()">Download CSV</a>
+                    </div>
+                </div>
+                <!-- /.col-lg-9 -->
+            </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col-lg-9 flat">
+                    <div class="checkbox">
+                        <label><input id="nopushtotalk" type="checkbox" onChange="setNoPushToTalk(this)">
+                                 Disable push2talk, audio always open</label>
                     </div>
                 </div>
                 <!-- /.col-lg-9 -->
