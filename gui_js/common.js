@@ -3,7 +3,7 @@
  */
 
 
-var skipReservation = true;
+var skipReservation = false;
 
 
 //Rest client to VSM: URL, call method, structures.
