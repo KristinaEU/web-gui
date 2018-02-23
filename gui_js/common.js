@@ -77,7 +77,13 @@ function startWebsocket() {
       ws = new WebSocket("wss://" + wsUri);
 
       ws.onopen = function (e) {
-        console.log("Websocket connected to: ", wsUri);
+		if (ws.readyState == 0){
+			console.error("Websocket called onopen before readyState was open!");
+			setTimeout(ws.onopen,1);
+			return;
+		}
+        console.log("Websocket connected to: ", wsUri, ws, ws.readyState);
+		
         ws_open = true;
 
         if (mediaRecorder != null) {
