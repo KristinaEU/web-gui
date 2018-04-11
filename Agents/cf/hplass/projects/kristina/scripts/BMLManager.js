@@ -314,7 +314,7 @@ BMLTimeManager.prototype.checkSync = function(syncAttr, block, it){
 		}
 		// Add offset
 		if (str.length == 2)
-			tNumber += parseFloat(str[1]) * Math.sign(parseFloat(tNumber)); // This last part is to compensate
+			tNumber += (parseFloat(str[1])||1) * Math.sign(parseFloat(tNumber)); // This last part is to compensate
 																// the negative flag (ref to other blocks)
 	}
 

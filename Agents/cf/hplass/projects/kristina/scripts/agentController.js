@@ -75,6 +75,7 @@ this.onUpdate = function(dt) {
             {
                 // Send post response
                 LS.Globals.ws.send( block.id + ": true" );
+                console.log("(On audio error) Sending POST response with id:", block.id);
 
                 // Remove from pending stack
                 LS.Globals.pendingResources.splice( i, 1 );
